@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pl.edu.agh.mobilecodereviewer" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/pl.agh.edu.mobilecodereviewer.title"
+        android:theme="@style/AppTheme"
+        android:name="pl.edu.agh.mobilecodereviewer.controllers.MainApplicationController">
+        <activity
+            android:name=".activities.changes.explorer.ChangesExplorer"
+            android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
