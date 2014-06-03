@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pl.agh.edu.mobilecodereviewer.title">MobileCodeReviewer</string>
+    <string name="pl.agh.edu.mobilecodereviewer.settings">Settings</string>
+
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.title">Changes explorer</string>
+
+</resources>
