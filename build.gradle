@@ -11,6 +11,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/staging/com/squareup/dagger/dagger/1.2.1/'
+        }
         mavenCentral()
     }
 }
