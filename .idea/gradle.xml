@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\d00d171\AndroidStudioProjects\MobileCodeReviewer" />
-            <option value="C:\Users\d00d171\AndroidStudioProjects\MobileCodeReviewer\app" />
+            <option value="C:\Users\lee\MobileCodeReviewer" />
+            <option value="C:\Users\lee\MobileCodeReviewer\app" />
           </set>
         </option>
       </GradleProjectSettings>

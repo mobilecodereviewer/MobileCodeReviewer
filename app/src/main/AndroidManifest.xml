@@ -7,9 +7,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/pl.agh.edu.mobilecodereviewer.title"
         android:theme="@style/AppTheme"
-        android:name="pl.edu.agh.mobilecodereviewer.controllers.MainApplicationController">
+        android:name=".app.MobileCodeReviewerApplication">
         <activity
-            android:name=".activities.changes.explorer.ChangesExplorer"
+            android:name=".view.activities.ChangesExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
