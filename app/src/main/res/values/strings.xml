@@ -4,9 +4,15 @@
     <string name="pl.agh.edu.mobilecodereviewer.title">MobileCodeReviewer</string>
     <string name="pl.agh.edu.mobilecodereviewer.settings">Settings</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.title">Changes explorer</string>
+
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.title">ChangeDetails</string>
     <string name="pl.agh.edu.mobilecodereviewer.ModifiedFiles.title">ChangeDetails</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFiles.id">ModifiedFiles</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFiles.label">ModifiedFiles</string>
+
+    <string name="title_activity_source_explorer">SourceExplorer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 
 </resources>
