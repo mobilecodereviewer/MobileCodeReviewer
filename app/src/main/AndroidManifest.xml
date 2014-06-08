@@ -3,19 +3,26 @@
     package="pl.edu.agh.mobilecodereviewer" >
 
     <application
+        android:name="pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/pl.agh.edu.mobilecodereviewer.title"
-        android:theme="@style/AppTheme"
-        android:name=".app.MobileCodeReviewerApplication">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".view.activities.ChangesExplorer"
+            android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails"
+            android:label="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.title" >
+        </activity>
+        <activity
+            android:name="pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFiles">
         </activity>
     </application>
 

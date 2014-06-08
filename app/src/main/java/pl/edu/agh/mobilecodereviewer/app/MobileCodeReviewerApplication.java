@@ -7,6 +7,7 @@ import roboguice.RoboGuice;
  * MobileCodeReviewerApllication class is the main point for the whole application.
  * Its main purpose is to initialize some application configuration and supply
  * service method for all activities
+ *
  * @author AGH
  * @version 0.1
  * @since 0.1

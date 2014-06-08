@@ -13,6 +13,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 /**
  * Implementation for controlling action after event in change explorer
  * activity took place
+ *
  * @author AGH
  * @version 0.1
  * @since 0.1
@@ -35,6 +36,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
 
     /**
      * Construct object with given data access Object
+     *
      * @param changeInfoDAO {@link pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl#changeInfoDAO}
      */
     public ChangesExplorerControllerImpl(ChangeInfoDAO changeInfoDAO) {
@@ -42,18 +44,20 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     }
 
     /**
-     * Method download information about changes and inform
+     * Method downloads information about changes and inform
      * view to show given information
+     *
      * @param view View in which changes will be shown
      */
     @Override
     public void updateChanges(ChangesExplorerView view) {
-        List<ChangeInfo> infos = changeInfoDAO.getInfoChanges();
+        List<ChangeInfo> infos = changeInfoDAO.getAllChangesInfo();
         view.showChanges(infos);
     }
 
     /**
      * Getter for {@link pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl#changeInfoDAO}
+     *
      * @return Change Information Data Access Object
      */
     public ChangeInfoDAO getChangeInfoDAO() {
@@ -62,6 +66,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
 
     /**
      * Setter for {@link pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl#changeInfoDAO}
+     *
      * @param changeInfoDAO Change Information Data Access Object
      */
     public void setChangeInfoDAO(ChangeInfoDAO changeInfoDAO) {
