@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
+import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 
 @Singleton
@@ -16,6 +17,9 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void updateSourceCode(SourceExplorerView view) {
+        SourceCode sourceCode = sourceCodeDAO.getSourceCode();
 
+        view.showSourceCode( sourceCode );
     }
+
 }

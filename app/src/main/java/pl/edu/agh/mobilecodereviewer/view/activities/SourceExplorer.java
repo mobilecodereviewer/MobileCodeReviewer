@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.common.collect.Lists;
+
 import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.view.activities.tools.SourceCodeViewList;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.activity.RoboActivity;
 
@@ -49,6 +52,9 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @Override
     public void showSourceCode(SourceCode sourceCode) {
 
+        SourceCodeViewList sourceCodeViewList =
+                new SourceCodeViewList(SourceExplorer.class,
+                        Lists.transform(sourceCode.getLines() ,));
     }
 }
 
