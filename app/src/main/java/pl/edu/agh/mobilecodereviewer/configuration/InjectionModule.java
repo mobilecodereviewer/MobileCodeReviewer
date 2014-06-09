@@ -5,10 +5,9 @@ import com.google.inject.Module;
 
 import pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ModifiedFilesControllerImpl;
-import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
-import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
 import pl.edu.agh.mobilecodereviewer.controllers.SourceExplorerControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.ChangeInfoDAOMockImpl;
 import pl.edu.agh.mobilecodereviewer.dao.SourceCodeDAOMockImpl;
@@ -24,7 +23,6 @@ import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
  * @since 0.1
  */
 public class InjectionModule implements Module {
-
     /**
      * Method bind interfaces to associated classes
      *

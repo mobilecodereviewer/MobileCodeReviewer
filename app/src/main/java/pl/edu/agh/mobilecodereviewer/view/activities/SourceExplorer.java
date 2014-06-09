@@ -3,23 +3,45 @@ package pl.edu.agh.mobilecodereviewer.view.activities;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-import com.google.common.collect.Lists;
-
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
-import pl.edu.agh.mobilecodereviewer.view.activities.tools.SourceCodeViewList;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
 
+/**
+ * Activity is primary point for exploring changes of the file for a given change.
+ * Source Explorer show changes of the file,comments of the lines, give
+ * tools to add comment etc
+ *
+ * @author AGH
+ * @version 0.1
+ * @since 0.1
+ */
 public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
+    /**
+     *  Associated controller which make actions to activity events
+     */
     @Inject
     private SourceExplorerController controller;
 
+    /**
+     * List View which shows source code and comments
+     */
+    @InjectView(R.id.sourceLinesListView)
+    private ListView sourceLinesListView;
+
+    /**
+     * Initialize view and request update of source code list
+     * @param savedInstanceState Saved instance of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,19 +51,22 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     }
 
 
+    /**
+     * Preparing activity's options menu.
+     * @inheritDoc
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.source_explorer, menu);
         return true;
     }
 
+    /**
+     * Preparing activity's options menu onclick actions.
+     * @inheritDoc
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
@@ -49,12 +74,17 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Show content from given source code
+     * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
+     */
     @Override
     public void showSourceCode(SourceCode sourceCode) {
+        SourceCodeViewListAdapter sourceCodeViewListAdapter =
+                new SourceCodeViewListAdapter(this,sourceCode);
 
-        SourceCodeViewList sourceCodeViewList =
-                new SourceCodeViewList(SourceExplorer.class,
-                        Lists.transform(sourceCode.getLines() ,));
+        sourceLinesListView.setAdapter(sourceCodeViewListAdapter);
+
     }
 }
 

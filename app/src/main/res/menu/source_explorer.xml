@@ -3,7 +3,7 @@
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer" >
     
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.title"
         android:orderInCategory="100"
         android:showAsAction="never" />
 </menu>

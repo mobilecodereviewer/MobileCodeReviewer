@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer"
-            android:label="@string/title_activity_source_explorer" >
+            android:label="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.title">
         </activity>
     </application>
 

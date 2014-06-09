@@ -1,5 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -97,7 +98,11 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
         modifiedFilesListView.setAdapter(adapter);
     }
 
+    /**
+     * Show content of the file {@link pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer}
+     */
     private void showFileDetails() {
-        //TODO przechodzenie do ekranu ze szczegolami pliku
+        Intent intent = new Intent(getApplicationContext(), SourceExplorer.class);
+        startActivity(intent);
     }
 }

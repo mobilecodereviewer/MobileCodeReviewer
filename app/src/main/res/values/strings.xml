@@ -10,6 +10,9 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFiles.id">ModifiedFiles</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFiles.label">ModifiedFiles</string>
 
+    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.title">Source Explorer</string>
+
+
     <string name="title_activity_source_explorer">SourceExplorer</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
