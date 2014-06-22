@@ -29,4 +29,5 @@ dependencies {
     compile 'org.roboguice:roboguice:2.0'
     compile 'com.google.guava:guava:r05'
     compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.squareup.retrofit:retrofit:1.6.0'
 }

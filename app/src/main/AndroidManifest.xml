@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.edu.agh.mobilecodereviewer" >
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
     <application
         android:name="pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication"
         android:allowBackup="true"
