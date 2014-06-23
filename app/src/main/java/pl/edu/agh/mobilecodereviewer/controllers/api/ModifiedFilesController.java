@@ -18,5 +18,5 @@ public interface ModifiedFilesController {
      *
      * @param view View in which files will be shown
      */
-    void updateFiles(ModifiedFilesView view);
+    void updateFiles(ModifiedFilesView view, String changeId);
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -103,9 +104,10 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
      * @param changes List of changes to display
      */
     @Override
-    public void showChanges(List<ChangeInfo> changes) {
-        //TODO dorobienie customowego adaptera ktory umozliwi rozpoznanie id (ChangeInfo#id) kliknietego itema na liscie
+    public void showChanges(final List<ChangeInfo> changes) {
+
         List<String> strChanges = new ArrayList<String>();
+
         for (ChangeInfo change : changes) {
             strChanges.add(change.getSubject());
         }
@@ -115,12 +117,13 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
                 android.R.id.text1,
                 strChanges);
 
-        //TODO modyfkiacja metody aby pobierala id kliknietego itema na liscie (ChangeInfo#id)
         changesExplorerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showChangeDetails();
+                showChangeDetails(changes.get(i).getChangeId());
             }
+
         });
         changesExplorerListView.setAdapter(adapter);
     }
@@ -128,9 +131,9 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     /**
      * Starts Change Details activity
      */
-    private void showChangeDetails() {
+    private void showChangeDetails(String changeId) {
         Intent intent = new Intent(getApplicationContext(), ChangeDetails.class);
-        //TODO dodawania informacji o id wybranego ChangeDetails do Intent
+        intent.putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId);
         startActivity(intent);
     }
 }

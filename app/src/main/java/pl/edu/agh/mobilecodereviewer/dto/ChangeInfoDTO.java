@@ -2,14 +2,37 @@ package pl.edu.agh.mobilecodereviewer.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Map;
+
 public class ChangeInfoDTO {
+
+    private String id;
 
     @SerializedName("change_id")
     private String changeId;
 
-    private String id;
-
     private String subject;
+
+    @SerializedName("current_revision")
+    private String currentRevision;
+
+    private Map<String, RevisionInfoDTO> revisions;
+
+    public String getCurrentRevision() {
+        return currentRevision;
+    }
+
+    public void setCurrentRevision(String currentRevision) {
+        this.currentRevision = currentRevision;
+    }
+
+    public Map<String, RevisionInfoDTO> getRevisions() {
+        return revisions;
+    }
+
+    public void setRevisions(Map<String, RevisionInfoDTO> revisions) {
+        this.revisions = revisions;
+    }
 
     public String getSubject() {
         return subject;

@@ -36,7 +36,7 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
      * Information about modified files used by {@link pl.edu.agh.mobilecodereviewer.dao.ChangeInfoDAOMockImpl}
      */
     private static List<FileInfo> filesInfos = Arrays.asList(
-            FileInfo.valueOf("file1.txt"),
+            FileInfo.valueOf("ThisissuperlongfileNamewhichwillbeusedtotextbehavouirasdeiojd.txt"),
             FileInfo.valueOf("file2.txt"),
             FileInfo.valueOf("file2.txt")
     );

@@ -1,10 +1,15 @@
 package pl.edu.agh.mobilecodereviewer.dao.gerrit;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.FileInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 
@@ -37,6 +42,17 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
 
     @Override
     public List<FileInfo> getModifiedFiles(String id) {
-        return null;
+
+        Pair<String, RevisionInfoDTO> changeInfoDTO = RestApi.getCurrentRevisionForChange(id);
+
+        Map<String, FileInfoDTO> fileInfoDTOs = changeInfoDTO.second.getFiles();
+
+        List<FileInfo> fileInfos = new ArrayList<FileInfo>();
+
+        for(String fileName : fileInfoDTOs.keySet()){
+            fileInfos.add(FileInfo.valueOf(id, changeInfoDTO.first, fileName));
+        }
+
+        return fileInfos;
     }
 }
