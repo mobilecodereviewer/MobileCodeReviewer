@@ -1,12 +1,14 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import roboguice.activity.RoboTabActivity;
 import roboguice.inject.InjectResource;
 
@@ -27,12 +29,8 @@ public class ChangeDetails extends RoboTabActivity {
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_modifiedFiles_id)
     String modifiedFilesTabId;
 
-    /**
-     * Visible label of modified files tab.
-     */
-    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_modifiedFiles_label)
-    String modifiedFilesTabLabel;
-
+    @InjectResource(R.drawable.change_details_modified_files)
+    Drawable modifiedFileTabIcon;
 
     /**
      * Invoked on start of the acivity.
@@ -46,25 +44,29 @@ public class ChangeDetails extends RoboTabActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        //TODO pobieranie id zmiany z dodatkowego parametru intent i przekazywanie go do metody
-        //TODO zostanie on przekazany do addTabs aby a nastepnie w intencie do kazdej zakladki
 
         TabHost changeDetailsTabHost = getTabHost();
-        addTabs(changeDetailsTabHost);
+        addTabs(changeDetailsTabHost, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
         changeDetailsTabHost.setCurrentTab(0);
     }
 
     /**
      * Adds required tabs for change details tabbed view container
+     *
      * @param tabHost tabbed view container
      */
-    //TODO zmodyfikowac zeby przekazywany byl tez intent ktory ma zostac ustawiony
-    private void addTabs(TabHost tabHost) {
-        tabHost.addTab(tabHost.newTabSpec(modifiedFilesTabId).setIndicator(modifiedFilesTabLabel).setContent(new Intent(this, ModifiedFiles.class)));
+    private void addTabs(TabHost tabHost, String changeId) {
+
+        tabHost.addTab(tabHost.newTabSpec(modifiedFilesTabId)
+                .setIndicator("", modifiedFileTabIcon)
+                .setContent(new Intent(this, ModifiedFiles.class)
+                        .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+
     }
 
     /**
      * Preparing activity's options menu.
+     *
      * @inheritDoc
      */
     @Override
@@ -75,6 +77,7 @@ public class ChangeDetails extends RoboTabActivity {
 
     /**
      * Preparing activity's options menu onclick actions.
+     *
      * @inheritDoc
      */
     @Override

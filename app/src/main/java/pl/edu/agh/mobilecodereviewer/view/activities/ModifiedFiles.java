@@ -15,6 +15,7 @@ import java.util.List;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesView;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -67,8 +68,9 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modified_files);
 
-        //TODO pobrac id z intenta przekazanego przez changedetails i przekazac do kontrolera
-        controller.updateFiles(this);
+        Intent intent = getIntent();
+
+        controller.updateFiles(this, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
     }
 
     /**
@@ -78,7 +80,7 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
      * @param filesList List of modified files to display
      */
     @Override
-    public void showFiles(List<FileInfo> filesList) {
+    public void showFiles(final List<FileInfo> filesList) {
         List<String> strChanges = new ArrayList<String>();
         for (FileInfo file : filesList) {
             strChanges.add(file.getFileName());
@@ -92,7 +94,8 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
         modifiedFilesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showFileDetails();
+                FileInfo selectedFile = filesList.get(i);
+                showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName());
             }
         });
         modifiedFilesListView.setAdapter(adapter);
@@ -101,8 +104,13 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
     /**
      * Show content of the file {@link pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer}
      */
-    private void showFileDetails() {
+    private void showFileDetails(String changeId, String revisionId, String fileName) {
         Intent intent = new Intent(getApplicationContext(), SourceExplorer.class);
+
+        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID, changeId);
+        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID, revisionId);
+        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME, fileName);
+
         startActivity(intent);
     }
 }

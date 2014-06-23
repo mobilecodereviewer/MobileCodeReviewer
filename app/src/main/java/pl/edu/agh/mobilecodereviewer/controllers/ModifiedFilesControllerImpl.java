@@ -50,9 +50,8 @@ public class ModifiedFilesControllerImpl implements ModifiedFilesController {
      * @param view View in which changes will be shown
      */
     @Override
-    //TODO dorobic zeby przyjmowal parametr z id zmiany dla ktorej maja zostac pobrane pliki
-    public void updateFiles(ModifiedFilesView view) {
-        List<FileInfo> changeInfos = changeInfoDAO.getModifiedFiles(null);
+    public void updateFiles(ModifiedFilesView view, String changeId) {
+        List<FileInfo> changeInfos = changeInfoDAO.getModifiedFiles(changeId);
         view.showFiles(changeInfos);
     }
 
