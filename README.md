@@ -23,7 +23,14 @@ Keep in mind that MobileCodeReview is in early stage of development, so it's fun
 Releases
 -----------
 
+1. **Official releases:**
 To be announced.
+
+2. **Beta releases:**
+ * **v0.1** [2014-06-09]  [[Download] (https://drive.google.com/file/d/0B-pUapeGeuvSblA5UUxDNk8yVDQ/edit?usp=sharing)]
+   * initial release - screens with mocked data : explorer of changes, explorer of modified files, source code view
+    
+ 
 
 
 Feedback
@@ -32,7 +39,6 @@ Feedback
 Any feedback regarding this project is very welcome. 
 
 If you have any remarks please contact us at *mobilecodereviewer@gmail.com*.
-
 If you are willing to contribute your code to this project feel free to fork the repository, and create a pull request when you're done.
 
 
