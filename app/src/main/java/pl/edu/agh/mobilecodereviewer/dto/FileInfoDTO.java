@@ -9,6 +9,14 @@ public class FileInfoDTO {
     @SerializedName("lines_inserted")
     private int linesInserted;
 
+    public FileInfoDTO() {
+    }
+
+    public FileInfoDTO(String status, int linesInserted) {
+        this.status = status;
+        this.linesInserted = linesInserted;
+    }
+
     public String getStatus() {
         return status;
     }

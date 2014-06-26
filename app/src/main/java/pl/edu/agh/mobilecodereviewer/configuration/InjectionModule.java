@@ -9,7 +9,7 @@ import pl.edu.agh.mobilecodereviewer.controllers.SourceExplorerControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
-import pl.edu.agh.mobilecodereviewer.dao.SourceCodeDAOMockImpl;
+import pl.edu.agh.mobilecodereviewer.dao.mock.SourceCodeDAOMockImpl;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.ChangeInfoDAOImpl;

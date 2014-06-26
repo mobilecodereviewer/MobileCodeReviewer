@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao;
+package pl.edu.agh.mobilecodereviewer.dao.mock;
 
 import com.google.inject.Singleton;
 
@@ -24,7 +24,7 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
 
     /**
-     * Information about changes used by {@link pl.edu.agh.mobilecodereviewer.dao.ChangeInfoDAOMockImpl}
+     * Information about changes used by {@link ChangeInfoDAOMockImpl}
      */
     private static List<ChangeInfo> changesInfos = Arrays.asList(
             ChangeInfo.valueOf("project1~branch1~changeId1", "changeId1", "Change1"),
@@ -33,7 +33,7 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
     );
 
     /**
-     * Information about modified files used by {@link pl.edu.agh.mobilecodereviewer.dao.ChangeInfoDAOMockImpl}
+     * Information about modified files used by {@link ChangeInfoDAOMockImpl}
      */
     private static List<FileInfo> filesInfos = Arrays.asList(
             FileInfo.valueOf("ThisissuperlongfileNamewhichwillbeusedtotextbehavouirasdeiojd.txt"),

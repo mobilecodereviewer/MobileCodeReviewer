@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao;
+package pl.edu.agh.mobilecodereviewer.dao.mock;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Singleton;

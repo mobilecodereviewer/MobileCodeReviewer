@@ -8,26 +8,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 import retrofit.RestAdapter;
-import retrofit.http.GET;
-import retrofit.http.Path;
 
 public class RestApi {
-
-    private interface GerritService {
-
-        @GET("/changes/")
-        List<ChangeInfoDTO> getChanges();
-
-        @GET("/changes/{id}/detail/")
-        ChangeInfoDTO getChangeDetails(@Path("id") String id);
-
-        @GET("/changes/{id}/?o=CURRENT_REVISION&o=CURRENT_FILES")
-        ChangeInfoDTO getChangeWithCurrentRevision(@Path("id") String id);
-
-    }
 
     private static final String API_URL = "http://192.168.194.161:8080";
 

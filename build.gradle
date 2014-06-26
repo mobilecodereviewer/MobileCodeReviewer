@@ -3,14 +3,17 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.2.+'
     }
 }
 
 allprojects {
     repositories {
         mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 }
