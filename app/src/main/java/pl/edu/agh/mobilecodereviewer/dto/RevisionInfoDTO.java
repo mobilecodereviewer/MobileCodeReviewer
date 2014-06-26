@@ -12,6 +12,14 @@ public class RevisionInfoDTO {
 
     private Map<String, FileInfoDTO> files;
 
+    public RevisionInfoDTO() {
+    }
+
+    public RevisionInfoDTO(String number, Map<String, FileInfoDTO> files) {
+        this.number = number;
+        this.files = files;
+    }
+
     public String getNumber() {
         return number;
     }
