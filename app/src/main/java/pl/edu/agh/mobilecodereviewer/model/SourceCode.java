@@ -38,6 +38,18 @@ public class SourceCode {
         return lines;
     }
 
+    public Line getLine(int lineNumber) {
+        return lines.get(lineNumber-1);
+    }
+
+    public String getLineContent(int lineNumber) {
+        return lines.get(lineNumber-1).getContent();
+    }
+
+    public List<Comment> getLineComments(int lineNumber) {
+        return lines.get(lineNumber-1).getComments();
+    }
+
     /**
      * Setter for {@link pl.edu.agh.mobilecodereviewer.model.SourceCode#lines}
      * @param lines Lines of code

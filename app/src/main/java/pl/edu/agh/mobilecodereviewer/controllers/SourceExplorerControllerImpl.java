@@ -48,10 +48,10 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
      * @param view View which will be show information aboud model
      */
     @Override
-    public void updateSourceCode(SourceExplorerView view) {
-        SourceCode sourceCode = sourceCodeDAO.getSourceCode();
+    public void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id) {
+        SourceCode sourceCode = sourceCodeDAO.getSourceCode(change_id,revision_id,file_id);
 
-        view.showSourceCode( sourceCode );
+        view.showSourceCode(sourceCode);
     }
 
 }

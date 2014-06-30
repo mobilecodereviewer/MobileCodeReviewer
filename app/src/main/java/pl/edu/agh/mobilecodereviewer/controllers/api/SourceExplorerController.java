@@ -18,5 +18,5 @@ public interface SourceExplorerController {
      * update source code is requested
      * @param view
      */
-    void updateSourceCode(SourceExplorerView view);
+    void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id);
 }

@@ -20,5 +20,5 @@ public interface SourceCodeDAO {
      * parameters etc
      * @return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
-    SourceCode getSourceCode();
+    SourceCode getSourceCode(String change_id,String revision_id,String file_id);
 }

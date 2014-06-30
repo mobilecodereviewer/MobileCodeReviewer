@@ -9,10 +9,10 @@ import pl.edu.agh.mobilecodereviewer.controllers.SourceExplorerControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
-import pl.edu.agh.mobilecodereviewer.dao.mock.SourceCodeDAOMockImpl;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.ChangeInfoDAOImpl;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.SourceCodeDAOImpl;
 
 /**
  * Class configure assosiaciations between interfaces and classes
@@ -33,7 +33,7 @@ public class InjectionModule implements Module {
         binder.bind(ChangeInfoDAO.class).to(ChangeInfoDAOImpl.class);
         binder.bind(ChangesExplorerController.class).to(ChangesExplorerControllerImpl.class);
         binder.bind(ModifiedFilesController.class).to(ModifiedFilesControllerImpl.class);
-        binder.bind(SourceCodeDAO.class).to(SourceCodeDAOMockImpl.class);
+        binder.bind(SourceCodeDAO.class).to(SourceCodeDAOImpl.class);
         binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
     }
 }
