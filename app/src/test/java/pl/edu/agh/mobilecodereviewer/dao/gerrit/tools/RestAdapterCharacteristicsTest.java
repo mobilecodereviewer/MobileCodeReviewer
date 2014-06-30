@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao.gerrit;
+package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
 
 
 import com.google.common.base.Function;
@@ -29,11 +29,11 @@ public class RestAdapterCharacteristicsTest {
 
     @Test(expected = RetrofitError.class)
     public void testRestAdapterIsOk() throws Exception {
-        RestAdapter restAdapter = GerritHelper.createRestAdapter(new Client() {
+        RestAdapter restAdapter = GerritTestHelper.createRestAdapter(new Client() {
             @Override
             public Response execute(Request request) throws IOException {
                 assertEquals("GET", request.getMethod());
-                assertEquals("0.0.0.0/changes/", request.getUrl());
+                assertEquals("http://0.0.0.0:8080/changes/", request.getUrl());
                 return null;
             }
         });
@@ -44,8 +44,8 @@ public class RestAdapterCharacteristicsTest {
 
     @Test
     public void testGetEmptyJson() throws Exception {
-        GerritService gerritService = GerritHelper.createSimpleTestTemplate(GerritService.class,
-                GerritHelper.doNothing,
+        GerritService gerritService = GerritTestHelper.createSimpleRestServiceForTest(GerritService.class,
+                GerritTestHelper.doNothing,
                 "");
 
         List<ChangeInfoDTO> changes = gerritService.getChanges();
@@ -54,8 +54,8 @@ public class RestAdapterCharacteristicsTest {
 
     @Test
     public void testGetEmptyChanges() throws Exception {
-        GerritService gerritService = GerritHelper.createSimpleTestTemplate(GerritService.class,
-                GerritHelper.doNothing,
+        GerritService gerritService = GerritTestHelper.createSimpleRestServiceForTest(GerritService.class,
+                GerritTestHelper.doNothing,
                 "[]");
 
         List<ChangeInfoDTO> changes = gerritService.getChanges();
@@ -65,15 +65,16 @@ public class RestAdapterCharacteristicsTest {
     @Test
     public void testGetRevisionEmpty() throws Exception {
         final int id = 30;
-        GerritService gerritService = GerritHelper.createSimpleTestTemplate(GerritService.class,
+        GerritService gerritService = GerritTestHelper.createSimpleRestServiceForTest(GerritService.class,
                 new Function<Request, Void>() {
                     @Override
                     public Void apply(Request from) {
-                        assertEquals( "0.0.0.0/changes/" + 30 + "/detail/" , from.getUrl());
+                        assertEquals("http://0.0.0.0:8080/changes/" + 30 + "/detail/", from.getUrl());
                         return null;
                     }
                 },
-                "{}");
+                "{}"
+        );
 
         ChangeInfoDTO changeDetails = gerritService.getChangeDetails(Integer.toString(id));
         assertNull( changeDetails.getId() );
@@ -82,19 +83,21 @@ public class RestAdapterCharacteristicsTest {
     @Test
     public void testGetChangeWithCurrentRevisionProperSendRequest() throws Exception {
         final int id = 30;
-        GerritService gerritService = GerritHelper.createSimpleTestTemplate(GerritService.class,
+        GerritService gerritService = GerritTestHelper.createSimpleRestServiceForTest(GerritService.class,
                 new Function<Request, Void>() {
                     @Override
                     public Void apply(Request from) {
-                        assertEquals( "0.0.0.0/changes/" + 30 + "/?o=CURRENT_REVISION&o=CURRENT_FILES" ,
-                                      from.getUrl() );
+                        assertEquals("http://0.0.0.0:8080/changes/" + 30 + "/?o=CURRENT_REVISION&o=CURRENT_FILES",
+                                from.getUrl());
                         return null;
                     }
                 },
-                "{}");
+                "{\"id\":\"" + id + "\"}"
+        );
 
         ChangeInfoDTO changeDetails = gerritService.getChangeWithCurrentRevision(Integer.toString(id));
-
+        assertEquals( changeDetails.getId() , Integer.toString(id) );
+        assertNull(changeDetails.getSubject());
     }
 }
 

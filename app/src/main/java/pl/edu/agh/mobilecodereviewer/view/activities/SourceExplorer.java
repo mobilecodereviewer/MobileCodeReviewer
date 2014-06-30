@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.activity.RoboActivity;
@@ -47,7 +48,10 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_source_explorer);
 
-        controller.updateSourceCode(this);
+        String change_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID);
+        String revision_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID);
+        String file_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME);
+        controller.updateSourceCode(this,change_id,revision_id,file_id);
     }
 
 

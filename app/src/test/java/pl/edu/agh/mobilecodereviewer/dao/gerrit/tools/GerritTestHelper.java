@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao.gerrit;
+package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
 
 import com.google.common.base.Function;
 
@@ -14,10 +14,8 @@ import retrofit.client.Request;
 import retrofit.client.Response;
 import retrofit.mime.TypedInput;
 
-/**
- * Created by lee on 2014-06-27.
- */
-public class GerritHelper {
+
+public class GerritTestHelper {
 
     public static Function<Request,Void> doNothing = new Function<Request, Void>() {
         @Override
@@ -70,13 +68,13 @@ public class GerritHelper {
         return new RestAdapter.Builder()
                 .setClient(client)
                 .setLogLevel(RestAdapter.LogLevel.NONE)
-                .setEndpoint("0.0.0.0")
+                .setEndpoint("http://0.0.0.0:8080")
                 .build();
     }
 
-    public static <T> T createSimpleTestTemplate(Class<T> objclass,
-                                                 final Function<Request, Void> requestValidator,
-                                                 final String httpMessage) {
+    public static <T> T createSimpleRestServiceForTest(Class<T> objclass,
+                                                       final Function<Request, Void> requestValidator,
+                                                       final String httpMessage) {
 
         RestAdapter restAdapter = createRestAdapter( createClient(requestValidator,httpMessage)  );
         return restAdapter.create(objclass);
