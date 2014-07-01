@@ -23,7 +23,7 @@ public class RestApi {
     }
 
     protected String createUrl() {
-        return "http://192.168.194.161:8080";
+        return "http://192.168.163.151:8080";
     }
 
     protected Executor createExecutor() {

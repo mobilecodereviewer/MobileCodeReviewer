@@ -30,7 +30,7 @@ android {
 apply plugin: 'android-unit-test'
 
 dependencies {
-    testCompile 'junit:junit:4.8+'
+    testCompile 'junit:junit:4.11+'
     testCompile 'org.mockito:mockito-all:1.8.4'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -38,7 +38,5 @@ dependencies {
     compile 'com.google.guava:guava:r05'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
-    compile 'junit:junit:4.8+'
-    compile 'org.mockito:mockito-all:1.8.4'
     compile 'commons-codec:commons-codec:1.5'
 }
