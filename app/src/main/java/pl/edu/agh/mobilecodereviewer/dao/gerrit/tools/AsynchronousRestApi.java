@@ -32,11 +32,11 @@ public class AsynchronousRestApi extends RestApi{
 
     @Override
     public List<ChangeInfoDTO> getChanges(){
-        return runAsyncTask(new AsyncTask<Void, Void, List<ChangeInfoDTO>>() {
+        return runAsyncTask(new AsyncTask<Object, Void, List<ChangeInfoDTO>>() {
 
             @Override
-            protected List<ChangeInfoDTO> doInBackground(Void... voids) {
-                return getChanges();
+            protected List<ChangeInfoDTO> doInBackground(Object... voids) {
+                return restApi.getChanges();
             }
         });
     }
@@ -54,11 +54,11 @@ public class AsynchronousRestApi extends RestApi{
 
     @Override
     public Pair<String, RevisionInfoDTO> getCurrentRevisionForChange(final String id){
-        return runAsyncTask(new AsyncTask<String, Void, Pair<String, RevisionInfoDTO>>() {
+        return runAsyncTask(new AsyncTask<Object, Void, Pair<String, RevisionInfoDTO>>() {
 
             @Override
-            protected Pair<String, RevisionInfoDTO> doInBackground(String... params) {
-                return getCurrentRevisionForChange(id);
+            protected Pair<String, RevisionInfoDTO> doInBackground(Object... params) {
+                return restApi.getCurrentRevisionForChange(id);
             }
 
         });
@@ -66,20 +66,20 @@ public class AsynchronousRestApi extends RestApi{
 
     @Override
     public String getFileContent(final String change_id, final String revision_id , final String file_id) {
-        return runAsyncTask(new AsyncTask<String, Void, String>() {
+        return runAsyncTask(new AsyncTask<Object, Void, String>() {
             @Override
-            protected String doInBackground(String... params) {
-                return getFileContent(change_id, revision_id, file_id);
+            protected String doInBackground(Object... params) {
+                return restApi.getFileContent(change_id, revision_id, file_id);
             }
         });
     }
 
     @Override
     public Map<String,List<CommentInfoDTO>> getComments( final String change_id , final String revision_id) {
-        return runAsyncTask(new AsyncTask<String, Void, Map<String,List<CommentInfoDTO>> >() {
+        return runAsyncTask(new AsyncTask<Object, Void, Map<String,List<CommentInfoDTO>> >() {
             @Override
-            protected Map<String,List<CommentInfoDTO>> doInBackground(String... params) {
-                return getComments(change_id,revision_id);
+            protected Map<String,List<CommentInfoDTO>> doInBackground(Object... params) {
+                return restApi.getComments(change_id,revision_id);
             }
         });
     }
