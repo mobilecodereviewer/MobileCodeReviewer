@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 import retrofit.RestAdapter;
 
@@ -23,7 +24,7 @@ public class RestApi {
     }
 
     protected String createUrl() {
-        return "http://192.168.163.151:8080";
+        return "http://192.168.194.161:8080";
     }
 
     protected Executor createExecutor() {
@@ -51,8 +52,13 @@ public class RestApi {
         return gerritService.getChangeDetails(id);
     }
 
-    public Pair<String, RevisionInfoDTO> getCurrentRevisionForChange(final String id){
-        ChangeInfoDTO changeInfoDTO = gerritService.getChangeWithCurrentRevision(id);
+    public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
+        ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithFiles(id);
+        return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
+    }
+
+    public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id){
+        ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithCommit(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
     }
 
@@ -63,6 +69,15 @@ public class RestApi {
     public Map<String,List<CommentInfoDTO>> getComments( final String change_id , final String revision_id) {
         return gerritService.getComments(change_id,revision_id);
     }
+
+    public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id){
+        return gerritService.getMergeableInfoForCurrentRevision(change_id);
+    }
+
+    public String getChangeTopic(final String change_id) {
+        return gerritService.getChangeTopic(change_id);
+    }
+
 }
 
 

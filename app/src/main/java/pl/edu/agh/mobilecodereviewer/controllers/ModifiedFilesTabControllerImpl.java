@@ -5,10 +5,10 @@ import com.google.inject.Singleton;
 
 import java.util.List;
 
-import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
-import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesView;
+import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 
 /**
  * Implementation for controlling action after event in modified files
@@ -19,7 +19,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesView;
  * @since 0.1
  */
 @Singleton
-public class ModifiedFilesControllerImpl implements ModifiedFilesController {
+public class ModifiedFilesTabControllerImpl implements ModifiedFilesTabController {
 
     /**
      * Object gives information about changes.
@@ -31,15 +31,15 @@ public class ModifiedFilesControllerImpl implements ModifiedFilesController {
      * Simple object constructor, it doesnt initialize any
      * properties, preserve to be used with di framework
      */
-    public ModifiedFilesControllerImpl() {
+    public ModifiedFilesTabControllerImpl() {
     }
 
     /**
      * Construct object with given data access Object
      *
-     * @param changeInfoDAO {@link pl.edu.agh.mobilecodereviewer.controllers.ModifiedFilesControllerImpl#changeInfoDAO}
+     * @param changeInfoDAO {@link ModifiedFilesTabControllerImpl#changeInfoDAO}
      */
-    public ModifiedFilesControllerImpl(ChangeInfoDAO changeInfoDAO) {
+    public ModifiedFilesTabControllerImpl(ChangeInfoDAO changeInfoDAO) {
         this.changeInfoDAO = changeInfoDAO;
     }
 
@@ -50,13 +50,13 @@ public class ModifiedFilesControllerImpl implements ModifiedFilesController {
      * @param view View in which changes will be shown
      */
     @Override
-    public void updateFiles(ModifiedFilesView view, String changeId) {
+    public void updateFiles(ModifiedFilesTabView view, String changeId) {
         List<FileInfo> changeInfos = changeInfoDAO.getModifiedFiles(changeId);
         view.showFiles(changeInfos);
     }
 
     /**
-     * Getter for {@link pl.edu.agh.mobilecodereviewer.controllers.ModifiedFilesControllerImpl#changeInfoDAO}
+     * Getter for {@link ModifiedFilesTabControllerImpl#changeInfoDAO}
      *
      * @return Change Information Data Access Object
      */
@@ -65,7 +65,7 @@ public class ModifiedFilesControllerImpl implements ModifiedFilesController {
     }
 
     /**
-     * Setter for {@link pl.edu.agh.mobilecodereviewer.controllers.ModifiedFilesControllerImpl#changeInfoDAO}
+     * Setter for {@link ModifiedFilesTabControllerImpl#changeInfoDAO}
      *
      * @param changeInfoDAO Change Information Data Access Object
      */

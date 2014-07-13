@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
-import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
-import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesView;
+import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
@@ -28,24 +28,24 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
+public class ModifiedFilesTab extends RoboActivity implements ModifiedFilesTabView {
 
     /**
      * Associated controller which make actions to activity events
      */
     @Inject
-    private ModifiedFilesController controller;
+    private ModifiedFilesTabController controller;
 
     /**
      * List of modified files view
      */
-    @InjectView(R.id.modifiedFilesListView)
-    private ListView modifiedFilesListView;
+    @InjectView(R.id.modifiedFilesTabListView)
+    private ListView modifiedFilesTabListView;
 
     /**
      * No arg constructor,main for use by di and android framework
      */
-    public ModifiedFiles() {
+    public ModifiedFilesTab() {
     }
 
     /**
@@ -53,7 +53,7 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
      *
      * @param controller Controller to be used
      */
-    public ModifiedFiles(ModifiedFilesController controller) {
+    public ModifiedFilesTab(ModifiedFilesTabController controller) {
         this.controller = controller;
     }
 
@@ -66,7 +66,7 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modified_files);
+        setContentView(R.layout.activity_modified_files_tab);
 
         Intent intent = getIntent();
 
@@ -91,14 +91,14 @@ public class ModifiedFiles extends RoboActivity implements ModifiedFilesView {
                 android.R.id.text1,
                 strChanges);
 
-        modifiedFilesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        modifiedFilesTabListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FileInfo selectedFile = filesList.get(i);
                 showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName());
             }
         });
-        modifiedFilesListView.setAdapter(adapter);
+        modifiedFilesTabListView.setAdapter(adapter);
     }
 
     /**

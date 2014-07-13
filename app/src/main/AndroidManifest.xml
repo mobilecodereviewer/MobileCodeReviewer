@@ -28,8 +28,35 @@
                 android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
         </activity>
         <activity
-            android:name="pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFiles"
-            android:label="@string/pl.agh.edu.mobilecodereviewer.ModifiedFiles.title"
+            android:name=".view.activities.ModifiedFilesTab"
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
+        </activity>
+        <activity
+            android:name=".view.activities.ChangeInfoTab"
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
+        </activity>
+        <activity
+            android:name=".view.activities.CommitMessageTab"
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
+        </activity>
+        <activity
+            android:name=".view.activities.ChangeMessagesTab"
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
+        </activity>
+        <activity
+            android:name=".view.activities.ReviewersTab"
             android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -38,7 +65,7 @@
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.title"
-            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFiles" >
+            android:parentActivityName=".view.activities.ModifiedFilesTab" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFiles" />

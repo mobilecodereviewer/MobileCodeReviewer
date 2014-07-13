@@ -26,11 +26,35 @@ public class ChangeDetails extends RoboTabActivity {
     /**
      * Tag of modified files tab.
      */
-    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_modifiedFiles_id)
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_modifiedFilesTab_id)
     String modifiedFilesTabId;
 
-    @InjectResource(R.drawable.change_details_modified_files)
+    @InjectResource(R.drawable.change_details_modified_files_icon)
     Drawable modifiedFileTabIcon;
+
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_changeInfoTab_id)
+    String changeInfoTabId;
+
+    @InjectResource(R.drawable.change_details_change_info_icon)
+    Drawable changeInfoTabIcon;
+
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_commitMessageTab_id)
+    String commitMessageTabId;
+
+    @InjectResource(R.drawable.change_details_commit_message_icon)
+    Drawable commitMessageTabIcon;
+
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_changeMessagesTab_id)
+    String changeMessagesTabId;
+
+    @InjectResource(R.drawable.change_details_change_messages_icon)
+    Drawable changeMessagesTabIcon;
+
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_reviewersTab_id)
+    String reviewersTabId;
+
+    @InjectResource(R.drawable.change_details_reviewers_icon)
+    Drawable reviewersTabIcon;
 
     /**
      * Invoked on start of the acivity.
@@ -46,6 +70,7 @@ public class ChangeDetails extends RoboTabActivity {
         Intent intent = getIntent();
 
         TabHost changeDetailsTabHost = getTabHost();
+        changeDetailsTabHost.getTabWidget().setStripEnabled(false);
         addTabs(changeDetailsTabHost, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
         changeDetailsTabHost.setCurrentTab(0);
     }
@@ -57,11 +82,30 @@ public class ChangeDetails extends RoboTabActivity {
      */
     private void addTabs(TabHost tabHost, String changeId) {
 
+        tabHost.addTab(tabHost.newTabSpec(changeInfoTabId)
+                .setIndicator("", changeInfoTabIcon)
+                .setContent(new Intent(this, ChangeInfoTab.class)
+                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+
+        tabHost.addTab(tabHost.newTabSpec(commitMessageTabId)
+                .setIndicator("", commitMessageTabIcon)
+                .setContent(new Intent(this, CommitMessageTab.class)
+                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+
+        tabHost.addTab(tabHost.newTabSpec(reviewersTabId)
+            .setIndicator("", reviewersTabIcon)
+            .setContent(new Intent(this, ReviewersTab.class)
+                .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+
         tabHost.addTab(tabHost.newTabSpec(modifiedFilesTabId)
                 .setIndicator("", modifiedFileTabIcon)
-                .setContent(new Intent(this, ModifiedFiles.class)
+                .setContent(new Intent(this, ModifiedFilesTab.class)
                         .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
 
+        tabHost.addTab(tabHost.newTabSpec(changeMessagesTabId)
+            .setIndicator("", changeMessagesTabIcon)
+            .setContent(new Intent(this, ChangeMessagesTab.class)
+                .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
     }
 
     /**

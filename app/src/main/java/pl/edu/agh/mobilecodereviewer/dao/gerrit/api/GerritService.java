@@ -5,6 +5,7 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
@@ -17,7 +18,10 @@ public interface GerritService {
     ChangeInfoDTO getChangeDetails(@Path("id") String id);
 
     @GET("/changes/{id}/?o=CURRENT_REVISION&o=CURRENT_FILES")
-    ChangeInfoDTO getChangeWithCurrentRevision(@Path("id") String id);
+    ChangeInfoDTO getCurrentRevisionWithFiles(@Path("id") String id);
+
+    @GET("/changes/{id}/?o=CURRENT_REVISION&o=CURRENT_COMMIT")
+    ChangeInfoDTO getCurrentRevisionWithCommit(@Path("id") String id);
 
     @GET("/changes/{change_id}/revisions/{revision_id}/files/{file_id}/content")
     String getFileContent(@Path("change_id") String change_id,
@@ -28,4 +32,9 @@ public interface GerritService {
     Map<String,List<CommentInfoDTO>> getComments(@Path("change_id") String change_id ,
                                                  @Path("revision_id") String revision_id);
 
+    @GET("/changes/{change_id}/revisions/current/mergeable")
+    MergeableInfoDTO getMergeableInfoForCurrentRevision(@Path("change_id") String change_id);
+
+    @GET("/changes/{change_id}/topic")
+    String getChangeTopic(@Path("change_id") String change_id);
 }
