@@ -3,15 +3,59 @@
 
     <string name="pl.agh.edu.mobilecodereviewer.title">MobileCodeReviewer</string>
     <string name="pl.agh.edu.mobilecodereviewer.settings">Settings</string>
-    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.title">Changes explorer</string>
 
+    <!-- commons start -->
+
+    <string name="pl.agh.edu.mobilecodereviewer.common.true">True</string>
+    <string name="pl.agh.edu.mobilecodereviewer.common.false">True</string>
+
+    <!-- commons end -->
+
+    <!--ChangeDetails start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.title">ChangeDetails</string>
-    <string name="pl.agh.edu.mobilecodereviewer.ModifiedFiles.title">ChangeDetails</string>
-    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFiles.id">ModifiedFiles</string>
-    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFiles.label">ModifiedFiles</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFilesTab.id">ModifiedFiles</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFilesTab.label">Modified Files</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.changeInfoTab.id">ChangeInfo</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.changeInfoTab.label">Change Info</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.commitMessageTab.id">CommitMessage</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.commitMessageTab.label">Commit Message</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.changeMessagesTab.label">Change Messages</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.changeMessagesTab.id">ChangeMessages</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.label">Reviewers</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.id">Reviewers</string>
+
+    <!--ChangeInfoTab start-->
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.changeId">Change ID</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.owner">Owner</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.project">Project</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.topic">Topic</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.uploaded">Uploaded</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.updated">Updated</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.sumbitType">Submit Type</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.status">Status</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.mergeable">Can merge</string>
+    <!--ModifiedFiles end-->
+
+    <!--ReviewersTab start-->
+    <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.reviewer">REVIEWER</string>
+    <!--ReviewersTab end-->
+
+    <!--ChangeDetails end-->
 
     <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.title">Source Explorer</string>
 
+    <!--ChangesExplorer start-->
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.title">Changes explorer</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.buttons.go">Details</string>
+
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.subject">Subject</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.status">Status</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.owner">Owner</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.project">Project</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.branch">Branch</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.updated">Updated</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.size">Size</string>
+    <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">SourceExplorer</string>
     <string name="hello_world">Hello world!</string>

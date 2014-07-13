@@ -4,20 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -41,8 +38,8 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     /**
      * List of changes view
      */
-    @InjectView(R.id.changesExplorerListView)
-    private ListView changesExplorerListView;
+    @InjectView(R.id.changesExplorerExpandableListView)
+    private ExpandableListView changesExplorerExpandableListView;
 
     /**
      * No arg constructor,main for use by di and android framework
@@ -105,33 +102,14 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
      */
     @Override
     public void showChanges(final List<ChangeInfo> changes) {
-
-        List<String> strChanges = new ArrayList<String>();
-
-        for (ChangeInfo change : changes) {
-            strChanges.add(change.getSubject());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                strChanges);
-
-        changesExplorerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showChangeDetails(changes.get(i).getChangeId());
-            }
-
-        });
-        changesExplorerListView.setAdapter(adapter);
+        ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
+        changesExplorerExpandableListView.setAdapter(expandableListAdapter);
     }
 
     /**
      * Starts Change Details activity
      */
-    private void showChangeDetails(String changeId) {
+    public void showChangeDetails(String changeId) {
         Intent intent = new Intent(getApplicationContext(), ChangeDetails.class);
         intent.putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId);
         startActivity(intent);

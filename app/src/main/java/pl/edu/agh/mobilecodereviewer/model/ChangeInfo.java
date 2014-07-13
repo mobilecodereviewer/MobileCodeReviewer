@@ -24,6 +24,20 @@ public class ChangeInfo {
      */
     private String subject;
 
+    private String status;
+
+    private String ownerName;
+
+    private String project;
+
+    private String branch;
+
+    private String updated;
+
+    private String created;
+
+    private Integer size;
+
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
      */
@@ -110,6 +124,62 @@ public class ChangeInfo {
      */
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     /**

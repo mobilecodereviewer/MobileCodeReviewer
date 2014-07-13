@@ -12,6 +12,8 @@ public class RevisionInfoDTO {
 
     private Map<String, FileInfoDTO> files;
 
+    private CommitInfoDTO commit;
+
     public RevisionInfoDTO() {
     }
 
@@ -34,5 +36,13 @@ public class RevisionInfoDTO {
 
     public void setFiles(Map<String, FileInfoDTO> files) {
         this.files = files;
+    }
+
+    public CommitInfoDTO getCommit() {
+        return commit;
+    }
+
+    public void setCommit(CommitInfoDTO commit) {
+        this.commit = commit;
     }
 }

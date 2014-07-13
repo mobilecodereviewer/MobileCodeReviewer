@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/expandable_group_height"
+        android:id="@+id/changesExplorerGroupLabel"
+        android:text="New text"
+        android:textSize="@dimen/expandable_group_font_size"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/changesExplorerGroupGoButton"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/expandable_group_height"
+        android:textSize="@dimen/expandable_group_font_size"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.buttons.go"
+        android:id="@+id/changesExplorerGroupGoButton"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>

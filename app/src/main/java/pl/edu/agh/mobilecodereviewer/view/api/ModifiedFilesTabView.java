@@ -11,7 +11,7 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
  * @version 0.1
  * @since 0.1
  */
-public interface ModifiedFilesView {
+public interface ModifiedFilesTabView {
 
     /**
      * Shows given list of modified files

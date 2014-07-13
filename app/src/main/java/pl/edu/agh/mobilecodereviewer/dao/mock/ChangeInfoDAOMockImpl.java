@@ -7,7 +7,10 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
+import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
+import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 
 /**
  * Simple Stub for ChangeInfoDAO with hardcoded values
@@ -57,8 +60,6 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
         return changesInfos.get(0);
     }
 
-    ;
-
     /**
      * Method replace hardcoded values about all changes
      *
@@ -79,4 +80,26 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
         return filesInfos;
     }
 
+    @Override
+    public MergeableInfo getMergeableInfo(String id) {
+        return MergeableInfo.valueOf("CHERRY_PICK", true);
+    }
+
+    @Override
+    public String getChangeTopic(String id) {
+        return "TOPIC";
+    }
+
+    @Override
+    public String getCommitMessageForChange(String id) {return "COMMIT MESSAGE";}
+
+    @Override
+    public List<ChangeMessageInfo> getChangeMessages(String id) {
+        return null;
+    }
+
+    @Override
+    public List<LabelInfo> getLabels(String id) {
+        return null;
+    }
 }

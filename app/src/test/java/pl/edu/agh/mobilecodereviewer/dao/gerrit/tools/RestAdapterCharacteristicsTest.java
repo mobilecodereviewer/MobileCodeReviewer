@@ -95,7 +95,7 @@ public class RestAdapterCharacteristicsTest {
                 "{\"id\":\"" + id + "\"}"
         );
 
-        ChangeInfoDTO changeDetails = gerritService.getChangeWithCurrentRevision(Integer.toString(id));
+        ChangeInfoDTO changeDetails = gerritService.getCurrentRevisionWithFiles(Integer.toString(id));
         assertEquals( changeDetails.getId() , Integer.toString(id) );
         assertNull(changeDetails.getSubject());
     }
