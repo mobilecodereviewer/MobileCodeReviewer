@@ -1,26 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:textSize="@dimen/expandable_child_font_size"
-        android:textStyle="bold"
-        android:id="@+id/changesExplorerChildLabel"
-    />
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.subject" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/changesExplorerChildValue"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:layout_below="@+id/changesExplorerChildLabel"
-         />
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildSubjectValue" />
 
-</RelativeLayout>
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.status" />
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildStatusValue" />
+
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.owner" />
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildOwnerValue" />
+
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.project" />
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildProjectValue" />
+
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.branch" />
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildBranchValue" />
+
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.updated" />
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildUpdatedValue" />
+
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.size" />
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:id="@+id/changeExplorerChildSizeValue" />
+
+</LinearLayout>

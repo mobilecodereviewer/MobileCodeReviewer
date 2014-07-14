@@ -19,12 +19,9 @@ public class ReviewersViewListAdapter extends ArrayAdapter<ApprovalInfo> {
 
     private final List<ApprovalInfo> content;
 
-    private String labelName;
-
-    public ReviewersViewListAdapter(Activity context, List<ApprovalInfo> approvalInfos, String labelName){
+    public ReviewersViewListAdapter(Activity context, List<ApprovalInfo> approvalInfos){
         super(context, R.layout.layout_reviewers_tab_reviewer_item, approvalInfos);
         this.context = context;
-
         this.content = approvalInfos;
     }
 
@@ -52,13 +49,5 @@ public class ReviewersViewListAdapter extends ArrayAdapter<ApprovalInfo> {
         }
 
         return itemView;
-    }
-
-    public String getLabelName() {
-        return labelName;
-    }
-
-    public void setLabelName(String labelName) {
-        this.labelName = labelName;
     }
 }

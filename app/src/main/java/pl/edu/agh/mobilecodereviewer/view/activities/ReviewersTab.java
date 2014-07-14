@@ -56,12 +56,7 @@ public class ReviewersTab extends RoboActivity implements ReviewersTabView{
     @Override
     public void showReviewers(final List<LabelInfo> labels) {
 
-        final ReviewersViewListAdapter reviewersViewListAdapter = new ReviewersViewListAdapter(this, labels.get(0).getAll(), labels.get(0).getName());
-
-        reviewersListView.setAdapter(reviewersViewListAdapter);
-
         List<String> labelNames = Lists.transform(labels, new Function<LabelInfo, String>() {
-
                     @Override
                     public String apply(LabelInfo from) {
                         return from.getName();
@@ -69,23 +64,24 @@ public class ReviewersTab extends RoboActivity implements ReviewersTabView{
                 }
         );
 
-        reviewersTabLabelSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labelNames));
+        reviewersListView.setAdapter( new ReviewersViewListAdapter(this, labels.get(0).getAll()));
 
+        reviewersTabLabelSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labelNames));
         reviewersTabLabelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 String selectedLabelName = labels.get(position).getName();
 
-                if(!selectedLabelName.equals(reviewersViewListAdapter.getLabelName()) && getLabelInfo(selectedLabelName, labels) != null && view != null){
-                   reviewersListView.setAdapter(new ReviewersViewListAdapter((Activity) view.getContext(), getLabelInfo(selectedLabelName, labels).getAll(), selectedLabelName));
+                if(getLabelInfo(selectedLabelName, labels) != null && view != null){
+                   reviewersListView.setAdapter(new ReviewersViewListAdapter((Activity) view.getContext(), getLabelInfo(selectedLabelName, labels).getAll()));
                 }
-            }
 
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
