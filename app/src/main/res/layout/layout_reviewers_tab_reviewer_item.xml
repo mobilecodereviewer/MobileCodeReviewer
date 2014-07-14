@@ -7,16 +7,19 @@
     <TextView
         style="@style/reviewers_tab_reviewer_column"
         android:text="Name Surname"
+        android:layout_height="@dimen/common_big_line_height"
         android:id="@+id/reviewersTabReviewerItemName"
-        android:gravity="center_horizontal|left"
-        android:layout_gravity="center"/>
+        android:gravity="center_vertical|left"
+        />
+
+    <View style="@style/common_vertical_separator"/>
 
     <FrameLayout
         style="@style/reviewers_tab_label_column">
 
         <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/reviewersTabReviewerItemValueText"
             android:gravity="center"
             />
