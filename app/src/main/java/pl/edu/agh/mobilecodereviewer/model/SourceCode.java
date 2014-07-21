@@ -38,14 +38,29 @@ public class SourceCode {
         return lines;
     }
 
+    /**
+     * Get appropriate line from given number
+     * @param lineNumber Number of line ( we assume first line of source code is 1 not 0 !!)
+     * @return {@link pl.edu.agh.mobilecodereviewer.model.Line}
+     */
     public Line getLine(int lineNumber) {
         return lines.get(lineNumber-1);
     }
 
+    /**
+     * Get content of the given line
+     * @param lineNumber Number of line ( we assume first line of source code is 1 not 0 !!)
+     * @return Content of the file
+     */
     public String getLineContent(int lineNumber) {
         return lines.get(lineNumber-1).getContent();
     }
 
+    /**
+     * Get comments in a given line
+     * @param lineNumber Number of line ( we assume first line of source code is 1 not 0 !!)
+     * @return List of {@link pl.edu.agh.mobilecodereviewer.model.Comment}
+     */
     public List<Comment> getLineComments(int lineNumber) {
         return lines.get(lineNumber-1).getComments();
     }

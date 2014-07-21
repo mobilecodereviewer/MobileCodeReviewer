@@ -22,19 +22,39 @@ import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.model.utilities.LabelInfoHelper;
 
+/**
+ * Data access object for information about Changes. It is
+ * some kind of adapter between data from gerrit instance
+ * and appropriates models
+ */
 public class ChangeInfoDAOImpl implements ChangeInfoDAO {
 
+    /**
+     * Api from information will be given
+     */
     private RestApi restApi;
 
+    /**
+     * Construct Object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     */
     public ChangeInfoDAOImpl() {
         this( new AsynchronousRestApi( new RestApi() ) );
     }
 
+    /**
+     * Construct Object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * @param restApi
+     */
     public ChangeInfoDAOImpl(RestApi restApi) {
         this.restApi = restApi;
     }
 
 
+    /**
+     * Get information about change
+     * @param id Change identifier
+     * @return Constructed {@link pl.edu.agh.mobilecodereviewer.model.ChangeInfo}
+     */
     @Override
     public ChangeInfo getChangeInfoById(String id) {
 
@@ -47,12 +67,17 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         changeInfoModel.setProject(changeInfoDTO.getProject());
         changeInfoModel.setBranch(changeInfoDTO.getBranch());
         changeInfoModel.setUpdated(changeInfoDTO.getUpdated());
-        changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
+        if (changeInfoDTO.getInsertions() != null)
+            changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
         changeInfoModel.setCreated(changeInfoDTO.getCreated());
 
         return changeInfoModel;
     }
 
+    /**
+     * Get information about all changes
+     * @return List of {@link pl.edu.agh.mobilecodereviewer.model.ChangeInfo}
+     */
     @Override
     public List<ChangeInfo> getAllChangesInfo() {
 
@@ -68,7 +93,10 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
             changeInfoModel.setProject(changeInfoDTO.getProject());
             changeInfoModel.setBranch(changeInfoDTO.getBranch());
             changeInfoModel.setUpdated(changeInfoDTO.getUpdated());
-            changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
+            if ( changeInfoDTO.getInsertions() != null )
+                changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
+            else
+                changeInfoModel.setSize(0);
             changeInfoModel.setCreated(changeInfoDTO.getCreated());
 
             changeInfoModels.add(changeInfoModel);
@@ -77,6 +105,11 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         return changeInfoModels;
     }
 
+    /**
+     * Get information about all modified files for a given change
+     * @param id id of change which files will be retrieved
+     * @return List of {@link pl.edu.agh.mobilecodereviewer.model.FileInfo}
+     */
     @Override
     public List<FileInfo> getModifiedFiles(String id) {
 

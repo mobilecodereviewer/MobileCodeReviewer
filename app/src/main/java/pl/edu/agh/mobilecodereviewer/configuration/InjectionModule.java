@@ -20,6 +20,7 @@ import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.ChangeInfoDAOImpl;
+import pl.edu.agh.mobilecodereviewer.dao.mock.ChangeInfoDAOMockImpl;
 import pl.edu.agh.mobilecodereviewer.dao.mock.SourceCodeDAOMockImpl;
 
 /**
@@ -38,6 +39,32 @@ public class InjectionModule implements Module {
      */
     @Override
     public void configure(Binder binder) {
+        configureForProduction(binder);
+    }
+
+    /**
+     * Helper method to bind appropriate interfaces to classes without full
+     * business logic implemented. Used in development and testing gui design
+     * @param binder Appropriate object which bind interface to classes
+     */
+    public void configureForGuiTest(Binder binder) {
+        binder.bind(ChangeInfoDAO.class).to(ChangeInfoDAOMockImpl.class);
+        binder.bind(ChangesExplorerController.class).to(ChangesExplorerControllerImpl.class);
+        binder.bind(ModifiedFilesTabController.class).to(ModifiedFilesTabControllerImpl.class);
+        binder.bind(ChangeInfoTabController.class).to(ChangeInfoTabControllerImpl.class);
+        binder.bind(CommitMessageTabController.class).to(CommitMessageTabControllerImpl.class);
+        binder.bind(ChangeMessagesTabController.class).to(ChangeMessagesTabControllerImpl.class);
+        binder.bind(ReviewersTabController.class).to(ReviewersTabControllerImpl.class);
+        binder.bind(SourceCodeDAO.class).to(SourceCodeDAOMockImpl.class);
+        binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
+    }
+
+    /**
+     * Helper method to bind appropriate itnerface to classes with full business logic
+     * implemented . Used for production and integration testing
+     * @param binder Appropriate object which bind interface to classes
+     */
+    public void configureForProduction(Binder binder) {
         binder.bind(ChangeInfoDAO.class).to(ChangeInfoDAOImpl.class);
         binder.bind(ChangesExplorerController.class).to(ChangesExplorerControllerImpl.class);
         binder.bind(ModifiedFilesTabController.class).to(ModifiedFilesTabControllerImpl.class);
@@ -48,4 +75,5 @@ public class InjectionModule implements Module {
         binder.bind(SourceCodeDAO.class).to(SourceCodeDAOMockImpl.class);
         binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
     }
+
 }

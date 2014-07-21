@@ -5,14 +5,28 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class represent data returned by gerrit instance
+ * about information of the change
+ */
 public class ChangeInfoDTO {
 
+    /**
+     * Identifier
+     */
     private String id;
 
+    /**
+     * Change Identifier
+     */
     @SerializedName("change_id")
     private String changeId;
 
+    /**
+     * Subject of the change
+     */
     private String subject;
+
 
     private String status;
 
@@ -34,47 +48,94 @@ public class ChangeInfoDTO {
 
     private Map<String, LabelInfoDTO> labels;
 
+
+    /**
+     * Current revision identifier
+     */
     @SerializedName("current_revision")
     private String currentRevision;
 
+    /**
+     * Map between revision id and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
+     */
     private Map<String, RevisionInfoDTO> revisions;
 
+    /**
+     * Return current revision of the given change
+     * @return Name of the revision
+     */
     public String getCurrentRevision() {
         return currentRevision;
     }
 
+    /**
+     * Set current revision
+     * @param currentRevision Identifier of the revision
+     */
     public void setCurrentRevision(String currentRevision) {
         this.currentRevision = currentRevision;
     }
 
+    /**
+     * Get association between revision id and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
+     * @return Map between revision id and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
+     */
     public Map<String, RevisionInfoDTO> getRevisions() {
         return revisions;
     }
 
+    /**
+     * Set Association between name and revision to give
+     * @param revisions Given association
+     */
     public void setRevisions(Map<String, RevisionInfoDTO> revisions) {
         this.revisions = revisions;
     }
 
+    /**
+     * Get subject of the change
+     * @return
+     */
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * Set subject to the give
+     * @param subject New subject of the change
+     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    /**
+     * Get identifier of the change
+     * @return Identifier of the change
+     */
     public String getChangeId() {
         return changeId;
     }
 
+    /**
+     * Sets identifier of the change to given
+     * @param changeId new identifier of the change
+     */
     public void setChangeId(String changeId) {
         this.changeId = changeId;
     }
 
+    /**
+     * Get identifier
+     * @return identifier
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Set identifier
+     * @param id
+     */
     public void setId(String id) {
         this.id = id;
     }

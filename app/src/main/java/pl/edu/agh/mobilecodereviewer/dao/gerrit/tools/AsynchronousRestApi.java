@@ -12,13 +12,29 @@ import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 
+/**
+ * Class decorates RestApi with asynchronous task
+ * menagement facility
+ */
 public class AsynchronousRestApi extends RestApi{
     private RestApi restApi;
 
+    /**
+     * Create object from the given restApi
+     * @param restApi Appropriate restApi object
+     */
     public AsynchronousRestApi(RestApi restApi) {
         this.restApi = restApi;
     }
 
+    /**
+     * Helper method to run async task given in parameter
+     * @param asyncTask Task to execute
+     * @param <F> Type of Parameters
+     * @param <X> Type of Progress
+     * @param <T> Type of Result
+     * @return Result
+     */
     protected <F,X,T> T runAsyncTask(AsyncTask<F,X,T> asyncTask ) {
         try {
             return asyncTask.execute().get();
@@ -31,6 +47,10 @@ public class AsynchronousRestApi extends RestApi{
         return null;
     }
 
+    /**
+     * Asyncrhonous execute getting changes
+     * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
+     */
     @Override
     public List<ChangeInfoDTO> getChanges(){
         return runAsyncTask(new AsyncTask<Object, Void, List<ChangeInfoDTO>>() {
@@ -42,6 +62,11 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+    /**
+     * Asynchronous execute getting details of the given changes
+     * @param id Change identifier
+     * @return {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
+     */
     @Override
     public ChangeInfoDTO getChangeDetails(final String id){
         return runAsyncTask(new AsyncTask<Object, Void, ChangeInfoDTO>() {
@@ -53,6 +78,11 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+    /**
+     * Asynchronous execute getting current revision changes
+     * @param id Change identifier
+     * @return Mapper between revision and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
+     */
     @Override
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
         return runAsyncTask(new AsyncTask<Object, Void, Pair<String, RevisionInfoDTO>>() {
@@ -65,6 +95,13 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+    /**
+     * Asynchronous get content of the file
+     * @param change_id Indentifier of change
+     * @param revision_id Identifier of revision
+     * @param file_id File Path
+     * @return Content of the file in Base64
+     */
     @Override
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id){
         return runAsyncTask(new AsyncTask<Object, Void, Pair<String, RevisionInfoDTO>>() {
@@ -88,6 +125,12 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+    /**
+     * Get all comments for a given revision
+     * @param change_id Identifier of change
+     * @param revision_id Identifier of revision
+     * @return Mapping between file and list of {@link pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO}
+     */
     @Override
     public Map<String,List<CommentInfoDTO>> getComments( final String change_id , final String revision_id) {
         return runAsyncTask(new AsyncTask<Object, Void, Map<String,List<CommentInfoDTO>> >() {
