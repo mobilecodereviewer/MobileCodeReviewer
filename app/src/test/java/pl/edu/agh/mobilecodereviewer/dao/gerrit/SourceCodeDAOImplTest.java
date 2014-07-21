@@ -77,7 +77,7 @@ public class SourceCodeDAOImplTest extends SourceCodeDAOImpl {
                     }
                 }
         );
-        assertNull(downloadedSource);
+        assertEquals( "", downloadedSource);
     }
 
     @Test(expected = RetrofitError.class )

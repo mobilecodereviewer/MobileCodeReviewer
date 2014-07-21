@@ -1,16 +1,28 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.method.CharacterPickerDialog;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.inject.Inject;
 
+import java.util.Arrays;
+
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
+import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SingleLineCommentViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.activity.RoboActivity;
@@ -26,7 +38,11 @@ import roboguice.inject.InjectView;
  * @since 0.1
  */
 public class SourceExplorer extends RoboActivity implements SourceExplorerView{
+    private String change_id;
+    private String revision_id;
+    private String file_id;
 
+    private final Context context = this;
     /**
      *  Associated controller which make actions to activity events
      */
@@ -48,10 +64,18 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_source_explorer);
 
-        String change_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID);
-        String revision_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID);
-        String file_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME);
+        initializeSourceProperties();
         controller.updateSourceCode(this,change_id,revision_id,file_id);
+    }
+
+    /**
+     * Initialize properties of the source code to show, got from the
+     * previous activity
+     */
+    protected void initializeSourceProperties() {
+        change_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID);
+        revision_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID);
+        file_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME);
     }
 
 
@@ -83,13 +107,29 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     @Override
-    public void showSourceCode(SourceCode sourceCode) {
-        SourceCodeViewListAdapter sourceCodeViewListAdapter =
+    public void showSourceCode(final SourceCode sourceCode) {
+        final SourceCodeViewListAdapter sourceCodeViewListAdapter =
                 new SourceCodeViewListAdapter(this,sourceCode);
 
         sourceLinesListView.setAdapter(sourceCodeViewListAdapter);
+        sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                if ( sourceCode.getLine(position+1).hasComments() ) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.layout_line_comments);
+                    dialog.setTitle("Comments");
+
+                    ListView listView = (ListView) dialog.findViewById(R.id.lineCommentsList);
+                    listView.setAdapter(new SingleLineCommentViewListAdapter(context, sourceCode.getLine(position+1) ) );
+                    dialog.show();
+                }
+
+            }
+        });
     }
+
 }
 
 

@@ -1,5 +1,8 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.resources;
 
+/**
+ * Parameters passed between activities
+ */
 public class ExtraMessages {
 
     public static final String CHANGE_EXPLORER_SELECTED_CHANGE_ID = "CHANGE_EXPLORER_SELECTED_CHANGE_ID";

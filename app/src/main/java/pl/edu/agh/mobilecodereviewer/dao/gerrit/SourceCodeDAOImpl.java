@@ -1,11 +1,9 @@
 package pl.edu.agh.mobilecodereviewer.dao.gerrit;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,35 +12,75 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Base64;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 
-
+/**
+ * Data access object for a source code. It is some
+ * kind of adapter between data returned by gerrit instance
+ * and business model
+ */
 public class SourceCodeDAOImpl implements SourceCodeDAO {
+    /**
+     * {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     */
     private RestApi restApi;
 
+    /**
+     * Construct object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     */
     public SourceCodeDAOImpl() {
         this( new AsynchronousRestApi( new RestApi() ) );
     }
 
+    /**
+     * Construct object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * @param restApi {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     */
     public SourceCodeDAOImpl(RestApi restApi) {
         this.restApi = restApi;
     }
 
+    /**
+     * Download a source code
+     * @param change_id Identifier of the change
+     * @param revision_id Identifier of the revision
+     * @param file_id Identifier of the file
+     * @return Source code in Base64 compressed
+     */
     protected String downloadSourceCode(final String change_id,final String revision_id,final String file_id) {
         return restApi.getFileContent(change_id,revision_id,file_id);
     }
 
+
+    /**
+     * Convert source code from Base64 to UTF-8
+     * @param source Value of the source
+     * @return Converted source code in UTF-8
+     */
     protected String convertSourceCode(String source) {
-        return StringUtils.newStringUtf8(Base64.decodeBase64(source) );
+        if (source != null) {
+            try {
+                return new String(Base64.decode(source), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
-    // this maybe seem like overkill but bufferedreader has logic to
-    // split lines for many types of newlines characters for many operating systems
+    /**
+     * Split source into list of lines
+     * @param source Value of the source
+     * @return List of lines
+     */
     protected List<String> splitSourceIntoLines(String source) {
+        // this maybe seem like overkill but bufferedreader has logic to
+        // split lines for many types of newlines characters for many operating systems
         try {
             BufferedReader buffReader = new BufferedReader(new StringReader(source));
             List<String> lines = new ArrayList<>();
@@ -55,7 +93,14 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         }
     }
 
-    protected List<CommentInfoDTO> getComments(final String change_id,final String revision_id,
+    /**
+     * Get all comments for a given file in revision of change
+     * @param change_id Identifier of the change
+     * @param revision_id Identifier of the revision
+     * @param file_id Identifier of the file
+     * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO}
+     */
+    public List<CommentInfoDTO> getComments(final String change_id,final String revision_id,
                                                final String file_id) {
         Map<String, List<CommentInfoDTO>> comments = restApi.getComments(change_id, revision_id);
         if ( comments.containsKey(file_id) )
@@ -64,6 +109,11 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
             return new LinkedList<CommentInfoDTO>();
     }
 
+    /**
+     * Map list of comments in association between line number and list of comments( sounds legit..)
+     * @param comments List of comments
+     * @return Mapping between line number and list of comments
+     */
     protected Map<Integer,List<CommentInfoDTO>> mapCommentsIntoLines(List<CommentInfoDTO> comments) {
         Map<Integer,List<CommentInfoDTO>> mappedComments = new HashMap<>();
         for ( CommentInfoDTO comment : comments) {
@@ -79,6 +129,13 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         return mappedComments;
     }
 
+    /**
+     * Create {@link SourceCode} model from lines of files and map between
+     * line numbers and comments
+     * @param lines Lines of file
+     * @param comments Map between line number and list of comments
+     * @return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} model
+     */
     protected SourceCode createSourceCode(List<String> lines, Map<Integer,List<CommentInfoDTO>> comments) {
         List<Line> sourceLines = new LinkedList<Line>() ;
         int i = 1;
@@ -95,6 +152,14 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         return new SourceCode(sourceLines);
     }
 
+
+    /**
+     *  Get {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} from parameters
+     *  @param change_id Identifier of the change
+     *  @param revision_id Identifier of the revision
+     *  @param file_id Identifier of the file
+     *  @return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
+     */
     @Override
     public SourceCode getSourceCode(String change_id,String revision_id,String file_id) {
         List<String> lines = splitSourceIntoLines(
@@ -105,6 +170,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         );
         return createSourceCode(lines,commentsInLines);
     }
+
 
 }
 

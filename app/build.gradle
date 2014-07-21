@@ -25,6 +25,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 apply plugin: 'android-unit-test'
@@ -39,4 +44,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.retrofit:retrofit:1.6.0'
     compile 'commons-codec:commons-codec:1.5'
+    compile 'commons-io:commons-io:2.4'
 }
