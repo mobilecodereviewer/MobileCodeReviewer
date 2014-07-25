@@ -5,7 +5,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 /**
  * SourceExplorer activity controller. Object which implements its
  * methods will be responsible for taking actions according to
- * activity events
+ * activity events.
  *
  * @author AGH
  * @version 0.1
@@ -14,9 +14,12 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 public interface SourceExplorerController {
 
     /**
-     * Method updates model and instruct view what to do , when
-     * update source code is requested
-     * @param view
+     * Request for updating source code.
+     *
+     * @param view View in which source code will be shown
+     * @param change_id id of change containing revision with file
+     * @param revision_id id of revision containing file
+     * @param file_id id of file for which source code will be shown
      */
     void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id);
 }

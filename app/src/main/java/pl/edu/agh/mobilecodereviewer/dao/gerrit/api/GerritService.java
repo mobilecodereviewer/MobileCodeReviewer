@@ -16,35 +16,37 @@ import retrofit.http.Path;
  */
 public interface GerritService {
 
-    @GET("/changes/")
     /**
-     * Download All Changes from file
+     * Get all changes from file
      * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
+    @GET("/changes/")
     List<ChangeInfoDTO> getChanges();
 
-    @GET("/changes/{id}/detail/")
     /**
-     * Download information about change
+     * Get detailed information about change
      * @param id Identifier of the change
      * @return {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
+    @GET("/changes/{id}/detail/")
     ChangeInfoDTO getChangeDetails(@Path("id") String id);
 
-
+    /**
+     * Get change info with detailed information about list of files in most recent revision.
+     * @param id identifier of the change
+     * @return {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
+     */
     @GET("/changes/{id}/?o=CURRENT_REVISION&o=CURRENT_FILES")
     ChangeInfoDTO getCurrentRevisionWithFiles(@Path("id") String id);
 
+    /**
+     * Get change info with detailed information about most recent commit.
+     * @param id
+     * @return
+     */
     @GET("/changes/{id}/?o=CURRENT_REVISION&o=CURRENT_COMMIT")
     ChangeInfoDTO getCurrentRevisionWithCommit(@Path("id") String id);
-    /**
-     * Get all changes withing given revision
-     * @param id identifier of the revision
-     * @return {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
-     */
-    ChangeInfoDTO getChangeWithCurrentRevision(@Path("id") String id);
 
-    @GET("/changes/{change_id}/revisions/{revision_id}/files/{file_id}/content")
     /**
      * Get raw file content from the server
      * @param change_id identifier of the change
@@ -52,23 +54,34 @@ public interface GerritService {
      * @param file_id identifier of the file
      * @return {@link retrofit.client.Response}
      */
+    @GET("/changes/{change_id}/revisions/{revision_id}/files/{file_id}/content")
     Response getFileContent( @Path("change_id") String change_id,
                              @Path("revision_id") String revision_id ,
                              @Path("file_id") String file_id);
 
-    @GET("/changes/{change_id}/revisions/{revision_id}/comments/")
     /**
-     * Get all comment for a given change and its revision
+     * Get all comments for a given change and its revision
      * @param change_id identifier of the change
      * @param revision_id identifier of the revision
      * @return Assosciation between filename and comments added in the given revision
      */
+    @GET("/changes/{change_id}/revisions/{revision_id}/comments/")
     Map<String,List<CommentInfoDTO>> getComments( @Path("change_id") String change_id ,
                                                   @Path("revision_id") String revision_id);
 
+    /**
+     * Get information about mergeability of change.
+     * @param change_id identifier of the change
+     * @return {@link pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO}
+     */
     @GET("/changes/{change_id}/revisions/current/mergeable")
     MergeableInfoDTO getMergeableInfoForCurrentRevision(@Path("change_id") String change_id);
 
+    /**
+     * Get topic of change.
+     * @param change_id identifier of the change
+     * @return topic of change
+     */
     @GET("/changes/{change_id}/topic")
     String getChangeTopic(@Path("change_id") String change_id);
 }

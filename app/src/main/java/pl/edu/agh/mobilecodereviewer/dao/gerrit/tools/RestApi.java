@@ -47,7 +47,7 @@ public class RestApi {
      * @return default URL
      */
     protected String createUrl() {
-        return "http://192.168.1.102:8080";
+        return "http://149.156.205.132:8081";
     }
 
     /**
@@ -98,27 +98,25 @@ public class RestApi {
         return gerritService.getChangeDetails(id);
     }
 
-
+    /**
+     * Get current revision with list of files.
+     * @param id identifier of change
+     * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
+     */
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithFiles(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
     }
 
+    /**
+     * Get current revision with commit message.
+     * @param id identifier of change
+     * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
+     */
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id) {
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithCommit(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
 
-    }
-
-    /**
-     * Get current revision of change
-     * @param id Change identifier
-     * @return {@link} of Revision name and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
-     */
-    public Pair<String, RevisionInfoDTO> getCurrentRevisionForChange(final String id) {
-        ChangeInfoDTO changeInfoDTO = gerritService.getChangeWithCurrentRevision(id);
-        return new Pair<>(changeInfoDTO.getCurrentRevision(),
-                          changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
     }
 
     /**
@@ -161,10 +159,20 @@ public class RestApi {
         return gerritService.getComments(change_id,revision_id);
     }
 
+    /**
+     * Get mergeability info of current revision.
+     * @param change_id identifier of change
+     * @return {@link MergeableInfoDTO}
+     */
     public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id){
         return gerritService.getMergeableInfoForCurrentRevision(change_id);
     }
 
+    /**
+     * Get topic of change.
+     * @param change_id identifier of change
+     * @return topic of change
+     */
     public String getChangeTopic(final String change_id) {
         return gerritService.getChangeTopic(change_id);
     }
