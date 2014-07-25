@@ -48,8 +48,7 @@ public class AsynchronousRestApi extends RestApi{
     }
 
     /**
-     * Asyncrhonous execute getting changes
-     * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
+     * Asynchronous execution of {@link RestApi#getChanges()}
      */
     @Override
     public List<ChangeInfoDTO> getChanges(){
@@ -63,9 +62,7 @@ public class AsynchronousRestApi extends RestApi{
     }
 
     /**
-     * Asynchronous execute getting details of the given changes
-     * @param id Change identifier
-     * @return {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
+     * Asynchronous execution of {@link RestApi#getChangeDetails(String)}
      */
     @Override
     public ChangeInfoDTO getChangeDetails(final String id){
@@ -79,9 +76,7 @@ public class AsynchronousRestApi extends RestApi{
     }
 
     /**
-     * Asynchronous execute getting current revision changes
-     * @param id Change identifier
-     * @return Mapper between revision and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
+     * Asynchronous execution of {@link RestApi#getCurrentRevisionWithFiles}
      */
     @Override
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
@@ -96,11 +91,7 @@ public class AsynchronousRestApi extends RestApi{
     }
 
     /**
-     * Asynchronous get content of the file
-     * @param change_id Indentifier of change
-     * @param revision_id Identifier of revision
-     * @param file_id File Path
-     * @return Content of the file in Base64
+     * Asynchronous execution of {@link RestApi#getCurrentRevisionWithCommit(String)}
      */
     @Override
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id){
@@ -114,7 +105,9 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
-
+    /**
+     * Asynchronous execution of {@link RestApi@getFileContent}
+     */
     @Override
     public String getFileContent(final String change_id, final String revision_id , final String file_id) {
         return runAsyncTask(new AsyncTask<Object, Void, String>() {
@@ -126,10 +119,7 @@ public class AsynchronousRestApi extends RestApi{
     }
 
     /**
-     * Get all comments for a given revision
-     * @param change_id Identifier of change
-     * @param revision_id Identifier of revision
-     * @return Mapping between file and list of {@link pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO}
+     * Asynchronous execution of {@link RestApi#getComments(String, String)}
      */
     @Override
     public Map<String,List<CommentInfoDTO>> getComments( final String change_id , final String revision_id) {
@@ -141,6 +131,9 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+    /**
+     * Asynchronous execution of {@link RestApi#getMergeableInfoForCurrentRevision(String)}
+     */
     @Override
     public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id) {
         return runAsyncTask(new AsyncTask<Object, Void, MergeableInfoDTO >() {
@@ -151,6 +144,9 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+    /**
+     * Asynchronous execution of {@link RestApi#getChangeTopic(String)}
+     */
     @Override
     public String getChangeTopic(final String change_id) {
         return runAsyncTask(new AsyncTask<Object, Void, String >() {

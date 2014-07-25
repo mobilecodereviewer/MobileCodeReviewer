@@ -11,8 +11,9 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 
 /**
- * Implementation for controlling action after event in change explorer
- * activity took place
+ * Implementation of the ChangesExplorerController interface.
+ * <p/>
+ *  Used for controlling actions after event in {@link pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer} activity took place.
  *
  * @author AGH
  * @version 0.1
@@ -22,55 +23,34 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 public class ChangesExplorerControllerImpl implements ChangesExplorerController {
 
     /**
-     * Object gives information about changes
+     * DAO Used to access information about changes.
      */
     @Inject
     private ChangeInfoDAO changeInfoDAO;
 
     /**
-     * Simple object constructor, it doesnt initialize any
-     * properties, preserve to be used with di framework
+     * Simple constructor. Used by DI framework.
      */
     public ChangesExplorerControllerImpl() {
     }
 
     /**
-     * Construct object with given data access Object
+     * Construct object with given DAO.
      *
-     * @param changeInfoDAO {@link pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl#changeInfoDAO}
+     * @param changeInfoDAO {@link pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO} object used by controller to obtain information about changes.
      */
     public ChangesExplorerControllerImpl(ChangeInfoDAO changeInfoDAO) {
         this.changeInfoDAO = changeInfoDAO;
     }
 
     /**
-     * Method downloads information about changes and inform
-     * view to show given information
+     * Obtains information about all changes and informs view to show it.
      *
-     * @param view View in which changes will be shown
+     * @param view View in which messages will be shown
      */
     @Override
     public void updateChanges(ChangesExplorerView view) {
         List<ChangeInfo> infos = changeInfoDAO.getAllChangesInfo();
         view.showChanges(infos);
     }
-
-    /**
-     * Getter for {@link pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl#changeInfoDAO}
-     *
-     * @return Change Information Data Access Object
-     */
-    public ChangeInfoDAO getChangeInfoDAO() {
-        return changeInfoDAO;
-    }
-
-    /**
-     * Setter for {@link pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl#changeInfoDAO}
-     *
-     * @param changeInfoDAO Change Information Data Access Object
-     */
-    public void setChangeInfoDAO(ChangeInfoDAO changeInfoDAO) {
-        this.changeInfoDAO = changeInfoDAO;
-    }
-
 }
