@@ -13,10 +13,10 @@ import java.util.List;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 /**
@@ -27,7 +27,7 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class ChangesExplorer extends RoboActivity implements ChangesExplorerView {
+public class ChangesExplorer extends BaseActivity implements ChangesExplorerView {
 
     /**
      * Associated controller which make actions to activity events
@@ -66,7 +66,6 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changes_explorer);
-
         controller.updateChanges(this);
     }
 

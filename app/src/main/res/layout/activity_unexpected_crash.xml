@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    style="@style/common_activity_margins">
+
+
+    <TextView android:id="@+id/unexpectedCrashMessageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp"
+        />
+    
+    
+     <Button
+        android:id="@+id/unexpectedCrashSendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.CrashActivity.send"
+         android:layout_below="@+id/unexpectedCrashMessageTextView"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentStart="true" />
+     
+     <Button
+         android:id="@+id/unexpectedCrashShowHideDetailsButton"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/pl.agh.edu.mobilecodereviewer.CrashActivity.show"
+         android:layout_below="@+id/unexpectedCrashMessageTextView"
+         android:layout_toRightOf="@+id/unexpectedCrashSendButton"
+         android:layout_toEndOf="@+id/unexpectedCrashSendButton" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/unexpectedCrashSendButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" >
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/unexpectedCrashDetailsTextView" />
+        </HorizontalScrollView>
+    </ScrollView>
+
+
+</RelativeLayout>

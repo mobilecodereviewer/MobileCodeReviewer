@@ -11,6 +11,13 @@
 
     <!-- commons end -->
 
+    <!--CrashActivity start-->
+    <string name="pl.agh.edu.mobilecodereviewer.CrashActivity.send">Send Error</string>
+    <string name="pl.agh.edu.mobilecodereviewer.CrashActivity.show">Show Error</string>
+    <string name="pl.agh.edu.mobilecodereviewer.CrashActivity.hide">Hide Error</string>
+    <string name="pl.agh.edu.mobilecodereviewer.CrashActivity.message">Sorry, looks like our application crashed. Please feel free to send us detailed information about your problem and we will try to fix this issue.</string>
+    <!--CrashActivity end-->
+
     <!--ChangeDetails start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.title">ChangeDetails</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFilesTab.id">ModifiedFiles</string>

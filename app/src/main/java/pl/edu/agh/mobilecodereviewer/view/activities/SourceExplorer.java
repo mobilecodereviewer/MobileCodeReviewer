@@ -3,29 +3,22 @@ package pl.edu.agh.mobilecodereviewer.view.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.method.CharacterPickerDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-import java.util.Arrays;
-
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
-import pl.edu.agh.mobilecodereviewer.model.Comment;
-import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SingleLineCommentViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 /**
@@ -37,7 +30,7 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class SourceExplorer extends RoboActivity implements SourceExplorerView{
+public class SourceExplorer extends BaseActivity implements SourceExplorerView{
     private String change_id;
     private String revision_id;
     private String file_id;

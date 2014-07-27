@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseTabActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
-import roboguice.activity.RoboTabActivity;
 import roboguice.inject.InjectResource;
 
 /**
@@ -21,7 +21,7 @@ import roboguice.inject.InjectResource;
  * @version 0.1
  * @since 0.1
  */
-public class ChangeDetails extends RoboTabActivity {
+public class ChangeDetails extends BaseTabActivity {
 
     /**
      * Tag of modified files tab.

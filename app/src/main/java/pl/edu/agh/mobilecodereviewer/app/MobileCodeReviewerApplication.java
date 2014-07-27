@@ -31,6 +31,5 @@ public class MobileCodeReviewerApplication extends android.app.Application {
         RoboGuice.setBaseApplicationInjector(this, RoboGuice.DEFAULT_STAGE,
                 RoboGuice.newDefaultRoboModule(this), new InjectionModule());
     }
-
 }
 

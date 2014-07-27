@@ -3,6 +3,7 @@
     package="pl.edu.agh.mobilecodereviewer" >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication"
@@ -10,6 +11,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/pl.agh.edu.mobilecodereviewer.title"
         android:theme="@style/AppTheme" >
+
+        <activity
+            android:name=".app.utils.CrashActivity"
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
+        </activity>
+
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title" >
