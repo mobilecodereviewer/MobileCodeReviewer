@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 
+import java.util.Collections;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -41,8 +42,11 @@ public class ChangeMessagesTab extends RoboActivity implements ChangeMessagesTab
 
     @Override
     public void showMessages(List<ChangeMessageInfo> messages) {
-        ChangeMessagesViewListAdapter changeMessagesViewListAdapter = new ChangeMessagesViewListAdapter(this, messages);
-
+        ChangeMessagesViewListAdapter changeMessagesViewListAdapter;
+        if ( messages != null )
+            changeMessagesViewListAdapter = new ChangeMessagesViewListAdapter(this, messages);
+        else
+            changeMessagesViewListAdapter = new ChangeMessagesViewListAdapter(this, Collections.EMPTY_LIST);
         changeMessagesListView.setAdapter(changeMessagesViewListAdapter);
     }
 }

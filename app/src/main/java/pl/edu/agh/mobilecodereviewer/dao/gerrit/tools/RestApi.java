@@ -47,7 +47,7 @@ public class RestApi {
      * @return default URL
      */
     protected String createUrl() {
-        return "http://192.168.1.102:8080";
+        return "http://149.156.205.132:8081";
     }
 
     /**

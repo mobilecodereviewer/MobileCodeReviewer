@@ -50,7 +50,8 @@ public final class ChangeInfoHelper {
         childContent.put(ChildrenHeaders.PROJECT, changeInfo.getProject());
         childContent.put(ChildrenHeaders.BRANCH, changeInfo.getBranch());
         childContent.put(ChildrenHeaders.UPDATED, changeInfo.getUpdated());
-        childContent.put(ChildrenHeaders.SIZE, changeInfo.getSize().toString());
+        if (changeInfo.getSize() != null)
+            childContent.put(ChildrenHeaders.SIZE, changeInfo.getSize().toString());
 
         return childContent;
     }

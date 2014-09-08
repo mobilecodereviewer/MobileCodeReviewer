@@ -27,11 +27,11 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
      * Hardcoded information about lines
      */
     private static List<Line> lines = Arrays.asList(
-            Line.valueOf(0,"#include <iostream.h>", Lists.newArrayList( Comment.valueOf("LOL-Noob") ) ),
+            Line.valueOf(0,"#include <iostream.h>", Lists.newArrayList( Comment.valueOf("Comment for include") ) ),
             Line.valueOf(1,""),
             Line.valueOf(2,"using namespace sdt;"),
             Line.valueOf(3,""),
-            Line.valueOf(4,"int main() {" , Lists.newArrayList( Comment.valueOf("Looks like we have baddas here") )),
+            Line.valueOf(4,"int main() {" , Lists.newArrayList( Comment.valueOf("int main() {") )),
             Line.valueOf(5,"\tcout<<\"Hello World\"\n"),
             Line.valueOf(6,"}")
     );

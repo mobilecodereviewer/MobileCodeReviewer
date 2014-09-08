@@ -6,7 +6,7 @@ public class SimpleTest {
 
     @Test
     public void testCheckTestIsRunning() throws Exception {
-        assertEquals(true, true);
+        assertEquals( true, true);
     }
 
 }

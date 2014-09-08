@@ -20,6 +20,7 @@ import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.ChangeInfoDAOImpl;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.SourceCodeDAOImpl;
 import pl.edu.agh.mobilecodereviewer.dao.mock.ChangeInfoDAOMockImpl;
 import pl.edu.agh.mobilecodereviewer.dao.mock.SourceCodeDAOMockImpl;
 
@@ -39,7 +40,7 @@ public class InjectionModule implements Module {
      */
     @Override
     public void configure(Binder binder) {
-        configureForProduction(binder);
+        configureForGuiTest(binder);
     }
 
     /**
@@ -72,7 +73,7 @@ public class InjectionModule implements Module {
         binder.bind(CommitMessageTabController.class).to(CommitMessageTabControllerImpl.class);
         binder.bind(ChangeMessagesTabController.class).to(ChangeMessagesTabControllerImpl.class);
         binder.bind(ReviewersTabController.class).to(ReviewersTabControllerImpl.class);
-        binder.bind(SourceCodeDAO.class).to(SourceCodeDAOMockImpl.class);
+        binder.bind(SourceCodeDAO.class).to(SourceCodeDAOImpl.class);
         binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
     }
 

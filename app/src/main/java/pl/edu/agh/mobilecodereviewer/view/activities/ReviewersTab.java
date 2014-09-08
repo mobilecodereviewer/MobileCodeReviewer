@@ -13,6 +13,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
+import java.util.Collections;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -55,16 +56,22 @@ public class ReviewersTab extends RoboActivity implements ReviewersTabView{
 
     @Override
     public void showReviewers(final List<LabelInfo> labels) {
+        List<String> labelNames;
 
-        List<String> labelNames = Lists.transform(labels, new Function<LabelInfo, String>() {
-                    @Override
-                    public String apply(LabelInfo from) {
-                        return from.getName();
+        if (labels != null) {
+            labelNames = Lists.transform(labels,
+                    new Function<LabelInfo, String>() {
+                        @Override
+                        public String apply(LabelInfo from) {
+                            return from.getName();
+                        }
                     }
-                }
-        );
+            );
+        } else
+            labelNames = Collections.EMPTY_LIST;
 
-        reviewersListView.setAdapter( new ReviewersViewListAdapter(this, labels.get(0).getAll()));
+        if ( labels != null && labels.size() > 0)
+            reviewersListView.setAdapter( new ReviewersViewListAdapter(this, labels.get(0).getAll()));
 
         reviewersTabLabelSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labelNames));
         reviewersTabLabelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
