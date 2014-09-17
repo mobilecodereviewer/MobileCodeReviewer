@@ -1,6 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.view.api;
 
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
 /**
  * Represents the view which will show source code with comments
@@ -16,4 +17,8 @@ public interface SourceExplorerView {
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     void showSourceCode(SourceCode sourceCode);
+
+    void clearSourceLines();
+
+    void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff);
 }

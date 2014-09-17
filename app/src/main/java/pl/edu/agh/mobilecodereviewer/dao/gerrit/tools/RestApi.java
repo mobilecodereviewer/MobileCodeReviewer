@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 import retrofit.RestAdapter;
@@ -26,6 +27,13 @@ public class RestApi {
      * Class for binding between method and url
      */
     private final GerritService gerritService;
+    //private String url = "http://149.156.205.132:8081";
+    private String url = "http://192.168.0.11:8080";
+
+    public RestApi(String url) {
+        this.url = url;
+        this.gerritService = createGerritService();
+    }
 
     /**
      * Create instance of restApi with default data access service
@@ -47,7 +55,7 @@ public class RestApi {
      * @return default URL
      */
     protected String createUrl() {
-        return "http://149.156.205.132:8081";
+        return url;
     }
 
     /**
@@ -169,6 +177,9 @@ public class RestApi {
         return gerritService.getChangeTopic(change_id);
     }
 
+    public DiffInfoDTO getSourceCodeDiff(String change_id, String revision_id, String file_id) {
+        return gerritService.getDiffInfo(change_id, revision_id, file_id);
+    }
 }
 
 

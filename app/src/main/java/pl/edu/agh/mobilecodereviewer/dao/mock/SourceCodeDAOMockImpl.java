@@ -7,9 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffContentDTO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
 /**
  * Simple Stub for SourceCodeDAO with hardcoded values about
@@ -36,6 +39,19 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
             Line.valueOf(6,"}")
     );
 
+    private static DiffInfoDTO diffInfoDTO =
+            new DiffInfoDTO(
+                    Arrays.asList(
+                            new DiffContentDTO(null, null, Arrays.asList("while (m > 1) {"), 0),
+                            new DiffContentDTO(null, null, null, 3),
+                            new DiffContentDTO(Arrays.asList("int l;", "int w;"), null, null, 0),
+                            new DiffContentDTO(null, Arrays.asList("int h;"), null, 0),
+                            new DiffContentDTO(null, null, Arrays.asList("super();"), 0)
+                    )
+            );
+
+
+
     /**
      * Return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} with hardcoded
      * values ( {@link pl.edu.agh.mobilecodereviewer.model.Line}. The method is
@@ -46,4 +62,25 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
     public SourceCode getSourceCode(String change_id,String revision_id,String file_id) {
         return SourceCode.valueOf( lines );
     }
+
+    @Override
+    public SourceCodeDiff getSourceCodeDiff(String change_id, String revision_id, String file_id) {
+        return new SourceCodeDiff(diffInfoDTO);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

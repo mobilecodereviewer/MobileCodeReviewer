@@ -19,4 +19,6 @@ public interface SourceExplorerController {
      * @param view
      */
     void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id);
+
+    void updateSourceCodeDiff(SourceExplorerView view, String change_id, String revision_id, String file_id);
 }

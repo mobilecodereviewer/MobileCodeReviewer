@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.dto;
 
 import com.google.gson.Gson;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -63,6 +64,7 @@ public class ChangeInfoDTOCharacteristicTest {
         assertEquals("{\"current_revision\":\"1\"}" , json);
     }
 
+    @Ignore
     @Test
     public void testJsonViewWithIdAndOneRevisionInfoDTO() throws Exception {
         ChangeInfoDTO changeInfoDTO = new ChangeInfoDTO();

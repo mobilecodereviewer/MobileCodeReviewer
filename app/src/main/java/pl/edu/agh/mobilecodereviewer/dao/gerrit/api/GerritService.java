@@ -5,6 +5,7 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import retrofit.client.Response;
 import retrofit.http.GET;
@@ -71,4 +72,30 @@ public interface GerritService {
 
     @GET("/changes/{change_id}/topic")
     String getChangeTopic(@Path("change_id") String change_id);
+
+    @GET("/changes/{change-id}/revisions/{revision-id}/files/{file-id}/diff")
+    DiffInfoDTO getDiffInfo(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
+                            @Path("file-id") String file_id);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

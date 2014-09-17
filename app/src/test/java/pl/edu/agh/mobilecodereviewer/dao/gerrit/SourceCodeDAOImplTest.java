@@ -12,11 +12,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import retrofit.RetrofitError;
 import retrofit.client.Request;
 
@@ -25,6 +28,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.GerritTestHelper.createSimpleRestServiceForTest;
 import static pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.GerritTestHelper.doNothing;
@@ -463,6 +467,23 @@ public class SourceCodeDAOImplTest extends SourceCodeDAOImpl {
         for (Line line : sourceCode.getLines() ) commentCount += line.getComments().size();
         assertEquals(0,commentCount);
     }
+
+    @Test
+    public void shouldGetDiffedSourceCode() throws Exception {
+        RestApi restApi = mock(RestApi.class);
+        String change_id = "change";
+        String revision_id = "revision";
+        String file_id = "file";
+        DiffInfoDTO diffInfoDTO = new DiffInfoDTO(null);
+        when ( restApi.getSourceCodeDiff(change_id,revision_id,file_id) ).
+                thenReturn( diffInfoDTO );
+
+        SourceCodeDAO sourceCodeDAO = new SourceCodeDAOImpl(restApi);
+        SourceCodeDiff sourceCodeDiff = sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+        verify(restApi).getSourceCodeDiff(change_id, revision_id, file_id);
+        assertEquals(0, sourceCodeDiff.getLinesCount());
+    }
+
 }
 
 

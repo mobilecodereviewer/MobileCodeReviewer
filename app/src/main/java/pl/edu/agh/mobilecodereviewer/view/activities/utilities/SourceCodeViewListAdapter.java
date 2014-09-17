@@ -65,7 +65,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.layout_source_code , null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.codeText);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
-        txtTitle.setText(content.get(position) );
+        txtTitle.setText((position+1) + "|\t" +  content.get(position) );
         if ( hasComments.get(position) )
             imageView.setImageResource( R.drawable.source_code_info_icon );
         else

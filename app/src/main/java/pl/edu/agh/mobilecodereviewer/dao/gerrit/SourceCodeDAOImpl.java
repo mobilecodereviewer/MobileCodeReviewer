@@ -15,9 +15,11 @@ import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Base64;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
 /**
  * Data access object for a source code. It is some
@@ -171,6 +173,11 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         return createSourceCode(lines,commentsInLines);
     }
 
+    @Override
+    public SourceCodeDiff getSourceCodeDiff(String change_id, String revision_id, String file_id) {
+        DiffInfoDTO sourceCodeDiff = restApi.getSourceCodeDiff(change_id, revision_id, file_id);
+        return new SourceCodeDiff(sourceCodeDiff);
+    }
 
 }
 

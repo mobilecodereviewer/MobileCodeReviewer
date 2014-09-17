@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 
@@ -95,13 +96,7 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
-    /**
-     * Asynchronous get content of the file
-     * @param change_id Indentifier of change
-     * @param revision_id Identifier of revision
-     * @param file_id File Path
-     * @return Content of the file in Base64
-     */
+
     @Override
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id){
         return runAsyncTask(new AsyncTask<Object, Void, Pair<String, RevisionInfoDTO>>() {
@@ -114,7 +109,13 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
-
+    /**
+     * Asynchronous get content of the file
+     * @param change_id Indentifier of change
+     * @param revision_id Identifier of revision
+     * @param file_id File Path
+     * @return Content of the file in Base64
+     */
     @Override
     public String getFileContent(final String change_id, final String revision_id , final String file_id) {
         return runAsyncTask(new AsyncTask<Object, Void, String>() {
@@ -157,6 +158,16 @@ public class AsynchronousRestApi extends RestApi{
             @Override
             protected String doInBackground(Object... params) {
                 return restApi.getChangeTopic(change_id);
+            }
+        });
+    }
+
+    @Override
+    public DiffInfoDTO getSourceCodeDiff(final String change_id, final String revision_id, final String file_id) {
+        return runAsyncTask(new AsyncTask<Object, Void, DiffInfoDTO >() {
+            @Override
+            protected DiffInfoDTO doInBackground(Object... params) {
+                return restApi.getSourceCodeDiff(change_id, revision_id, file_id);
             }
         });
     }

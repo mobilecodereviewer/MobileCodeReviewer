@@ -40,7 +40,7 @@ public class InjectionModule implements Module {
      */
     @Override
     public void configure(Binder binder) {
-        configureForGuiTest(binder);
+        configureForProduction(binder);
     }
 
     /**

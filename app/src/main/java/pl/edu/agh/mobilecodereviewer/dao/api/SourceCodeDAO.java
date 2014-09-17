@@ -2,6 +2,7 @@ package pl.edu.agh.mobilecodereviewer.dao.api;
 
 
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
 /**
  * Source Code Data Access Object is used for obtaining
@@ -22,4 +23,5 @@ public interface SourceCodeDAO {
      */
     SourceCode getSourceCode(String change_id,String revision_id,String file_id);
 
+    SourceCodeDiff getSourceCodeDiff(String change_id, String revision_id, String file_id);
 }

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 
 /**
@@ -54,4 +55,27 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         view.showSourceCode(sourceCode);
     }
 
+    @Override
+    public void updateSourceCodeDiff(SourceExplorerView view, String change_id, String revision_id, String file_id) {
+        SourceCodeDiff sourceCodeDiff = sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+
+        view.showSourceCodeDiff(sourceCodeDiff );
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

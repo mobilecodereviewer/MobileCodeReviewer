@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
@@ -21,8 +23,10 @@ import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
+import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SingleLineCommentViewListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.activity.RoboActivity;
@@ -42,6 +46,8 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     private String revision_id;
     private String file_id;
 
+    private boolean isDiffView;
+
     private final Context context = this;
     /**
      *  Associated controller which make actions to activity events
@@ -55,6 +61,9 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @InjectView(R.id.sourceLinesListView)
     private ListView sourceLinesListView;
 
+    @InjectView(R.id.sourceDiffToggleButton)
+    private ImageButton sourceDiffToogleButton;
+
     /**
      * Initialize view and request update of source code list
      * @param savedInstanceState Saved instance of the activity
@@ -65,6 +74,20 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         setContentView(R.layout.activity_source_explorer);
 
         initializeSourceProperties();
+        isDiffView = false;
+        final SourceExplorerView sourceView = this;
+        sourceDiffToogleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SourceExplorer.this.clearSourceLines();
+                if ( !SourceExplorer.this.isDiffView() ) {
+                    controller.updateSourceCode(sourceView,change_id,revision_id,file_id);
+                } else {
+                    controller.updateSourceCodeDiff(sourceView,change_id,revision_id,file_id);
+                }
+                SourceExplorer.this.toogleDiffView();
+            }
+        });
         controller.updateSourceCode(this,change_id,revision_id,file_id);
     }
 
@@ -130,6 +153,31 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         });
     }
 
+    @Override
+    public void clearSourceLines() {
+        sourceLinesListView.setAdapter(null);
+    }
+
+    @Override
+    public void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff) {
+        final SourceCodeDiffViewListAdapter sourceCodeDiffViewListAdapter =
+                new SourceCodeDiffViewListAdapter(this,sourceCodeDiff);
+
+        sourceLinesListView.setAdapter(sourceCodeDiffViewListAdapter);
+    }
+
+    public boolean isDiffView() {
+        return isDiffView;
+    }
+
+    public void toogleDiffView() {
+        isDiffView = !isDiffView;
+        if (isDiffView) {
+            sourceDiffToogleButton.setBackgroundResource( R.drawable.source_code_diff_icon );
+        } else {
+            sourceDiffToogleButton.setBackgroundResource( R.drawable.source_code_code_icon );
+        }
+    }
 }
 
 
