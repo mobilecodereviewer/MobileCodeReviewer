@@ -1,9 +1,18 @@
 package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
 
+import com.google.common.collect.Lists;
+import com.google.gerrit.extensions.api.GerritApi;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
+import com.google.gerrit.extensions.restapi.RestApiException;
+import com.urswolfer.gerrit.client.rest.GerritAuthData;
+import com.urswolfer.gerrit.client.rest.GerritRestApiFactory;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -14,8 +23,10 @@ import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedInput;
 
@@ -29,6 +40,8 @@ public class RestApi {
     private final GerritService gerritService;
     //private String url = "http://149.156.205.132:8081";
     private String url = "http://192.168.0.11:8080";
+    private String login = "liscju";
+    private String password = "wx6Vyx16aIRy";
 
     public RestApi(String url) {
         this.url = url;
@@ -180,7 +193,38 @@ public class RestApi {
     public DiffInfoDTO getSourceCodeDiff(String change_id, String revision_id, String file_id) {
         return gerritService.getDiffInfo(change_id, revision_id, file_id);
     }
+
+    public void putFileComment(String change_id, String revision_id,
+                               int line, String message,String path) throws RetrofitError {
+        GerritRestApiFactory gerritRestApiFactory = new GerritRestApiFactory();
+        GerritAuthData.Basic auth = new GerritAuthData.Basic(this.url, login, password);
+        GerritApi gerritApi = gerritRestApiFactory.create(auth);
+        ReviewInput reviewInput = new ReviewInput();
+        ReviewInput.CommentInput commentInput = new ReviewInput.CommentInput();
+        commentInput.line = line;
+        commentInput.message = message;
+        commentInput.path = path;
+        reviewInput.comments = Collections.singletonMap(path, Collections.singletonList(commentInput));
+        try {
+            gerritApi.changes().id(change_id).revision(revision_id).review(reviewInput);
+        } catch (RestApiException e) {
+            throw RetrofitError.unexpectedError(e.getMessage(), e.getCause());
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

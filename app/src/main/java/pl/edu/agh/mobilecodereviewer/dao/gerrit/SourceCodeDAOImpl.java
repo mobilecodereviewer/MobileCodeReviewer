@@ -134,18 +134,20 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
     /**
      * Create {@link SourceCode} model from lines of files and map between
      * line numbers and comments
+     *
+     * @param path
      * @param lines Lines of file
      * @param comments Map between line number and list of comments
      * @return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} model
      */
-    protected SourceCode createSourceCode(List<String> lines, Map<Integer,List<CommentInfoDTO>> comments) {
+    protected SourceCode createSourceCode(String path, List<String> lines, Map<Integer, List<CommentInfoDTO>> comments) {
         List<Line> sourceLines = new LinkedList<Line>() ;
         int i = 1;
         for (String line : lines) {
             List<Comment> lineComments = new LinkedList<>();
             if ( comments.containsKey(i) )
                 for (CommentInfoDTO commentInfoDTO : comments.get(i) )
-                        lineComments.add( new Comment(commentInfoDTO.getMessage() ) );
+                        lineComments.add( new Comment(i,path,commentInfoDTO.getMessage() ) );
 
             Line sourceLine = new Line(i,line,lineComments );
             sourceLines.add(sourceLine);
@@ -170,7 +172,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         Map<Integer, List<CommentInfoDTO>> commentsInLines = mapCommentsIntoLines(
                 getComments(change_id, revision_id, file_id)
         );
-        return createSourceCode(lines,commentsInLines);
+        return createSourceCode(file_id,lines,commentsInLines);
     }
 
     @Override
@@ -179,6 +181,14 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         return new SourceCodeDiff(sourceCodeDiff);
     }
 
+
+    @Override
+    public void putFileComment(String change_id, String revision_id,Comment comment) {
+        int line = comment.getLine();
+        String message = comment.getContent();
+        String path = comment.getPath();
+        restApi.putFileComment(change_id,revision_id,line,message,path);
+    }
 }
 
 

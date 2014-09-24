@@ -64,6 +64,10 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @InjectView(R.id.sourceDiffToggleButton)
     private ImageButton sourceDiffToogleButton;
 
+    
+    @InjectView(R.id.sourceWriteCommentButton)
+    private ImageButton sourceWriteCommentButton;
+
     /**
      * Initialize view and request update of source code list
      * @param savedInstanceState Saved instance of the activity

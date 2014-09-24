@@ -12,6 +12,7 @@ import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
+import retrofit.RetrofitError;
 
 /**
  * Class decorates RestApi with asynchronous task
@@ -172,6 +173,18 @@ public class AsynchronousRestApi extends RestApi{
         });
     }
 
+
+    @Override
+    public void putFileComment(final String change_id, final String revision_id, final int line,
+                               final String message, final String path){
+        runAsyncTask(new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                restApi.putFileComment(change_id, revision_id, line, message, path);
+                return null;
+            }
+        });
+    }
 }
 
 

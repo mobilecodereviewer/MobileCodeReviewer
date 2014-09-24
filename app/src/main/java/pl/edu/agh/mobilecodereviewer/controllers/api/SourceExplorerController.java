@@ -1,5 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 
 /**
@@ -21,4 +22,6 @@ public interface SourceExplorerController {
     void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id);
 
     void updateSourceCodeDiff(SourceExplorerView view, String change_id, String revision_id, String file_id);
+
+    void insertComment(SourceExplorerView view, String change_id, String revision_id, Comment comment);
 }

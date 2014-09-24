@@ -12,6 +12,7 @@ import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffContentDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import retrofit.client.Request;
 
 import static junit.framework.Assert.assertEquals;
@@ -238,10 +239,7 @@ public class RestApiTest extends RestApi{
         assertNull(thirdDiff.getLinesAfterChange());
     }
 
-
 }
-
-
 
 
 

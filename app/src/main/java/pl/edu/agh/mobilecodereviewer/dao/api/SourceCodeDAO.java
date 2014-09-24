@@ -1,6 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.dao.api;
 
 
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
@@ -24,4 +25,6 @@ public interface SourceCodeDAO {
     SourceCode getSourceCode(String change_id,String revision_id,String file_id);
 
     SourceCodeDiff getSourceCodeDiff(String change_id, String revision_id, String file_id);
+
+    void putFileComment(String change_id, String revision_id, Comment comment);
 }

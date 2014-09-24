@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -12,13 +12,25 @@
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="right"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:background="@drawable/source_code_diff_icon"
         android:id="@+id/sourceDiffToggleButton" />
 
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/source_code_write_comment"
+        android:id="@+id/sourceWriteCommentButton" />
+
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/sourceDiffToggleButton"
+        android:layout_above="@id/sourceWriteCommentButton"
         android:id="@+id/sourceLinesListView"
         android:footerDividersEnabled="false" />
-</LinearLayout>
+
+</RelativeLayout>

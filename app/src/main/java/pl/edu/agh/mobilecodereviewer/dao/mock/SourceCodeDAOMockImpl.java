@@ -30,11 +30,11 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
      * Hardcoded information about lines
      */
     private static List<Line> lines = Arrays.asList(
-            Line.valueOf(0,"#include <iostream.h>", Lists.newArrayList( Comment.valueOf("Comment for include") ) ),
+            Line.valueOf(0,"#include <iostream.h>", Lists.newArrayList( Comment.valueOf(0,"file","Comment for include") ) ),
             Line.valueOf(1,""),
             Line.valueOf(2,"using namespace sdt;"),
             Line.valueOf(3,""),
-            Line.valueOf(4,"int main() {" , Lists.newArrayList( Comment.valueOf("int main() {") )),
+            Line.valueOf(4,"int main() {" , Lists.newArrayList( Comment.valueOf(4,"file","int main() {") )),
             Line.valueOf(5,"\tcout<<\"Hello World\"\n"),
             Line.valueOf(6,"}")
     );
@@ -66,6 +66,11 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
     @Override
     public SourceCodeDiff getSourceCodeDiff(String change_id, String revision_id, String file_id) {
         return new SourceCodeDiff(diffInfoDTO);
+    }
+
+    @Override
+    public void putFileComment(String change_id, String revision_id, Comment comment) {
+        // TODO something to show on the screen....
     }
 }
 

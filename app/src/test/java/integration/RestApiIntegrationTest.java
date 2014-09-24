@@ -1,16 +1,18 @@
 package integration;
 
 import org.junit.Before;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 @Ignore
 public class RestApiIntegrationTest {
     static RestApi restApi;
@@ -20,8 +22,9 @@ public class RestApiIntegrationTest {
         restApi = new RestApi("http://192.168.163.151:8080");
     }
 
+    @Ignore
     @Test
-    public void shouldAccessProperValues() throws Exception {
+    public void shouldGetSourceDiffAccessProperValues() throws Exception {
         String change_id = "Ie6fa2f384caa58b5cae6256d9e8041f2981c8832";
         String revision_id = "1";
         String file_id = "README.md";
@@ -36,6 +39,16 @@ public class RestApiIntegrationTest {
         assertEquals("" , sourceCodeDiff.getDiffContent().get(1).getLinesAfterChange().get(2) );
         assertEquals("give yourself some free time with this stuff..." , sourceCodeDiff.getDiffContent().get(1).getLinesAfterChange().get(3) );
     }
+
+    @Ignore
+    @Test
+    public void shouldPutCommentSaveValuesToServer() throws Exception {
+        String change_id = "Ie6fa2f384caa58b5cae6256d9e8041f2981c8832";
+        String revision_id = "1";
+        restApi.putFileComment(change_id, revision_id,
+                               1,"New Proper Sending Comment 12:25/24-04-2014","file2");
+    }
+
 }
 
 

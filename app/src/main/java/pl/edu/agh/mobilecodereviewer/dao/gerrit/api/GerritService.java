@@ -7,8 +7,13 @@ import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.ReviewInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
@@ -76,7 +81,14 @@ public interface GerritService {
     @GET("/changes/{change-id}/revisions/{revision-id}/files/{file-id}/diff")
     DiffInfoDTO getDiffInfo(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
                             @Path("file-id") String file_id);
+
+    @POST("/a/changes/{change-id}/revisions/{revision-id}/review")
+    ReviewInfoDTO putFileComment(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
+                                 @Body ReviewInputDTO reviewInputDTO);
+
+
 }
+
 
 
 

@@ -333,7 +333,7 @@ public class SourceCodeDAOImplTest extends SourceCodeDAOImpl {
                         " \r" +
                         "    private String subject;}"
         );
-        SourceCode sourceCode = createSourceCode(lines, commentsInLines);
+        SourceCode sourceCode = createSourceCode("file", lines, commentsInLines);
         assertEquals( 5 , sourceCode.getLines().size() );
         assertEquals( 5 , sourceCode.getLines().get(4).getLineNumber() );
         for (int i=0;i<4;i++)
@@ -364,7 +364,7 @@ public class SourceCodeDAOImplTest extends SourceCodeDAOImpl {
                         " \r" +
                         "    private String subject;}"
         );
-        SourceCode sourceCode = createSourceCode(lines, commentsInLines);
+        SourceCode sourceCode = createSourceCode("file", lines, commentsInLines);
         assertEquals(5,sourceCode.getLines().size() );
         assertEquals(2,sourceCode.getLines().get(0).getComments().size() );
         assertEquals("LOL" , sourceCode.getLines().get(0).getComments().get(0).getContent() );
@@ -483,6 +483,8 @@ public class SourceCodeDAOImplTest extends SourceCodeDAOImpl {
         verify(restApi).getSourceCodeDiff(change_id, revision_id, file_id);
         assertEquals(0, sourceCodeDiff.getLinesCount());
     }
+
+
 
 }
 
