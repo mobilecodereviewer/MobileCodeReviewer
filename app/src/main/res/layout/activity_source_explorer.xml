@@ -22,6 +22,7 @@
         android:background="?android:attr/activatedBackgroundIndicator" />
 
     <LinearLayout
+        android:background="@android:color/white"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
@@ -33,9 +34,10 @@
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/source_code_write_comment"
+            android:background="@drawable/expand_icon"
             android:id="@+id/showHideCommentOptionsButton"
-            android:layout_gravity="right"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="-10dp"
             android:visibility="visible" />
 
         <TabHost
@@ -70,48 +72,43 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content">
 
-                                <RelativeLayout
+                            <RelativeLayout
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/optionsRelativeLayout"
+                                android:layout_alignParentBottom="true">
+
+                                <EditText
                                     android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/optionsRelativeLayout"
-                                    android:layout_alignParentBottom="true">
-
-                                    <EditText
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="120dp"
-                                        android:layout_toLeftOf="@+id/buttonsLayout"
-                                        android:id="@+id/commentContentTextView"
-                                        android:background="#ffffffff" />
+                                    android:layout_height="120dp"
+                                    android:id="@+id/commentContentTextView"
+                                    android:background="@drawable/rectangle_background"
+                                    android:hint="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.comment.placeholder"/>
 
 
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:id="@+id/buttonsLayout"
-                                        android:orientation="vertical">
+                                <ImageButton
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:background="@drawable/common_cancel_icon"
+                                    android:id="@+id/cancelCommentButton"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true" />
 
-                                        <ImageButton
-                                            android:layout_width="60dp"
-                                            android:layout_height="60dp"
-                                            android:background="@drawable/sendcomment"
-                                            android:id="@+id/sendCommentButton"
-                                            android:layout_alignParentRight="true" />
+                                <ImageButton
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:background="@drawable/common_accept_icon"
+                                    android:id="@+id/sendCommentButton"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentEnd="true" />
 
-                                        <ImageButton
-                                            android:layout_width="60dp"
-                                            android:layout_height="60dp"
-                                            android:background="@drawable/cancelicon"
-                                            android:id="@+id/cancelCommentButton"
-                                            android:layout_alignParentRight="true" />
-
-                                    </LinearLayout>
-
-                                </RelativeLayout>
-
-                            </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
 
                     </FrameLayout>
+
             </LinearLayout>
         </TabHost>
 

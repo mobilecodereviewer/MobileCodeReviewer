@@ -187,7 +187,7 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         }
         commentOptionsTab.setVisibility(View.GONE);
         showHideCommentOptionsButton.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.source_code_write_comment);
+        showHideCommentOptionsButton.setBackgroundResource(R.drawable.expand_icon);
     }
 
     @Override
@@ -208,14 +208,14 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     public void showCommentOptions() {
         commentOptionsTab.setVisibility(View.VISIBLE);
         showHideCommentOptionsButton.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.downicon);
+        showHideCommentOptionsButton.setBackgroundResource(R.drawable.collapse_icon);
     }
 
     @Override
     public void hideCommentOptions() {
         commentOptionsTab.setVisibility(View.GONE);
         showHideCommentOptionsButton.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.source_code_write_comment);
+        showHideCommentOptionsButton.setBackgroundResource(R.drawable.expand_icon);
     }
 }
 
