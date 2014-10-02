@@ -5,8 +5,9 @@
     <TableRow>
         <ImageView
             android:id="@+id/commentImage"
-            android:layout_width="50dp"
-            android:layout_height="@dimen/common_medium_line_height"/>
+            android:layout_width="30dp"
+            android:layout_height="@dimen/common_medium_line_height"
+            android:paddingRight="5dp"/>
         <TextView
             android:id="@+id/codeText"
             android:layout_width="fill_parent"

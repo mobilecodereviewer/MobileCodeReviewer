@@ -11,21 +11,12 @@
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer"
     android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
 
-    <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/source_code_diff_icon"
-        android:id="@+id/sourceDiffToggleButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:id="@+id/sourceLinesListView"
         android:footerDividersEnabled="false"
         android:layout_above="@+id/optionsLayout"
-        android:layout_below="@id/sourceDiffToggleButton"
         android:choiceMode="singleChoice"
         android:listSelector="@android:color/holo_blue_light"
         android:background="?android:attr/activatedBackgroundIndicator" />

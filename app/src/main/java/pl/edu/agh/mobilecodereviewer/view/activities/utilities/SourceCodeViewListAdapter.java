@@ -85,7 +85,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
         });
         txtTitle.setText((position+1) + "|\t" +  content.get(position) );
         if ( hasComments.get(position) )
-            imageView.setImageResource( R.drawable.source_code_info_icon );
+            imageView.setImageResource( R.drawable.source_explorer_line_comment_icon );
         else
             imageView.setImageDrawable(null);
         return rowView;

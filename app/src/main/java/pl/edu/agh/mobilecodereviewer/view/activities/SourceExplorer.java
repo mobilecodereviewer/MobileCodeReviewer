@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +39,8 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     private String revision_id;
     private String file_id;
 
+    private Menu menu;
+
     private final Context context = this;
     /**
      *  Associated controller which make actions to activity events
@@ -52,9 +53,6 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
      */
     @InjectView(R.id.sourceLinesListView)
     private ListView sourceLinesListView;
-
-    @InjectView(R.id.sourceDiffToggleButton)
-    private ImageButton sourceDiffToogleButton;
 
     @InjectView(R.id.optionsRelativeLayout)
     private RelativeLayout optionsRelativeLayout;
@@ -95,12 +93,6 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 controller.setCurrentLinePosition(i);
-            }
-        });
-        sourceDiffToogleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.toggleDiffView();
             }
         });
         sendCommentButton.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +138,7 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.source_explorer, menu);
         return true;
     }
@@ -159,6 +152,10 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if(id == R.id.sourceDiffToggleButton) {
+            controller.toggleDiffView();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -185,7 +182,9 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
     @Override
     public void setInterfaceForCode() {
-        sourceDiffToogleButton.setBackgroundResource(R.drawable.source_code_code_icon);
+        if(menu != null) {
+            menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
+        }
         commentOptionsTab.setVisibility(View.GONE);
         showHideCommentOptionsButton.setVisibility(View.VISIBLE);
         showHideCommentOptionsButton.setBackgroundResource(R.drawable.source_code_write_comment);
@@ -193,7 +192,9 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
     @Override
     public void setInterfaceForDiff() {
-        sourceDiffToogleButton.setBackgroundResource( R.drawable.source_code_diff_icon );
+        if(menu != null) {
+            menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
+        }
         commentOptionsTab.setVisibility(View.GONE);
         showHideCommentOptionsButton.setVisibility(View.GONE);
     }

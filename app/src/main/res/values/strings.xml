@@ -38,6 +38,7 @@
 
     <!--ReviewersTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.reviewer">REVIEWER</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.unauthorized">Unauthorized</string>
     <!--ReviewersTab end-->
 
     <!--ChangeDetails end-->

@@ -44,6 +44,8 @@ public class ReviewersViewListAdapter extends ArrayAdapter<ApprovalInfo> {
             imageLabel.setImageResource(R.drawable.common_accept_icon);
         } else if(currentApprovalInfo.isMinValueForLabel()) {
             imageLabel.setImageResource(R.drawable.common_cancel_icon);
+        } else if(currentApprovalInfo.getValue() == null) {
+            textLabel.setText(R.string.pl_agh_edu_mobilecodereviewer_ReviewersTab_unauthorized);
         } else {
             textLabel.setText(currentApprovalInfo.getValue().toString());
         }
