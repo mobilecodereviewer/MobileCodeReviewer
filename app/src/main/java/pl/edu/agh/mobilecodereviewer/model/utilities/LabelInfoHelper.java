@@ -25,19 +25,23 @@ public final class LabelInfoHelper {
 
     private static ApprovalInfo createApprovalInfoFromDTO(ApprovalInfoDTO approvalInfoDTO, Set<Integer> values) {
 
+        /*
         if (approvalInfoDTO.getValue() == null) {
             approvalInfoDTO.setValue(0);
         }
+        */
 
         ApprovalInfo approvalInfo = new ApprovalInfo(approvalInfoDTO.getName(), approvalInfoDTO.getValue(), approvalInfoDTO.getDate());
 
         List<Integer> sortedValues = new ArrayList<Integer>(values);
         Collections.sort(sortedValues);
 
-        if (approvalInfo.getValue().equals(sortedValues.get(0))) {
-            approvalInfo.setMinValueForLabel(true);
-        } else if (approvalInfo.getValue().equals(sortedValues.get(sortedValues.size() - 1))) {
-            approvalInfo.setMaxValueForLabel(true);
+        if(approvalInfoDTO.getValue() != null) {
+            if (approvalInfo.getValue().equals(sortedValues.get(0))) {
+                approvalInfo.setMinValueForLabel(true);
+            } else if (approvalInfo.getValue().equals(sortedValues.get(sortedValues.size() - 1))) {
+                approvalInfo.setMaxValueForLabel(true);
+            }
         }
 
         return approvalInfo;

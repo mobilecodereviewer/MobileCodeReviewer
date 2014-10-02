@@ -23,6 +23,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.changeMessagesTab.id">ChangeMessages</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.label">Reviewers</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.id">Reviewers</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview">Add review</string>
 
     <!--ChangeInfoTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.changeId">Change ID</string>
@@ -38,6 +39,7 @@
 
     <!--ReviewersTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.reviewer">REVIEWER</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.unauthorized">Unauthorized</string>
     <!--ReviewersTab end-->
 
     <!--ChangeDetails end-->

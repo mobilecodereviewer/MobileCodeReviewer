@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
     
-    <item android:id="@+id/action_settings"
-        android:title="@string/pl.agh.edu.mobilecodereviewer.settings"
+    <item android:id="@+id/action_addReview"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview"
         android:orderInCategory="100"
         android:showAsAction="never" />
 </menu>
