@@ -1,7 +1,5 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
-import com.google.inject.Singleton;
-
 import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
@@ -19,7 +17,6 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  * @version 0.1
  * @since 0.1
  */
-@Singleton
 public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     /**
@@ -28,6 +25,15 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Inject
     SourceCodeDAO sourceCodeDAO;
 
+    boolean isDiffView = false;
+    boolean isAddingCommentOptionsVisible = false;
+    int currentSelectedLine = -1;
+
+    private SourceExplorerView view;
+    private String change_id;
+    private String revision_id;
+    private String file_id;
+
     /**
      * Simple object constructor, it doesnt initialize any
      * properties, preserve to be used with di framework
@@ -35,40 +41,91 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     public SourceExplorerControllerImpl() {
     }
 
-    /**
-     * Construct object with given data access Object
-     *
-     * @param sourceCodeDAO {@link pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO}
-     */
-    public SourceExplorerControllerImpl(SourceCodeDAO sourceCodeDAO) {
+    public SourceExplorerControllerImpl(SourceExplorerView view, String change_id, String revision_id, String file_id, SourceCodeDAO sourceCodeDAO) {
+        this.view = view;
+        this.change_id = change_id;
+        this.revision_id = revision_id;
+        this.file_id = file_id;
         this.sourceCodeDAO = sourceCodeDAO;
+    }
+
+
+    @Override
+    public void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id) {
+        this.view = view;
+        this.change_id = change_id;
+        this.revision_id = revision_id;
+        this.file_id = file_id;
+    }
+
+    @Override
+    public void initializeView() {
+        updateSourceCode();
+    }
+
+    @Override
+    public void toggleDiffView() {
+        view.clearLines();
+        isDiffView = !isDiffView;
+        if (isDiffView) {
+            updateSourceCodeDiff();
+        } else {
+            updateSourceCode();
+        }
+        isAddingCommentOptionsVisible = false;
     }
 
     /**
      * Method downloads source code for a given file with comments
      * and line number
-     * @param view View which will be show information aboud model
      */
     @Override
-    public void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id) {
+    public void updateSourceCode() {
         SourceCode sourceCode = sourceCodeDAO.getSourceCode(change_id,revision_id,file_id);
 
         view.showSourceCode(sourceCode);
+        view.setInterfaceForCode();
     }
 
     @Override
-    public void updateSourceCodeDiff(SourceExplorerView view, String change_id, String revision_id, String file_id) {
+    public void updateSourceCodeDiff() {
         SourceCodeDiff sourceCodeDiff = sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
 
         view.showSourceCodeDiff(sourceCodeDiff );
+        view.setInterfaceForDiff();
     }
 
     @Override
-    public void insertComment(SourceExplorerView view,String change_id, String revision_id, Comment comment) {
-        sourceCodeDAO.putFileComment(change_id,revision_id,comment);
+    public void insertComment(String content) {
+        Comment comment = new Comment(currentSelectedLine, file_id, content);
 
-        updateSourceCode(view,change_id,revision_id,comment.getPath());
+        //sourceCodeDAO.putFileComment(change_id, revision_id, comment);
+        //TODO zahardcodowana wartosc, z normalnym revision_id byl bug trzeba to zmienic , ale na ten moment nie ma czasu....
+        sourceCodeDAO.putFileComment(change_id, "1", comment);
+        updateSourceCode();
     }
+
+    @Override
+    public void cancelComment() {
+        view.clearCommentContent();
+    }
+
+    @Override
+    public void toggleCommentWriteMode() {
+        isAddingCommentOptionsVisible = !isAddingCommentOptionsVisible;
+        if ( isAddingCommentOptionsVisible ) {
+            view.showCommentOptions();
+        } else {
+            view.clearCommentContent();
+            view.hideCommentOptions();
+        }
+    }
+
+    @Override
+    public void setCurrentLinePosition(int currLine) {
+        currentSelectedLine = currLine;
+    }
+
 }
 
 

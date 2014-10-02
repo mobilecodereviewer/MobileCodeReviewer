@@ -29,10 +29,15 @@ public final class LabelInfoHelper {
         List<Integer> sortedValues = new ArrayList<Integer>(values);
         Collections.sort(sortedValues);
 
-        if(approvalInfo.getValue().equals(sortedValues.get(0))){
-            approvalInfo.setMinValueForLabel(true);
-        } else if(approvalInfo.getValue().equals(sortedValues.get(sortedValues.size()-1))){
-            approvalInfo.setMaxValueForLabel(true);
+        if (approvalInfo != null && approvalInfo.getValue() != null &&
+                sortedValues != null && sortedValues.size() > 0) {
+
+            if (approvalInfo.getValue().equals(sortedValues.get(0))) {
+                approvalInfo.setMinValueForLabel(true);
+            } else if (approvalInfo.getValue().equals(sortedValues.get(sortedValues.size() - 1))) {
+                approvalInfo.setMaxValueForLabel(true);
+            }
+
         }
 
         return approvalInfo;

@@ -6,10 +6,11 @@
         <ImageView
             android:id="@+id/commentImage"
             android:layout_width="50dp"
-            android:layout_height="25dp"/>
+            android:layout_height="@dimen/common_medium_line_height"/>
         <TextView
             android:id="@+id/codeText"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp" />
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/common_medium_line_height"
+            android:textSize="@dimen/common_medium_font_size" />
     </TableRow>
 </TableLayout>

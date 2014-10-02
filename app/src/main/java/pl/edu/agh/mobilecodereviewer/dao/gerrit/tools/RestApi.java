@@ -1,18 +1,13 @@
 package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
 
-import com.google.common.collect.Lists;
-import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.api.changes.ReviewInput;
-import com.google.gerrit.extensions.restapi.RestApiException;
-import com.urswolfer.gerrit.client.rest.GerritAuthData;
-import com.urswolfer.gerrit.client.rest.GerritRestApiFactory;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Proxy;
-import java.util.Collections;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -21,14 +16,20 @@ import java.util.concurrent.Executors;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Client;
+import retrofit.client.Header;
+import retrofit.client.Request;
 import retrofit.client.Response;
 import retrofit.mime.TypedInput;
+
+import static pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.HttpDigestAuth.tryDigestAuthentication;
 
 /**
  * Element responsible for getting data from gerrit instance
@@ -38,10 +39,10 @@ public class RestApi {
      * Class for binding between method and url
      */
     private final GerritService gerritService;
-    //private String url = "http://149.156.205.132:8081";
-    private String url = "http://192.168.0.11:8080";
-    private String login = "liscju";
-    private String password = "wx6Vyx16aIRy";
+
+    private String url = "http://apps.iisg.agh.edu.pl:8081/";
+    private String login = "d00d171";
+    private String password = "SdGiS0eM3ctw";
 
     public RestApi(String url) {
         this.url = url;
@@ -55,8 +56,15 @@ public class RestApi {
         gerritService = createGerritService();
     }
 
+
+    public RestApi(String url, Client client) {
+        this.url = url;
+        this.gerritService = createGerritService(client);
+    }
+
     /**
      * Create instance of restApi from given data access service
+     *
      * @param gerritService {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService}
      */
     public RestApi(GerritService gerritService) {
@@ -65,6 +73,7 @@ public class RestApi {
 
     /**
      * Return default URL
+     *
      * @return default URL
      */
     protected String createUrl() {
@@ -73,54 +82,85 @@ public class RestApi {
 
     /**
      * Create default executor of tasks
+     *
      * @return {@link java.util.concurrent.Executor}
      */
     protected Executor createExecutor() {
         return Executors.newCachedThreadPool();
     }
 
-    /**
-     * Create default adapter from executor and url
-     * @param executor {@link java.util.concurrent.Executor}
-     * @param url URL of gerrit instance
-     * @return {@link retrofit.RestAdapter}
-     */
-    protected RestAdapter createRestAdapter(Executor executor,String url) {
+
+    protected RestAdapter createRestAdapter(Client client, Executor executor, String url) {
         return new RestAdapter.Builder()
                 .setExecutors(executor, executor)
                 .setEndpoint(url)
                 .setLogLevel(RestAdapter.LogLevel.BASIC)
+                .setClient(client).build();
+    }
+
+    /**
+     * Create default adapter from executor and url
+     *
+     * @param executor {@link java.util.concurrent.Executor}
+     * @param url      URL of gerrit instance
+     * @return {@link retrofit.RestAdapter}
+     */
+    protected RestAdapter createRestAdapter(Executor executor, String url) {
+        return new RestAdapter.Builder()
+                .setExecutors(executor, executor)
+                .setEndpoint(url)
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
+                .setClient(new GerritClient())
                 .build();
     }
 
     /**
      * Create default gerrit service
+     *
      * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService}
      */
     protected GerritService createGerritService() {
-        RestAdapter restAdapter = createRestAdapter( createExecutor() , createUrl() );
+        RestAdapter restAdapter = createRestAdapter(createExecutor(), createUrl());
+        setHttpAuthenticatorForVM();
         return restAdapter.create(GerritService.class);
     }
 
+    private void setHttpAuthenticatorForVM() {
+        /*Authenticator.setDefault(new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(login, password.toCharArray());
+            }
+        });*/
+    }
+
+    protected GerritService createGerritService(Client client) {
+        RestAdapter restAdapter = createRestAdapter(client, createExecutor(), createUrl());
+        return restAdapter.create(GerritService.class);
+    }
+
+
     /**
      * Download list of changes
+     *
      * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
-    public List<ChangeInfoDTO> getChanges(){
+    public List<ChangeInfoDTO> getChanges() {
         return gerritService.getChanges();
     }
 
     /**
      * Download details of the change
+     *
      * @param id Details Identifier
      * @return {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
-    public ChangeInfoDTO getChangeDetails(String id){
+    public ChangeInfoDTO getChangeDetails(String id) {
         return gerritService.getChangeDetails(id);
     }
 
 
-    public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
+    public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id) {
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithFiles(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
     }
@@ -133,31 +173,34 @@ public class RestApi {
 
     /**
      * Get current revision of change
+     *
      * @param id Change identifier
      * @return {@link} of Revision name and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
      */
     public Pair<String, RevisionInfoDTO> getCurrentRevisionForChange(final String id) {
         ChangeInfoDTO changeInfoDTO = gerritService.getChangeWithCurrentRevision(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(),
-                          changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
+                changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
     }
 
     /**
      * Get content of the file in base64
-     * @param change_id Change Identifier
+     *
+     * @param change_id   Change Identifier
      * @param revision_id Revision Identifier
-     * @param file_id Path of file
+     * @param file_id     Path of file
      * @return Content compressed in base64
      */
-    public String getFileContent(final String change_id, final String revision_id , final String file_id) {
+    public String getFileContent(final String change_id, final String revision_id, final String file_id) {
         Response response = gerritService.getFileContent(change_id, revision_id, file_id);
 
         TypedInput responseBody = response.getBody();
-        return getStringFromTypedInput( responseBody );
+        return getStringFromTypedInput(responseBody);
     }
 
     /**
      * Helper class for getting String value from {@link retrofit.mime.TypedInput}
+     *
      * @param typedInput {@link retrofit.mime.TypedInput}
      * @return String value from TypedInput
      */
@@ -174,15 +217,16 @@ public class RestApi {
 
     /**
      * Get all comments for a given change and revision
-     * @param change_id Change Identifier
+     *
+     * @param change_id   Change Identifier
      * @param revision_id Revision Identifier
      * @return Mapping between file and list of comments
      */
-    public Map<String,List<CommentInfoDTO>> getComments( final String change_id , final String revision_id) {
-        return gerritService.getComments(change_id,revision_id);
+    public Map<String, List<CommentInfoDTO>> getComments(final String change_id, final String revision_id) {
+        return gerritService.getComments(change_id, revision_id);
     }
 
-    public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id){
+    public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id) {
         return gerritService.getMergeableInfoForCurrentRevision(change_id);
     }
 
@@ -195,21 +239,89 @@ public class RestApi {
     }
 
     public void putFileComment(String change_id, String revision_id,
-                               int line, String message,String path) throws RetrofitError {
-        GerritRestApiFactory gerritRestApiFactory = new GerritRestApiFactory();
-        GerritAuthData.Basic auth = new GerritAuthData.Basic(this.url, login, password);
-        GerritApi gerritApi = gerritRestApiFactory.create(auth);
-        ReviewInput reviewInput = new ReviewInput();
-        ReviewInput.CommentInput commentInput = new ReviewInput.CommentInput();
-        commentInput.line = line;
-        commentInput.message = message;
-        commentInput.path = path;
-        reviewInput.comments = Collections.singletonMap(path, Collections.singletonList(commentInput));
-        try {
-            gerritApi.changes().id(change_id).revision(revision_id).review(reviewInput);
-        } catch (RestApiException e) {
-            throw RetrofitError.unexpectedError(e.getMessage(), e.getCause());
+                               int line, String message, String path) throws RetrofitError {
+        ReviewInputDTO reviewInputDTO = ReviewInputDTO.createFromSingleComment(path,
+                new CommentInputDTO(line, message, path));
+        gerritService.putFileComment(change_id, revision_id, reviewInputDTO);
+    }
+
+
+    private class GerritClient implements Client {
+
+        private HttpURLConnection tryAuth(HttpURLConnection connection, String username, String password)
+                throws IOException
+        {
+            int responseCode = connection.getResponseCode();
+            if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+                connection = tryDigestAuthentication(connection, username, password);
+                if(connection == null){
+                    throw new HttpDigestAuth.AuthenticationException();
+                }
+            }
+            return connection;
         }
+
+        @Override
+        public Response execute(Request request) throws IOException {
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(request.getUrl()).openConnection();
+            setConnectionProperties(request, urlConnection);
+            urlConnection.connect();
+
+            HttpURLConnection authConnection = tryAuth(urlConnection, login, password);
+            if (authConnection != urlConnection) {
+                urlConnection = authConnection;
+                setConnectionProperties(request,urlConnection);
+                urlConnection.connect();
+            }
+            return createResponseFromConnection(urlConnection);
+        }
+
+        private Response createResponseFromConnection(final HttpURLConnection urlConnection) throws IOException {
+            String received_url = urlConnection.getURL().toString();
+            int received_status = urlConnection.getResponseCode();
+            String received_reason = urlConnection.getResponseMessage();
+            List<Header> received_headers = new LinkedList<Header>();
+            for (Map.Entry<String, List<String>> header : urlConnection.getHeaderFields().entrySet()) {
+                for (String headerValue : header.getValue()) {
+                    received_headers.add(new Header(header.getKey(), headerValue));
+                }
+            }
+            TypedInput received_body = new TypedInput() {
+                @Override
+                public String mimeType() {
+                    return urlConnection.getContentType();
+                }
+
+                @Override
+                public long length() {
+                    return -1;
+                }
+
+                @Override
+                public InputStream in() throws IOException {
+                    return urlConnection.getInputStream();
+                }
+            };
+            return new Response(received_url, received_status, received_reason, received_headers, received_body);
+        }
+
+        private void setConnectionProperties(Request request, HttpURLConnection urlConnection) throws IOException {
+            urlConnection.setRequestMethod(request.getMethod());
+            for (Header header : request.getHeaders()) {
+                urlConnection.addRequestProperty(header.getName(), header.getValue());
+            }
+
+            if (!request.getMethod().toLowerCase().equals("get")) {
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("charset", "UTF-8");
+                urlConnection.setDoOutput(true);
+                OutputStream outputStream = urlConnection.getOutputStream();
+                if (request.getBody() != null)
+                    request.getBody().writeTo(outputStream);
+            }
+        }
+
+
     }
 }
 

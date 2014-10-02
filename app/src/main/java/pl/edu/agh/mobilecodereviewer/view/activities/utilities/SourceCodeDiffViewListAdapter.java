@@ -1,17 +1,12 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.opengl.EGLExt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.common.io.Resources;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.DiffLine;
@@ -27,7 +22,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
 
     public SourceCodeDiffViewListAdapter(Activity context,
                                          SourceCodeDiff sourceCodeDiff) {
-        super(context, R.layout.layout_source_code, new String[sourceCodeDiff.getLinesCount()]);
+        super(context, R.layout.layout_source_line, new String[sourceCodeDiff.getLinesCount()]);
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
     }
@@ -35,7 +30,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.layout_source_code , null, true);
+        View rowView = inflater.inflate(R.layout.layout_source_line, null, true);
 
         TextView txtLine = (TextView) rowView.findViewById(R.id.codeText);
         ImageView imgComment = (ImageView) rowView.findViewById(R.id.commentImage);

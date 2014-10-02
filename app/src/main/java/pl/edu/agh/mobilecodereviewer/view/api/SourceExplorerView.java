@@ -12,13 +12,23 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
  */
 public interface SourceExplorerView {
 
+    void clearLines();
+
     /**
      * Update source code in the view from a given source code ({@link pl.edu.agh.mobilecodereviewer.model.SourceCode} )
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     void showSourceCode(SourceCode sourceCode);
 
-    void clearSourceLines();
-
     void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff);
+
+    void setInterfaceForCode();
+
+    void setInterfaceForDiff();
+
+    void clearCommentContent();
+
+    void showCommentOptions();
+
+    void hideCommentOptions();
 }

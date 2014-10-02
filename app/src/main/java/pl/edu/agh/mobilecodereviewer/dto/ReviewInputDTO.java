@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by lee on 2014-09-22.
- */
+
 public class ReviewInputDTO {
     Map<String, List<CommentInputDTO>> comments;
 

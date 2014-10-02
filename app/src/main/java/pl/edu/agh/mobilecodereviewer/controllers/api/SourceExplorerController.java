@@ -1,6 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
 import pl.edu.agh.mobilecodereviewer.model.Comment;
+import pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 
 /**
@@ -14,14 +15,25 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  */
 public interface SourceExplorerController {
 
+    void initializeView();
+
+    void toggleDiffView();
+
     /**
      * Method updates model and instruct view what to do , when
      * update source code is requested
-     * @param view
      */
-    void updateSourceCode(SourceExplorerView view,String change_id,String revision_id,String file_id);
+    void updateSourceCode();
 
-    void updateSourceCodeDiff(SourceExplorerView view, String change_id, String revision_id, String file_id);
+    void updateSourceCodeDiff();
 
-    void insertComment(SourceExplorerView view, String change_id, String revision_id, Comment comment);
+    void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id);
+
+    void insertComment(String content);
+
+    void cancelComment();
+
+    void toggleCommentWriteMode();
+
+    void setCurrentLinePosition(int currLine);
 }

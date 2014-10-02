@@ -1,11 +1,13 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -37,6 +39,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
      * List of information if given line has comment
      */
     private final List<Boolean> hasComments;
+    private final SourceCode sourceCode;
 
     /**
      * Construct Adapter from given activity and sourcecode
@@ -45,26 +48,41 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
      */
     public SourceCodeViewListAdapter(Activity context,
                                      SourceCode sourceCode) {
-        super(context, R.layout.layout_source_code , SourceCodeHelper.getContent(sourceCode) );
+        super(context, R.layout.layout_source_line, SourceCodeHelper.getContent(sourceCode) );
         this.context = context;
 
         this.content = SourceCodeHelper.getContent(sourceCode);
         this.hasComments = SourceCodeHelper.getHasLineComments(sourceCode);
+        this.sourceCode = sourceCode;
     }
 
     /**
-     * Adapts data to be shown in layout_source_code layout from given position and view
+     * Adapts data to be shown in layout_source_line layout from given position and view
      * @param position position to adapts view
      * @param view {@link android.view.View}
      * @param parent {@link android.view.ViewGroup}
      * @return Constructed view adapted from given data
      */
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.layout_source_code , null, true);
+        View rowView = inflater.inflate(R.layout.layout_source_line, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.codeText);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ( sourceCode.getLine(position+1).hasComments() ) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.layout_line_comments);
+                    dialog.setTitle("Comments");
+
+                    ListView listView = (ListView) dialog.findViewById(R.id.lineCommentsList);
+                    listView.setAdapter(new SingleLineCommentViewListAdapter(context, sourceCode.getLine(position+1) ) );
+                    dialog.show();
+                }
+            }
+        });
         txtTitle.setText((position+1) + "|\t" +  content.get(position) );
         if ( hasComments.get(position) )
             imageView.setImageResource( R.drawable.source_code_info_icon );
