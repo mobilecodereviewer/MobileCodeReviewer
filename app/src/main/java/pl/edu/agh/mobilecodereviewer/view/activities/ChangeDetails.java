@@ -1,14 +1,27 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TabHost;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
+import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
+import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 import roboguice.activity.RoboTabActivity;
 import roboguice.inject.InjectResource;
 
@@ -21,7 +34,10 @@ import roboguice.inject.InjectResource;
  * @version 0.1
  * @since 0.1
  */
-public class ChangeDetails extends RoboTabActivity {
+public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
+
+    @Inject
+    private ChangeDetailsController controller;
 
     /**
      * Tag of modified files tab.
@@ -56,6 +72,8 @@ public class ChangeDetails extends RoboTabActivity {
     @InjectResource(R.drawable.change_details_reviewers_icon)
     Drawable reviewersTabIcon;
 
+    private String currentChangeId;
+
     /**
      * Invoked on start of the acivity.
      * Prepares tabs to be shown, passes intents to each tab and sets currently
@@ -71,7 +89,8 @@ public class ChangeDetails extends RoboTabActivity {
 
         TabHost changeDetailsTabHost = getTabHost();
         changeDetailsTabHost.getTabWidget().setStripEnabled(false);
-        addTabs(changeDetailsTabHost, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        currentChangeId = intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID);
+        addTabs(changeDetailsTabHost);
         changeDetailsTabHost.setCurrentTab(0);
     }
 
@@ -80,32 +99,32 @@ public class ChangeDetails extends RoboTabActivity {
      *
      * @param tabHost tabbed view container
      */
-    private void addTabs(TabHost tabHost, String changeId) {
+    private void addTabs(TabHost tabHost) {
 
         tabHost.addTab(tabHost.newTabSpec(changeInfoTabId)
                 .setIndicator("", changeInfoTabIcon)
                 .setContent(new Intent(this, ChangeInfoTab.class)
-                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
 
         tabHost.addTab(tabHost.newTabSpec(commitMessageTabId)
                 .setIndicator("", commitMessageTabIcon)
                 .setContent(new Intent(this, CommitMessageTab.class)
-                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
 
         tabHost.addTab(tabHost.newTabSpec(reviewersTabId)
             .setIndicator("", reviewersTabIcon)
             .setContent(new Intent(this, ReviewersTab.class)
-                .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+                .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
 
         tabHost.addTab(tabHost.newTabSpec(modifiedFilesTabId)
                 .setIndicator("", modifiedFileTabIcon)
                 .setContent(new Intent(this, ModifiedFilesTab.class)
-                        .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+                        .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
 
         tabHost.addTab(tabHost.newTabSpec(changeMessagesTabId)
             .setIndicator("", changeMessagesTabIcon)
             .setContent(new Intent(this, ChangeMessagesTab.class)
-                .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId)));
+                .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
     }
 
     /**
@@ -127,10 +146,52 @@ public class ChangeDetails extends RoboTabActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_addReview) {
+            controller.updateSetReviewPopup(this, currentChangeId);
         }
+
+
+
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void showSetReviewPopup(List<LabelInfo> approvalInfoList) {
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(ChangeDetails.this);
+        View promptsView = li.inflate(R.layout.layout_add_review, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                ChangeDetails.this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
 }

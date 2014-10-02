@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.configuration;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
+import pl.edu.agh.mobilecodereviewer.controllers.ChangeDetailsControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ChangeInfoTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ChangeMessagesTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ChangesExplorerControllerImpl;
@@ -10,6 +11,7 @@ import pl.edu.agh.mobilecodereviewer.controllers.CommitMessageTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ModifiedFilesTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ReviewersTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.SourceExplorerControllerImpl;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeMessagesTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
@@ -58,6 +60,7 @@ public class InjectionModule implements Module {
         binder.bind(ReviewersTabController.class).to(ReviewersTabControllerImpl.class);
         binder.bind(SourceCodeDAO.class).to(SourceCodeDAOMockImpl.class);
         binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
+        binder.bind(ChangeDetailsController.class).to(ChangeDetailsControllerImpl.class);
     }
 
     /**
@@ -75,6 +78,7 @@ public class InjectionModule implements Module {
         binder.bind(ReviewersTabController.class).to(ReviewersTabControllerImpl.class);
         binder.bind(SourceCodeDAO.class).to(SourceCodeDAOImpl.class);
         binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
+        binder.bind(ChangeDetailsController.class).to(ChangeDetailsControllerImpl.class);
     }
 
 }
