@@ -5,7 +5,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 /**
  * ModifiedFilesTab activity controller. Object which implements its
  * methods will be responsible for taking actions according to
- * activity events
+ * activity events.
  *
  * @author AGH
  * @version 0.1
@@ -14,9 +14,10 @@ import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 public interface ModifiedFilesTabController {
 
     /**
-     * Request for updating list of files.
+     * Request for updating list of modified files.
      *
-     * @param view View in which files will be shown
+     * @param view View in which modified files will be shown
+     * @param changeId id of change for which modified files will be shown
      */
     void updateFiles(ModifiedFilesTabView view, String changeId);
 }

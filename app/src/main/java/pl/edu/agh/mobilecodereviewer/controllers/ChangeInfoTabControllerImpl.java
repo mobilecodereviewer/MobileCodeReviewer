@@ -9,19 +9,43 @@ import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeInfoTabView;
 
 /**
- * Created by d00d171 on 2014-07-09.
+ * Implementation of the ChangeInfoTabController interface.
+ * <p/>
+ * Used for controlling actions after event in {@link pl.edu.agh.mobilecodereviewer.view.activities.ChangeInfoTab} activity took place.
+ *
+ * @author AGH
+ * @version 0.1
+ * @since 0.3
  */
 public class ChangeInfoTabControllerImpl implements ChangeInfoTabController {
 
+    /**
+     * DAO Used to access information about change.
+     */
     @Inject
     private ChangeInfoDAO changeInfoDAO;
 
-    public ChangeInfoTabControllerImpl() {}
+    /**
+     * Simple constructor. Used by DI framework.
+     */
+    public ChangeInfoTabControllerImpl() {
+    }
 
-    public ChangeInfoTabControllerImpl(ChangeInfoDAO changeInfoDAO){
+    /**
+     * Construct object with given DAO.
+     *
+     * @param changeInfoDAO {@link pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO} object used by controller to obtain information about change
+     */
+    public ChangeInfoTabControllerImpl(ChangeInfoDAO changeInfoDAO) {
         this.changeInfoDAO = changeInfoDAO;
     }
 
+    /**
+     * Obtains information about change and informs view to show it.
+     *
+     * @param view     View in which information will be shown
+     * @param changeId id of change for which information will be shown
+     */
     @Override
     public void updateInfo(ChangeInfoTabView view, String changeId) {
         MergeableInfo mergeableInfo = changeInfoDAO.getMergeableInfo(changeId);
@@ -29,13 +53,5 @@ public class ChangeInfoTabControllerImpl implements ChangeInfoTabController {
         ChangeInfo changeInfo = changeInfoDAO.getChangeInfoById(changeId);
 
         view.showInfo(changeInfo, mergeableInfo, changeTopic);
-    }
-
-    public ChangeInfoDAO getChangeInfoDAO() {
-        return changeInfoDAO;
-    }
-
-    public void setChangeInfoDAO(ChangeInfoDAO changeInfoDAO) {
-        this.changeInfoDAO = changeInfoDAO;
     }
 }

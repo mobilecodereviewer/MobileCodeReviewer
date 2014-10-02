@@ -15,7 +15,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  *
  * @author AGH
  * @version 0.1
- * @since 0.1
+ * @since 0.2
  */
 public class SourceExplorerControllerImpl implements SourceExplorerController{
 
@@ -35,12 +35,16 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     private String file_id;
 
     /**
-     * Simple object constructor, it doesnt initialize any
-     * properties, preserve to be used with di framework
+     * Simple constructor. Used by DI framework.
      */
     public SourceExplorerControllerImpl() {
     }
 
+    /**
+     * Construct object with given DAO.
+     *
+     * @param sourceCodeDAO {@link pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO} object used by controller to obtain source code.
+     */
     public SourceExplorerControllerImpl(SourceExplorerView view, String change_id, String revision_id, String file_id, SourceCodeDAO sourceCodeDAO) {
         this.view = view;
         this.change_id = change_id;
@@ -76,8 +80,12 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     }
 
     /**
-     * Method downloads source code for a given file with comments
-     * and line number
+     * Obtains source code with comments and line numbers and informs view to show it.
+     *
+     * @param view View in which source code will be shown
+     * @param change_id id of change containing revision with file
+     * @param revision_id id of revision containing file
+     * @param file_id id of file for which source code will be shown
      */
     @Override
     public void updateSourceCode() {

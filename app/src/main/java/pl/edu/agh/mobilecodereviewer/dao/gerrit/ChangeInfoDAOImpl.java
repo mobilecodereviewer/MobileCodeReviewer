@@ -49,12 +49,6 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         this.restApi = restApi;
     }
 
-
-    /**
-     * Get information about change
-     * @param id Change identifier
-     * @return Constructed {@link pl.edu.agh.mobilecodereviewer.model.ChangeInfo}
-     */
     @Override
     public ChangeInfo getChangeInfoById(String id) {
 
@@ -74,10 +68,6 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         return changeInfoModel;
     }
 
-    /**
-     * Get information about all changes
-     * @return List of {@link pl.edu.agh.mobilecodereviewer.model.ChangeInfo}
-     */
     @Override
     public List<ChangeInfo> getAllChangesInfo() {
 
@@ -105,11 +95,6 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         return changeInfoModels;
     }
 
-    /**
-     * Get information about all modified files for a given change
-     * @param id id of change which files will be retrieved
-     * @return List of {@link pl.edu.agh.mobilecodereviewer.model.FileInfo}
-     */
     @Override
     public List<FileInfo> getModifiedFiles(String id) {
 

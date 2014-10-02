@@ -159,12 +159,21 @@ public class RestApi {
         return gerritService.getChangeDetails(id);
     }
 
-
-    public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id) {
+    /**
+     * Get current revision with list of files.
+     * @param id identifier of change
+     * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
+     */
+    public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithFiles(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
     }
 
+    /**
+     * Get current revision with commit message.
+     * @param id identifier of change
+     * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
+     */
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id) {
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithCommit(id);
         return new Pair<>(changeInfoDTO.getCurrentRevision(), changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
@@ -226,10 +235,20 @@ public class RestApi {
         return gerritService.getComments(change_id, revision_id);
     }
 
-    public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id) {
+    /**
+     * Get mergeability info of current revision.
+     * @param change_id identifier of change
+     * @return {@link MergeableInfoDTO}
+     */
+    public MergeableInfoDTO getMergeableInfoForCurrentRevision(final String change_id){
         return gerritService.getMergeableInfoForCurrentRevision(change_id);
     }
 
+    /**
+     * Get topic of change.
+     * @param change_id identifier of change
+     * @return topic of change
+     */
     public String getChangeTopic(final String change_id) {
         return gerritService.getChangeTopic(change_id);
     }
@@ -324,22 +343,3 @@ public class RestApi {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

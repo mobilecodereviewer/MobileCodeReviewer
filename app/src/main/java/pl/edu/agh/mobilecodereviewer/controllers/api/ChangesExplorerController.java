@@ -1,12 +1,11 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
-
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 
 /**
- * ChangeExplorrer activity controller. Object which implements its
+ * ChangeExplorer activity controller. Object which implements its
  * methods will be responsible for taking actions according to
- * activity events
+ * activity events.
  *
  * @author AGH
  * @version 0.1
@@ -15,7 +14,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 public interface ChangesExplorerController {
 
     /**
-     * Request for updating change list
+     * Request for updating change list.
      *
      * @param view View in which changes will be shown
      */
