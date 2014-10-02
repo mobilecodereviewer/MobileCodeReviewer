@@ -181,18 +181,6 @@ public class RestApi {
     }
 
     /**
-     * Get current revision of change
-     *
-     * @param id Change identifier
-     * @return {@link} of Revision name and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
-     */
-    public Pair<String, RevisionInfoDTO> getCurrentRevisionForChange(final String id) {
-        ChangeInfoDTO changeInfoDTO = gerritService.getChangeWithCurrentRevision(id);
-        return new Pair<>(changeInfoDTO.getCurrentRevision(),
-                changeInfoDTO.getRevisions().get(changeInfoDTO.getCurrentRevision()));
-    }
-
-    /**
      * Get content of the file in base64
      *
      * @param change_id   Change Identifier
