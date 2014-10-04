@@ -117,7 +117,7 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     }
 
     @Override
-    public void clearLines() {
+    public void clearSourceCode() {
         sourceLinesListView.setAdapter(null);
     }
 

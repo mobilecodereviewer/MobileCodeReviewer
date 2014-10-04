@@ -12,7 +12,7 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
  */
 public interface SourceExplorerView {
 
-    void clearLines();
+    void clearSourceCode();
 
     /**
      * Update source code in the view from a given source code ({@link pl.edu.agh.mobilecodereviewer.model.SourceCode} )

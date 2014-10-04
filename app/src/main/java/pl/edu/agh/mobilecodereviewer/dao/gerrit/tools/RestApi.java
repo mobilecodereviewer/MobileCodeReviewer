@@ -249,7 +249,12 @@ public class RestApi {
                                int line, String message, String path) throws RetrofitError {
         ReviewInputDTO reviewInputDTO = ReviewInputDTO.createFromSingleComment(path,
                 new CommentInputDTO(line, message, path));
-        gerritService.putFileComment(change_id, revision_id, reviewInputDTO);
+        gerritService.putReview(change_id, revision_id, reviewInputDTO);
+    }
+
+    public void putReview(String change_id,String revision_id,String message,int vote) {
+        ReviewInputDTO reviewInputDTO = ReviewInputDTO.createVoteReview(message,vote);
+        gerritService.putReview(change_id, revision_id, reviewInputDTO);
     }
 
 

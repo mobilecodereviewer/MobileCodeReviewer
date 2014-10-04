@@ -155,6 +155,10 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         return labelInfos;
     }
 
+    @Override
+    public void setReview(String changeId, String revisionId, String message, int vote) {
+        restApi.putReview(changeId,revisionId,message,vote);
+    }
 
 
 }

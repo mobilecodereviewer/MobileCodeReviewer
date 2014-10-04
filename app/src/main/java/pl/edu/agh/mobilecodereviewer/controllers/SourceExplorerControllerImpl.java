@@ -69,7 +69,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void toggleDiffView() {
-        view.clearLines();
+        view.clearSourceCode();
         isDiffView = !isDiffView;
         if (isDiffView) {
             updateSourceCodeDiff();
@@ -79,18 +79,12 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         isAddingCommentOptionsVisible = false;
     }
 
-    /**
-     * Obtains source code with comments and line numbers and informs view to show it.
-     *
-     * @param view View in which source code will be shown
-     * @param change_id id of change containing revision with file
-     * @param revision_id id of revision containing file
-     * @param file_id id of file for which source code will be shown
-     */
+
     @Override
     public void updateSourceCode() {
         SourceCode sourceCode = sourceCodeDAO.getSourceCode(change_id,revision_id,file_id);
 
+        view.clearSourceCode();
         view.showSourceCode(sourceCode);
         view.setInterfaceForCode();
     }
@@ -105,12 +99,14 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void insertComment(String content) {
-        Comment comment = new Comment(currentSelectedLine, file_id, content);
+        if (currentSelectedLine != -1) {
+            Comment comment = new Comment(currentSelectedLine, file_id, content);
 
-        //sourceCodeDAO.putFileComment(change_id, revision_id, comment);
-        //TODO zahardcodowana wartosc, z normalnym revision_id byl bug trzeba to zmienic , ale na ten moment nie ma czasu....
-        sourceCodeDAO.putFileComment(change_id, "1", comment);
-        updateSourceCode();
+            //sourceCodeDAO.putReview(change_id, revision_id, comment);
+            //TODO zahardcodowana wartosc, z normalnym revision_id byl bug trzeba to zmienic , ale na ten moment nie ma czasu....
+            sourceCodeDAO.putFileComment(change_id, "1", comment);
+            updateSourceCode();
+        }
     }
 
     @Override
@@ -131,7 +127,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void setCurrentLinePosition(int currLine) {
-        currentSelectedLine = currLine;
+        currentSelectedLine = currLine+1;
     }
 
 }

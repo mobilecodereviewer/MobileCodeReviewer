@@ -80,4 +80,6 @@ public interface ChangeInfoDAO {
      * @return list of {@link pl.edu.agh.mobilecodereviewer.model.LabelInfo}
      */
     List<LabelInfo> getLabels(String id);
+
+    void setReview(String changeId, String revisionId, String message, int vote);
 }

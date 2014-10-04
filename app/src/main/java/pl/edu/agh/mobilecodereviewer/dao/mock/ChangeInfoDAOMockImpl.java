@@ -102,4 +102,8 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
     public List<LabelInfo> getLabels(String id) {
         return null;
     }
+
+    @Override
+    public void setReview(String changeId, String revisionId, String message, int vote) {
+    }
 }

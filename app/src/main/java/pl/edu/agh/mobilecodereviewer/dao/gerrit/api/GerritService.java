@@ -96,8 +96,8 @@ public interface GerritService {
                             @Path("file-id") String file_id);
 
     @POST("/a/changes/{change-id}/revisions/{revision-id}/review")
-    ReviewInfoDTO putFileComment(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
-                                 @Body ReviewInputDTO reviewInputDTO);
+    ReviewInfoDTO putReview(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
+                            @Body ReviewInputDTO reviewInputDTO);
 
 
 }

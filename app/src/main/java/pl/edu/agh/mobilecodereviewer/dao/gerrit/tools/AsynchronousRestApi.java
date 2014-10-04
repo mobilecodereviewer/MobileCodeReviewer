@@ -185,6 +185,18 @@ public class AsynchronousRestApi extends RestApi{
             }
         });
     }
+
+    @Override
+    public void putReview(final String change_id, final String revision_id, final String message,
+                               final int vote){
+        runAsyncTask(new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... params) {
+                restApi.putReview(change_id, revision_id, message, vote);
+                return null;
+            }
+        });
+    }
 }
 
 

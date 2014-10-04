@@ -9,4 +9,5 @@ public interface ChangeDetailsController {
 
     void updateSetReviewPopup(ChangeDetailsView view, String changeId);
 
+    void setReview(String changeId, String revisionId, String message, int vote);
 }

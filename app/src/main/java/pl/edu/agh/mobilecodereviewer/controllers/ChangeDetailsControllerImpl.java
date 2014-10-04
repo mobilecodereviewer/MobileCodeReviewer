@@ -18,4 +18,9 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController {
     public void updateSetReviewPopup(ChangeDetailsView view, String changeId) {
         view.showSetReviewPopup(changeInfoDAO.getLabels(changeId));
     }
+
+    @Override
+    public void setReview(String changeId, String revisionId, String message, int vote) {
+        changeInfoDAO.setReview(changeId,revisionId,message,vote);
+    }
 }

@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TabHost;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -73,6 +76,8 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
     Drawable reviewersTabIcon;
 
     private String currentChangeId;
+
+    private String currentRevisionId;
 
     /**
      * Invoked on start of the acivity.
@@ -170,15 +175,27 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
         final EditText userInput = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
 
+        final Spinner voteSpinner = (Spinner) promptsView
+                .findViewById(R.id.reviewVoteSpinner);
+
+        final List<String> possibleVotes = Arrays.asList("-2","-1","0","1","2");
+        ArrayAdapter<String> possibleVotesAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, possibleVotes);
+        possibleVotesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        voteSpinner.setAdapter(possibleVotesAdapter);
+        voteSpinner.setSelection(2); // selected 0
+
         // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
+                            public void onClick(DialogInterface dialog, int id) {
                                 // get user input and set it to result
                                 // edit text
-
+                            String message = userInput.getText().toString();
+                            int vote = Integer.parseInt(possibleVotes.get(voteSpinner.getSelectedItemPosition() ));
+                            controller.setReview(currentChangeId,"1",message,vote);
                             }
                         })
                 .setNegativeButton("Cancel",

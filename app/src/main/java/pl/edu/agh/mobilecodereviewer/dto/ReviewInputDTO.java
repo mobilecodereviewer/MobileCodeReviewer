@@ -7,7 +7,14 @@ import java.util.Map;
 
 
 public class ReviewInputDTO {
-    Map<String, List<CommentInputDTO>> comments;
+    String message = null;
+    Map<String,Integer> labels = null;
+    Map<String, List<CommentInputDTO>> comments = null;
+
+    public ReviewInputDTO(String message,Map<String,Integer> labels) {
+        this.message = message;
+        this.labels = labels;
+    }
 
     public ReviewInputDTO(Map<String, List<CommentInputDTO>> comments) {
         this.comments = comments;
@@ -17,22 +24,12 @@ public class ReviewInputDTO {
         return comments;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ReviewInputDTO that = (ReviewInputDTO) o;
-
-        if (comments != null ? !comments.equals(that.comments) : that.comments != null)
-            return false;
-
-        return true;
+    public String getMessage() {
+        return message;
     }
 
-    @Override
-    public int hashCode() {
-        return comments != null ? comments.hashCode() : 0;
+    public Map<String, Integer> getLabels() {
+        return labels;
     }
 
     public static ReviewInputDTO createFromSingleComment(String path, CommentInputDTO commentInputDTO) {
@@ -41,4 +38,9 @@ public class ReviewInputDTO {
         return new ReviewInputDTO(comments);
     }
 
+    public static ReviewInputDTO createVoteReview(String message, int vote) {
+        Map<String, Integer> labels = new HashMap<>();
+        labels.put("Code-Review", vote);
+        return new ReviewInputDTO(message, labels);
+    }
 }
