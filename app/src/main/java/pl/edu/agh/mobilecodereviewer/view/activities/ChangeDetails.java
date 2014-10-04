@@ -3,6 +3,8 @@ package pl.edu.agh.mobilecodereviewer.view.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,9 +24,9 @@ import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
-import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 import roboguice.activity.RoboTabActivity;
 import roboguice.inject.InjectResource;
@@ -54,7 +57,7 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_changeInfoTab_id)
     String changeInfoTabId;
 
-    @InjectResource(R.drawable.change_details_change_info_icon)
+    @InjectResource(R.drawable.common_info_icon)
     Drawable changeInfoTabIcon;
 
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_commitMessageTab_id)
@@ -154,28 +157,27 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
         if (id == R.id.action_addReview) {
             controller.updateSetReviewPopup(this, currentChangeId);
         }
-
-
+        if(id == R.id.action_about) {
+            AboutDialogHelper.showDialog(this);
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void showSetReviewPopup(List<LabelInfo> approvalInfoList) {
-        // get prompts.xml view
         LayoutInflater li = LayoutInflater.from(ChangeDetails.this);
-        View promptsView = li.inflate(R.layout.layout_add_review, null);
+        View addReviewView = li.inflate(R.layout.layout_add_review, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 ChangeDetails.this);
 
-        // set prompts.xml to alertdialog builder
-        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setView(addReviewView);
 
-        final EditText userInput = (EditText) promptsView
+        final EditText userInput = (EditText) addReviewView
                 .findViewById(R.id.editTextDialogUserInput);
 
-        final Spinner voteSpinner = (Spinner) promptsView
+        final Spinner voteSpinner = (Spinner) addReviewView
                 .findViewById(R.id.reviewVoteSpinner);
 
         final List<String> possibleVotes = Arrays.asList("-2","-1","0","1","2");

@@ -1,9 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" >
-    
-    <item android:id="@+id/action_settings"
-        android:title="@string/pl.agh.edu.mobilecodereviewer.settings"
+
+    <item android:id="@+id/action_about"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.about"
+        android:icon="@drawable/common_help_icon"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="always" />
 </menu>

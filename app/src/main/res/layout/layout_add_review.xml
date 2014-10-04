@@ -10,7 +10,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Type Your Message : "
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -23,15 +23,16 @@
     </EditText>
 
     <TextView
-        android:id="@+id/textView2"
+        android:paddingTop="20px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select vote for the review"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.vote"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Spinner
         android:id="@+id/reviewVoteSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></Spinner>
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"></Spinner>
 
 </LinearLayout>

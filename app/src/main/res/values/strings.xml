@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="pl.agh.edu.mobilecodereviewer.title">MobileCodeReviewer</string>
+
+    <string name="pl.agh.edu.mobilecodereviewer.title">Mobile Code Reviewer</string>
     <string name="pl.agh.edu.mobilecodereviewer.settings">Settings</string>
+    <string name="pl.agh.edu.mobilecodereviewer.about">About</string>
+    <string name="pl.agh.edu.mobilecodereviewer.about.text">Application allows using Gerrit from your mobile device.</string>
 
     <!-- commons start -->
 
@@ -12,7 +15,7 @@
     <!-- commons end -->
 
     <!--ChangeDetails start-->
-    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.title">ChangeDetails</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.title">Change details</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFilesTab.id">ModifiedFiles</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.modifiedFilesTab.label">Modified Files</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.changeInfoTab.id">ChangeInfo</string>
@@ -24,6 +27,8 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.label">Reviewers</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.id">Reviewers</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview">Add review</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.vote">Vote</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message">Review message</string>
 
     <!--ChangeInfoTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.changeId">Change ID</string>
@@ -44,8 +49,10 @@
 
     <!--ChangeDetails end-->
 
-    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.title">Source Explorer</string>
+    <!--SourceExplorer start-->
+    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.title">Source explorer</string>
     <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.comment.placeholder">Type your comment...</string>
+    <!--SourceExplorer end-->
 
 
     <!--ChangesExplorer start-->
@@ -61,7 +68,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.size">Size</string>
     <!--ChangesExplorer end-->
 
-    <string name="title_activity_source_explorer">SourceExplorer</string>
+    <string name="title_activity_source_explorer">Source explorer</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 

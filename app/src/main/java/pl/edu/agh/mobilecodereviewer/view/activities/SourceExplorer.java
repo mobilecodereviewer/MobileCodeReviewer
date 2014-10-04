@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TabHost;
 
 import com.google.inject.Inject;
 
@@ -19,6 +21,7 @@ import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
@@ -57,8 +60,8 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @InjectView(R.id.optionsRelativeLayout)
     private RelativeLayout optionsRelativeLayout;
 
-    @InjectView(R.id.commentOptionsTab)
-    private TabHost commentOptionsTab;
+    @InjectView(R.id.addCommentOptions)
+    private LinearLayout addCommentOptions;
 
     @InjectView(R.id.showHideCommentOptionsButton)
     private ImageButton showHideCommentOptionsButton;
@@ -150,13 +153,15 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         if(id == R.id.sourceDiffToggleButton) {
             controller.toggleDiffView();
         }
+
+        if(id == R.id.action_about) {
+            AboutDialogHelper.showDialog(this);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -183,19 +188,19 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @Override
     public void setInterfaceForCode() {
         if(menu != null) {
-            menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
         }
-        commentOptionsTab.setVisibility(View.GONE);
+        addCommentOptions.setVisibility(View.GONE);
         showHideCommentOptionsButton.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.expand_icon);
+        showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
     }
 
     @Override
     public void setInterfaceForDiff() {
         if(menu != null) {
-            menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
         }
-        commentOptionsTab.setVisibility(View.GONE);
+        addCommentOptions.setVisibility(View.GONE);
         showHideCommentOptionsButton.setVisibility(View.GONE);
     }
 
@@ -206,16 +211,40 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
     @Override
     public void showCommentOptions() {
-        commentOptionsTab.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.collapse_icon);
+        Animation bottomUp = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.bottom_up);
+
+        addCommentOptions.startAnimation(bottomUp);
+        addCommentOptions.setVisibility(View.VISIBLE);
+
+        showHideCommentOptionsButton.startAnimation(bottomUp);
+        showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_collapse_icon);
     }
 
     @Override
     public void hideCommentOptions() {
-        commentOptionsTab.setVisibility(View.GONE);
-        showHideCommentOptionsButton.setVisibility(View.VISIBLE);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.expand_icon);
+
+        Animation topDown = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.top_down);
+        topDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                addCommentOptions.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        addCommentOptions.startAnimation(topDown);
+
+        showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
+        showHideCommentOptionsButton.startAnimation(topDown);
     }
 }
 

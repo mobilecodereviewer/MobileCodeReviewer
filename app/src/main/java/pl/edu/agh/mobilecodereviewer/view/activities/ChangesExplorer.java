@@ -14,6 +14,7 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 import roboguice.activity.RoboActivity;
@@ -87,10 +88,13 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+        if(id == R.id.action_about) {
+            AboutDialogHelper.showDialog(this);
         }
+
         return super.onOptionsItemSelected(item);
+
     }
 
     /**
