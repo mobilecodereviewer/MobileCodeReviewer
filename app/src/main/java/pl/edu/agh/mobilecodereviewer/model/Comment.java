@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.model;
 
+import java.util.Date;
+
 /**
  * Model represents information about comment
  *
@@ -16,16 +18,23 @@ public class Comment {
     private String path;
 
     private int line;
+
+    private String author;
+
+    private String updated;
+
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
      */
     public Comment() {
     }
 
-    public Comment(int line, String path, String content) {
+    public Comment(int line, String path, String content, String author, String updated) {
         this.content = content;
         this.path = path;
         this.line = line;
+        this.author = author;
+        this.updated = updated;
     }
 
     /**
@@ -44,6 +53,13 @@ public class Comment {
         return line;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -73,7 +89,7 @@ public class Comment {
      * @param content {@link pl.edu.agh.mobilecodereviewer.model.Comment#content}
      * @return Constructed {@link pl.edu.agh.mobilecodereviewer.model.Comment}
      */
-    public static Comment valueOf(int line,String path,String content) {
-        return new Comment( line,path,String.valueOf(content) );
+    public static Comment valueOf(int line,String path,String content, String author, String updated) {
+        return new Comment( line,path,String.valueOf(content),  author, updated );
     }
 }

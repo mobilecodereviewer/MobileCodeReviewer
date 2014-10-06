@@ -20,6 +20,12 @@ public class FileInfoDTO {
     private int linesInserted;
 
     /**
+     * Lines deleted in file
+     */
+    @SerializedName("lines_deletd")
+    private int linesDeleted;
+
+    /**
      * Construct empty object
      */
     public FileInfoDTO() {
@@ -65,5 +71,13 @@ public class FileInfoDTO {
      */
     public void setLinesInserted(int linesInserted) {
         this.linesInserted = linesInserted;
+    }
+
+    public int getLinesDeleted() {
+        return linesDeleted;
+    }
+
+    public void setLinesDeleted(int linesDeleted) {
+        this.linesDeleted = linesDeleted;
     }
 }

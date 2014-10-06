@@ -100,7 +100,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Override
     public void insertComment(String content) {
         if (currentSelectedLine != -1) {
-            Comment comment = new Comment(currentSelectedLine, file_id, content);
+            Comment comment = new Comment(currentSelectedLine, file_id, content, null, null);
 
             //sourceCodeDAO.putReview(change_id, revision_id, comment);
             //TODO zahardcodowana wartosc, z normalnym revision_id byl bug trzeba to zmienic , ale na ten moment nie ma czasu....

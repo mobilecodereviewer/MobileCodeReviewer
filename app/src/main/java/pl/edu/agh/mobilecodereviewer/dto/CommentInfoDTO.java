@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.dto;
 
+import java.util.Date;
+
 /**
  * Class represent data returned from gerrit instance
  * about information of comment
@@ -19,6 +21,16 @@ public class CommentInfoDTO {
      * Message of the comment
      */
     private String message;
+
+    /**
+     * Date of adding comment
+     */
+    private String updated;
+
+    /**
+     * Author of comment;
+     */
+    private AccountInfoDTO author;
 
     /**
      * Create empty object
@@ -85,6 +97,22 @@ public class CommentInfoDTO {
      */
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
+    }
+
+    public AccountInfoDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AccountInfoDTO author) {
+        this.author = author;
     }
 
     /**

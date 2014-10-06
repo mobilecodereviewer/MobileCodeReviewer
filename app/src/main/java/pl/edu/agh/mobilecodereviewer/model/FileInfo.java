@@ -13,6 +13,10 @@ public class FileInfo {
 
     private String revisionId;
 
+    private int linesInserted;
+
+    private int linesDeleted;
+
     /**
      * Represent name of the file
      */
@@ -32,10 +36,12 @@ public class FileInfo {
         this.fileName = fileName;
     }
 
-    public FileInfo(String changeId, String revisionId, String fileName){
+    public FileInfo(String changeId, String revisionId, String fileName, int linesInserted, int linesDeleted){
         this.changeId = changeId;
         this.revisionId = revisionId;
         this.fileName = fileName;
+        this.linesDeleted = linesDeleted;
+        this.linesInserted = linesInserted;
     }
 
     /**
@@ -47,8 +53,8 @@ public class FileInfo {
         return new FileInfo(String.valueOf(fileName));
     }
 
-    public static FileInfo valueOf(String changeId, String revisionId, String fileName){
-        return new FileInfo(String.valueOf(changeId), String.valueOf(revisionId), String.valueOf(fileName));
+    public static FileInfo valueOf(String changeId, String revisionId, String fileName, int linesInserted, int linesDeleted){
+        return new FileInfo(String.valueOf(changeId), String.valueOf(revisionId), String.valueOf(fileName), linesInserted, linesDeleted);
     }
 
     /**
@@ -83,6 +89,22 @@ public class FileInfo {
         this.revisionId = revisionId;
     }
 
+    public int getLinesInserted() {
+        return linesInserted;
+    }
+
+    public void setLinesInserted(int linesInserted) {
+        this.linesInserted = linesInserted;
+    }
+
+    public int getLinesDeleted() {
+        return linesDeleted;
+    }
+
+    public void setLinesDeleted(int linesDeleted) {
+        this.linesDeleted = linesDeleted;
+    }
+
     /**
      * Return textual representation of {@link pl.edu.agh.mobilecodereviewer.model.FileInfo}
      *
@@ -94,6 +116,8 @@ public class FileInfo {
         return "FileInfo{" +
                 "changeId='" + changeId + '\'' +
                 ", revisionId='" + revisionId + '\'' +
+                ", linesInserted=" + linesInserted +
+                ", linesDeleted=" + linesDeleted +
                 ", fileName='" + fileName + '\'' +
                 '}';
     }

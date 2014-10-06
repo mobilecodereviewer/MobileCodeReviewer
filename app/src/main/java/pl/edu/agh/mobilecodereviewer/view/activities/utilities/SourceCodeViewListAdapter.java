@@ -1,15 +1,20 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -73,13 +78,17 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
                 if ( sourceCode.getLine(position+1).hasComments() ) {
-                    final Dialog dialog = new Dialog(context);
-                    dialog.setContentView(R.layout.layout_line_comments);
-                    dialog.setTitle("Comments");
 
-                    ListView listView = (ListView) dialog.findViewById(R.id.lineCommentsList);
+                    View lineCommentsView = context.getLayoutInflater().inflate(R.layout.layout_line_comments, null);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                    alertDialogBuilder.setView(lineCommentsView);
+
+                    ListView listView = (ListView) lineCommentsView.findViewById(R.id.lineCommentsList);
                     listView.setAdapter(new SingleLineCommentViewListAdapter(context, sourceCode.getLine(position+1) ) );
-                    dialog.show();
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
                 }
             }
         });

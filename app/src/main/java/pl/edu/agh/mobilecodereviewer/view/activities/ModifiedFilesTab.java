@@ -16,6 +16,7 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ModifiedFilesViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -81,16 +82,6 @@ public class ModifiedFilesTab extends RoboActivity implements ModifiedFilesTabVi
      */
     @Override
     public void showFiles(final List<FileInfo> filesList) {
-        List<String> strChanges = new ArrayList<String>();
-        for (FileInfo file : filesList) {
-            strChanges.add(file.getFileName());
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                strChanges);
-
         modifiedFilesTabListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -98,7 +89,7 @@ public class ModifiedFilesTab extends RoboActivity implements ModifiedFilesTabVi
                 showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName());
             }
         });
-        modifiedFilesTabListView.setAdapter(adapter);
+        modifiedFilesTabListView.setAdapter(new ModifiedFilesViewListAdapter(this, filesList));
     }
 
     /**

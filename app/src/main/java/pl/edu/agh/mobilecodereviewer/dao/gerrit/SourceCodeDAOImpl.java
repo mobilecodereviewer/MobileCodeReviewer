@@ -147,7 +147,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
             List<Comment> lineComments = new LinkedList<>();
             if ( comments.containsKey(i) )
                 for (CommentInfoDTO commentInfoDTO : comments.get(i) )
-                        lineComments.add( new Comment(i,path,commentInfoDTO.getMessage() ) );
+                        lineComments.add( new Comment(i,path,commentInfoDTO.getMessage(), commentInfoDTO.getAuthor().getName(), commentInfoDTO.getUpdated() ) );
 
             Line sourceLine = new Line(i,line,lineComments );
             sourceLines.add(sourceLine);

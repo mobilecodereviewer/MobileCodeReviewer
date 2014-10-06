@@ -57,9 +57,6 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     @InjectView(R.id.sourceLinesListView)
     private ListView sourceLinesListView;
 
-    @InjectView(R.id.optionsRelativeLayout)
-    private RelativeLayout optionsRelativeLayout;
-
     @InjectView(R.id.addCommentOptions)
     private LinearLayout addCommentOptions;
 

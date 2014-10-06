@@ -105,7 +105,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         List<FileInfo> fileInfos = new ArrayList<FileInfo>();
 
         for(String fileName : fileInfoDTOs.keySet()){
-            fileInfos.add(FileInfo.valueOf(id, currentRevisionForChange.first, fileName));
+            fileInfos.add(FileInfo.valueOf(id, currentRevisionForChange.first, fileName, fileInfoDTOs.get(fileName).getLinesInserted(), fileInfoDTOs.get(fileName).getLinesDeleted()));
         }
 
         return fileInfos;

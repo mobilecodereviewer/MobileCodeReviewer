@@ -19,7 +19,7 @@ import pl.edu.agh.mobilecodereviewer.model.Line;
  * Adapter for a {@link pl.edu.agh.mobilecodereviewer.model.Line} model
  * and popup with comments for a given line
  */
-public class SingleLineCommentViewListAdapter extends ArrayAdapter<String> {
+public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
     /**
      * Android context of execution
      */
@@ -36,14 +36,7 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<String> {
      * @param line Line which will be adapter
      */
     public SingleLineCommentViewListAdapter(Context context,Line line) {
-        super(context, R.layout.layout_single_line_comment,
-                Lists.transform(line.getComments(),new Function<Comment, String>() {
-                    @Override
-                    public String apply(Comment from) {
-                        return from.getContent();
-                    }
-                }));
-
+        super(context, R.layout.layout_single_line_comment, line.getComments());
         this.line = line;
         this.context = context;
     }
@@ -62,9 +55,16 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(R.layout.layout_single_line_comment, parent, false);
 
-        String comment = line.getComments().get(position).getContent();
-        TextView textView = (TextView) rowView.findViewById(R.id.singleCommentLineText);
-        textView.setText( comment );
+        TextView commentContent = (TextView) rowView.findViewById(R.id.commentContent);
+        TextView authorName = (TextView) rowView.findViewById(R.id.commentAuthorName);
+        TextView updated = (TextView) rowView.findViewById(R.id.commentDate);
+
+        Comment comment = line.getComments().get(position);
+
+        commentContent.setText( comment.getContent() );
+        authorName.setText(comment.getAuthor());
+        updated.setText(comment.getUpdated());
+
         return rowView;
     }
 }
