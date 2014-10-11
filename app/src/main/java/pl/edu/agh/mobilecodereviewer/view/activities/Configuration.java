@@ -181,8 +181,8 @@ public class Configuration extends RoboActivity implements ConfigurationView {
     }
 
     @Override
-    public void showIncorrectServerVersionInformation() {
-        showToast(gerritVersionToast);
+    public void showIncorrectServerVersionInformation(String currentVersion) {
+        showToast(gerritVersionToast + " " + currentVersion);
     }
 
     @Override

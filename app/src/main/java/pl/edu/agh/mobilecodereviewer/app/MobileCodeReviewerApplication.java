@@ -28,7 +28,7 @@ import roboguice.RoboGuice;
  */
 public class MobileCodeReviewerApplication extends android.app.Application {
 
-    public static final String MINIMAL_GERRIT_VERSION = "2.9";
+    public static final String MINIMAL_GERRIT_VERSION = "2.8";
 
     @Inject
     private ChangeInfoDAO changeInfoDAO;

@@ -16,6 +16,8 @@ public class ConfigurationControllerImpl implements ConfigurationController {
 
     public static enum ConfigurationError {INCORRECT_URL, INCORRECT_LOGIN_INFORMATION, GERRIT_VERSION_TO_LOW};
 
+    private String retrievedVersion;
+
     @Override
     public void authenticate(MobileCodeReviewerApplication mobileCodeReviewerApplication, ConfigurationView view, ConfigurationInfo configurationInfo, boolean saveConfiguration, boolean authenticateUser) {
 
@@ -40,7 +42,7 @@ public class ConfigurationControllerImpl implements ConfigurationController {
             view.showIncorrectUrlInformation();
             return;
         } else if(errors.equals(ConfigurationError.GERRIT_VERSION_TO_LOW)) {
-            view.showIncorrectServerVersionInformation();
+            view.showIncorrectServerVersionInformation(retrievedVersion);
             return;
         }
         view.onAuthenticationSuccess();
@@ -51,11 +53,11 @@ public class ConfigurationControllerImpl implements ConfigurationController {
 
         RestApi restApi = new AsynchronousRestApi(new RestApi(configurationInfo));
 
-        String version = restApi.getVersion();
-        if(version == null) {
+        retrievedVersion = restApi.getVersion();
+        if(retrievedVersion == null) {
             return ConfigurationError.INCORRECT_URL;
         } else {
-            String[] versionNumbers = version.split("\\.");
+            String[] versionNumbers = retrievedVersion.split("\\.");
             String[] minimalVersionNumbers = MobileCodeReviewerApplication.MINIMAL_GERRIT_VERSION.split("\\.");
 
             if( Integer.parseInt(versionNumbers[0]) < Integer.parseInt(minimalVersionNumbers[0])

@@ -17,7 +17,7 @@ public interface ConfigurationView {
 
     void showIncorrectLoginInformation();
 
-    void showIncorrectServerVersionInformation();
+    void showIncorrectServerVersionInformation(String currentVersion);
 
     void showNoInternetConnectionInformation();
 

@@ -30,7 +30,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.incorrectLogin">Incorrect login/password</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.giveName">Please provide name for this configuration</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.overwrite">Configuration with given name exists. Do you want to overwrite it?</string>
-    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.wrongVersionNumber">Minimal required Gerrit version for application is 2.9.</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.wrongVersionNumber">Minimal required Gerrit version for application is 2.9. Current: </string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.noInternetConnection">You are not connected to internet.</string>
 
     <!--Configuration end-->
