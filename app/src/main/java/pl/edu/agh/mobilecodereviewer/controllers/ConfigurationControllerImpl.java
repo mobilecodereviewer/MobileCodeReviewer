@@ -41,6 +41,7 @@ public class ConfigurationControllerImpl implements ConfigurationController {
             return;
         } else if(errors.equals(ConfigurationError.GERRIT_VERSION_TO_LOW)) {
             view.showIncorrectServerVersionInformation();
+            return;
         }
         view.onAuthenticationSuccess();
     }
