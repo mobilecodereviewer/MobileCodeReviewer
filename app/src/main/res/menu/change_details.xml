@@ -8,10 +8,19 @@
         android:orderInCategory="100"
         android:showAsAction="always" />
 
-    <item android:id="@+id/action_addReview"
-        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview"
-        android:icon="@drawable/change_details_add_review_icon"
-        android:orderInCategory="0"
-        android:showAsAction="always" />
+    <group
+        android:id="@+id/changeDetailsPrivilegedGroup">
+
+        <item android:id="@+id/action_addReview"
+            android:title="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview"
+            android:icon="@drawable/change_details_add_review_icon"
+            android:orderInCategory="0"
+            android:showAsAction="always" />
+
+    </group>
+
+
+
+
 
 </menu>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="New Text"
+        android:id="@+id/singleVoteText"
+        android:layout_gravity="center"
+        android:minWidth="100dp"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/singleVoteSpinner"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"/>
+
+    <TextView
+        style="@style/common_list_item_value"
+        android:text="@string/pl.agh.edu.common.unauthorized"
+        android:id="@+id/voteUnauthorized"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"/>
+</LinearLayout>

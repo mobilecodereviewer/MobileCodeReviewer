@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Singleton;
+
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Base64;
@@ -20,23 +22,30 @@ import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import roboguice.inject.ContextSingleton;
 
 /**
  * Data access object for a source code. It is some
  * kind of adapter between data returned by gerrit instance
  * and business model
  */
+@Singleton
 public class SourceCodeDAOImpl implements SourceCodeDAO {
     /**
      * {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
      */
     private RestApi restApi;
 
+    @Override
+    public void initialize(RestApi restApi){
+        this.restApi = restApi;
+    }
+
     /**
      * Construct object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
      */
     public SourceCodeDAOImpl() {
-        this( new AsynchronousRestApi( new RestApi() ) );
+
     }
 
     /**

@@ -3,30 +3,31 @@ package pl.edu.agh.mobilecodereviewer.view.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
-import android.widget.TextView;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
+import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 import roboguice.activity.RoboTabActivity;
 import roboguice.inject.InjectResource;
@@ -69,7 +70,7 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_changeMessagesTab_id)
     String changeMessagesTabId;
 
-    @InjectResource(R.drawable.change_details_change_messages_icon)
+    @InjectResource(R.drawable.common_label_icon)
     Drawable changeMessagesTabIcon;
 
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangeDetails_tabs_reviewersTab_id)
@@ -143,6 +144,11 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.change_details, menu);
+
+        if(!((MobileCodeReviewerApplication) getApplication()).isAuthenticated()) {
+            menu.setGroupVisible(R.id.changeDetailsPrivilegedGroup, false);
+        }
+
         return true;
     }
 
@@ -165,52 +171,54 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
     }
 
     @Override
-    public void showSetReviewPopup(List<LabelInfo> approvalInfoList) {
+    public void showSetReviewPopup(final List<LabelInfo> labelInfos) {
         LayoutInflater li = LayoutInflater.from(ChangeDetails.this);
         View addReviewView = li.inflate(R.layout.layout_add_review, null);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                ChangeDetails.this);
-
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChangeDetails.this);
         alertDialogBuilder.setView(addReviewView);
 
-        final EditText userInput = (EditText) addReviewView
-                .findViewById(R.id.editTextDialogUserInput);
+        final EditText userInput = (EditText) addReviewView.findViewById(R.id.editTextDialogUserInput);
 
-        final Spinner voteSpinner = (Spinner) addReviewView
-                .findViewById(R.id.reviewVoteSpinner);
+        AccountInfo loggedUser = ((MobileCodeReviewerApplication) getApplication()).getLoggedUser();
+        final ListView votesList = (ListView) addReviewView.findViewById(R.id.votesList);
+        votesList.setAdapter(new AddReviewVotesListAdapter(this, labelInfos, loggedUser));
 
-        final List<String> possibleVotes = Arrays.asList("-2","-1","0","1","2");
-        ArrayAdapter<String> possibleVotesAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, possibleVotes);
-        possibleVotesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        voteSpinner.setAdapter(possibleVotesAdapter);
-        voteSpinner.setSelection(2); // selected 0
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
 
-        // set dialog message
+                        String message = userInput.getText().toString();
+
+                        Map<String, Integer> votes = new HashMap<String, Integer>();
+                        for(int i = 0; i<labelInfos.size(); i++){
+                            View voteItem = (View) votesList.getChildAt(i);
+                            Spinner voteSpinner = (Spinner) voteItem.findViewById(R.id.singleVoteSpinner);
+                            if(voteSpinner.getSelectedItem() != null && voteSpinner.getAdapter().getCount() != 0) {
+                                votes.put(labelInfos.get(i).getName(), (Integer) voteSpinner.getSelectedItem());
+                            }
+                        }
+
+                        controller.setReview(currentChangeId, "1", message, votes);
+
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.cancel();
+                        break;
+                }
+            }
+        };
+
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // get user input and set it to result
-                                // edit text
-                            String message = userInput.getText().toString();
-                            int vote = Integer.parseInt(possibleVotes.get(voteSpinner.getSelectedItemPosition() ));
-                            controller.setReview(currentChangeId,"1",message,vote);
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
+                .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
+                .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
 
-        // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
         alertDialog.show();
     }
 }

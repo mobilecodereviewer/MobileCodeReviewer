@@ -4,8 +4,10 @@ import com.google.inject.Singleton;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
@@ -104,6 +106,11 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
     }
 
     @Override
-    public void setReview(String changeId, String revisionId, String message, int vote) {
+    public void setReview(String changeId, String revisionId, String message, Map<String, Integer> votes) {
+    }
+
+    @Override
+    public void initialize(RestApi restApi) {
+
     }
 }

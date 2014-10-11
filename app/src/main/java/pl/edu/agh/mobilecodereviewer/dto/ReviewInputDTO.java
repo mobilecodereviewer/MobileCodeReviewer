@@ -38,9 +38,7 @@ public class ReviewInputDTO {
         return new ReviewInputDTO(comments);
     }
 
-    public static ReviewInputDTO createVoteReview(String message, int vote) {
-        Map<String, Integer> labels = new HashMap<>();
-        labels.put("Code-Review", vote);
-        return new ReviewInputDTO(message, labels);
+    public static ReviewInputDTO createVoteReview(String message, Map<String, Integer> votes) {
+        return new ReviewInputDTO(message, votes);
     }
 }

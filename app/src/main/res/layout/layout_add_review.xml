@@ -26,13 +26,14 @@
         android:paddingTop="20px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.vote"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.votes"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Spinner
-        android:id="@+id/reviewVoteSpinner"
+    <View style="@style/common_horizontal_separator" />
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"></Spinner>
+        android:id="@+id/votesList" />
 
 </LinearLayout>

@@ -24,7 +24,7 @@ public final class LabelInfoHelper {
     }
 
     private static ApprovalInfo createApprovalInfoFromDTO(ApprovalInfoDTO approvalInfoDTO, Set<Integer> values){
-        ApprovalInfo approvalInfo = new ApprovalInfo(approvalInfoDTO.getName(), approvalInfoDTO.getValue(), approvalInfoDTO.getDate());
+        ApprovalInfo approvalInfo = new ApprovalInfo(approvalInfoDTO.getAccountId(), approvalInfoDTO.getName(), approvalInfoDTO.getEmail(), approvalInfoDTO.getUsername(), approvalInfoDTO.getValue(), approvalInfoDTO.getDate());
 
         List<Integer> sortedValues = new ArrayList<Integer>(values);
         Collections.sort(sortedValues);

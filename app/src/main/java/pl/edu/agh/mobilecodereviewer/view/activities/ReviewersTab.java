@@ -73,7 +73,9 @@ public class ReviewersTab extends RoboActivity implements ReviewersTabView{
         if ( labels != null && labels.size() > 0)
             reviewersListView.setAdapter( new ReviewersViewListAdapter(this, labels.get(0).getAll()));
 
-        reviewersTabLabelSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labelNames));
+        ArrayAdapter<String> labelSpinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labelNames);
+        reviewersTabLabelSpinner.setAdapter(labelSpinnerAdapter);
+        labelSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         reviewersTabLabelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override

@@ -1,8 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.model;
 
-public class ApprovalInfo {
-
-    private String approverName;
+public class ApprovalInfo extends AccountInfo{
 
     private Integer value;
 
@@ -12,20 +10,12 @@ public class ApprovalInfo {
 
     private boolean minValueForLabel;
 
-    public ApprovalInfo(String approverName, Integer value, String date){
-        this.approverName = approverName;
+    public ApprovalInfo(String accountId, String name, String email, String username, Integer value, String date){
+        super(accountId, name, email, username);
         this.value = value;
         this.date = date;
         this.maxValueForLabel = false;
         this.minValueForLabel = false;
-    }
-
-    public String getApproverName() {
-        return approverName;
-    }
-
-    public void setApproverName(String approverName) {
-        this.approverName = approverName;
     }
 
     public Integer getValue() {
@@ -63,11 +53,10 @@ public class ApprovalInfo {
     @Override
     public String toString() {
         return "ApprovalInfo{" +
-                "approverName='" + approverName + '\'' +
-                ", value=" + value +
+                "value=" + value +
                 ", date='" + date + '\'' +
                 ", maxValueForLabel=" + maxValueForLabel +
                 ", minValueForLabel=" + minValueForLabel +
-                '}';
+                "} -> " + super.toString();
     }
 }

@@ -2,7 +2,7 @@
 <resources>
 
 
-    <string name="pl.agh.edu.mobilecodereviewer.title">Mobile Code Reviewer</string>
+    <string name="pl.agh.edu.mobilecodereviewer.title">Gerrit Mobile</string>
     <string name="pl.agh.edu.mobilecodereviewer.settings">Settings</string>
     <string name="pl.agh.edu.mobilecodereviewer.about">About</string>
     <string name="pl.agh.edu.mobilecodereviewer.about.text">Application allows using Gerrit from your mobile device.</string>
@@ -11,8 +11,29 @@
 
     <string name="pl.agh.edu.mobilecodereviewer.common.true">True</string>
     <string name="pl.agh.edu.mobilecodereviewer.common.false">True</string>
-
+    <string name="pl.agh.edu.common.unauthorized">Unauthorized</string>
+    <string name="pl.agh.edu.common.ok">Ok</string>
+    <string name="pl.agh.edu.common.cancel">Cancel</string>
     <!-- commons end -->
+
+    <!--Configuration start-->
+
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.spinner.prompt">Saved configurations</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.configName">Configuration name</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.url">URL</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.authenticatedUser">Authenticated user</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.login">login</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.password">password</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.saveConfiguration">Save configuration</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.apply">Apply</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.incorrectURL">Incorrect URL</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.incorrectLogin">Incorrect login/password</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.giveName">Please provide name for this configuration</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.overwrite">Configuration with given name exists. Do you want to overwrite it?</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.wrongVersionNumber">Minimal required Gerrit version for application is 2.9.</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.noInternetConnection">You are not connected to internet.</string>
+
+    <!--Configuration end-->
 
     <!--ChangeDetails start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.title">Change details</string>
@@ -27,7 +48,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.label">Reviewers</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.tabs.reviewersTab.id">Reviewers</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview">Add review</string>
-    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.vote">Vote</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.votes">Votes</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message">Review message</string>
 
     <!--ChangeInfoTab start-->
@@ -44,7 +65,6 @@
 
     <!--ReviewersTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.reviewer">REVIEWER</string>
-    <string name="pl.agh.edu.mobilecodereviewer.ReviewersTab.unauthorized">Unauthorized</string>
     <!--ReviewersTab end-->
 
     <!--ChangeDetails end-->

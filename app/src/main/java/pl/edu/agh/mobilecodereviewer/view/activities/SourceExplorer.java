@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.google.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
@@ -113,7 +114,18 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
                 controller.toggleCommentWriteMode();
             }
         });
+
+        setCommentOptionsVisibility(null);
+
         controller.initializeView();
+    }
+
+    private void setCommentOptionsVisibility(Boolean visibility){
+        if(!((MobileCodeReviewerApplication) getApplication()).isAuthenticated()){
+            showHideCommentOptionsButton.setVisibility(View.GONE);
+        } else if(visibility != null){
+            showHideCommentOptionsButton.setVisibility(visibility ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -188,7 +200,7 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
         }
         addCommentOptions.setVisibility(View.GONE);
-        showHideCommentOptionsButton.setVisibility(View.VISIBLE);
+        setCommentOptionsVisibility(true);
         showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
     }
 
@@ -198,7 +210,7 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
         }
         addCommentOptions.setVisibility(View.GONE);
-        showHideCommentOptionsButton.setVisibility(View.GONE);
+        setCommentOptionsVisibility(false);
     }
 
     @Override

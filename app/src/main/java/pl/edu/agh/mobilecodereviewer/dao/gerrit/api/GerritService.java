@@ -3,6 +3,9 @@ package pl.edu.agh.mobilecodereviewer.dao.gerrit.api;
 import java.util.List;
 import java.util.Map;
 
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.NetworkException;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.UnauthorizedRequestException;
+import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
@@ -13,7 +16,6 @@ import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 import retrofit.http.Path;
 
 /**
@@ -21,6 +23,12 @@ import retrofit.http.Path;
  * appropriate url paths.
  */
 public interface GerritService {
+
+    @GET("/config/server/version")
+    String getVersion() throws NetworkException;
+
+    @GET("/a/accounts/self")
+    AccountInfoDTO getAccountInfo() throws UnauthorizedRequestException, NetworkException;
 
     /**
      * Get all changes from file

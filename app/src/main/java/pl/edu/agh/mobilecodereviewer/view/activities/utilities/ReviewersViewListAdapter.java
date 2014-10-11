@@ -38,14 +38,14 @@ public class ReviewersViewListAdapter extends ArrayAdapter<ApprovalInfo> {
 
         ApprovalInfo currentApprovalInfo = content.get(position);
 
-        reviewerName.setText(currentApprovalInfo.getApproverName());
+        reviewerName.setText(currentApprovalInfo.getName());
 
         if(currentApprovalInfo.isMaxValueForLabel()) {
             imageLabel.setImageResource(R.drawable.common_accept_icon);
         } else if(currentApprovalInfo.isMinValueForLabel()) {
             imageLabel.setImageResource(R.drawable.common_cancel_icon);
         } else if(currentApprovalInfo.getValue() == null) {
-            textLabel.setText(R.string.pl_agh_edu_mobilecodereviewer_ReviewersTab_unauthorized);
+            textLabel.setText(R.string.pl_agh_edu_common_unauthorized);
         } else {
             textLabel.setText(currentApprovalInfo.getValue().toString());
         }

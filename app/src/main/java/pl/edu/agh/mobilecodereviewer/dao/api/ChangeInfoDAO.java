@@ -1,7 +1,9 @@
 package pl.edu.agh.mobilecodereviewer.dao.api;
 
 import java.util.List;
+import java.util.Map;
 
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
@@ -81,5 +83,7 @@ public interface ChangeInfoDAO {
      */
     List<LabelInfo> getLabels(String id);
 
-    void setReview(String changeId, String revisionId, String message, int vote);
+    void setReview(String changeId, String revisionId, String message, Map<String, Integer> votes);
+
+    void initialize(RestApi restApi);
 }

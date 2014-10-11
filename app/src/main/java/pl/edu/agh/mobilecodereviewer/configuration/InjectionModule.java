@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.configuration;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
+import pl.edu.agh.mobilecodereviewer.controllers.ConfigurationControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ChangeDetailsControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ChangeInfoTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ChangeMessagesTabControllerImpl;
@@ -11,6 +12,7 @@ import pl.edu.agh.mobilecodereviewer.controllers.CommitMessageTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ModifiedFilesTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.ReviewersTabControllerImpl;
 import pl.edu.agh.mobilecodereviewer.controllers.SourceExplorerControllerImpl;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeMessagesTabController;
@@ -19,8 +21,10 @@ import pl.edu.agh.mobilecodereviewer.controllers.api.CommitMessageTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ReviewersTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
+import pl.edu.agh.mobilecodereviewer.dao.api.AccountDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.AccountDAOImpl;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.ChangeInfoDAOImpl;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.SourceCodeDAOImpl;
 import pl.edu.agh.mobilecodereviewer.dao.mock.ChangeInfoDAOMockImpl;
@@ -79,6 +83,8 @@ public class InjectionModule implements Module {
         binder.bind(SourceCodeDAO.class).to(SourceCodeDAOImpl.class);
         binder.bind(SourceExplorerController.class).to(SourceExplorerControllerImpl.class);
         binder.bind(ChangeDetailsController.class).to(ChangeDetailsControllerImpl.class);
+        binder.bind(ConfigurationController.class).to(ConfigurationControllerImpl.class);
+        binder.bind(AccountDAO.class).to(AccountDAOImpl.class);
     }
 
 }

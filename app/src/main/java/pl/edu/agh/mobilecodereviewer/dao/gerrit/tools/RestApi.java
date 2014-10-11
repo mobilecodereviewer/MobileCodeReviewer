@@ -2,6 +2,7 @@ package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,6 +15,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.NetworkException;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.UnauthorizedRequestException;
+import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
@@ -21,6 +25,7 @@ import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
+import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Client;
@@ -38,27 +43,26 @@ public class RestApi {
     /**
      * Class for binding between method and url
      */
-    private final GerritService gerritService;
+    private GerritService gerritService;
 
-    private String url = "http://apps.iisg.agh.edu.pl:8081/";
-    private String login = "d00d171";
-    private String password = "SdGiS0eM3ctw";
+    private ConfigurationInfo configurationInfo;
+
+    // private String url = "http://apps.iisg.agh.edu.pl:8081/";
+    // private String login = "d00d171";
+    // private String password = "SdGiS0eM3ctw";
 
     public RestApi(String url) {
-        this.url = url;
+        this.configurationInfo = new ConfigurationInfo(null, url, null, null, false);
         this.gerritService = createGerritService();
     }
 
-    /**
-     * Create instance of restApi with default data access service
-     */
-    public RestApi() {
-        gerritService = createGerritService();
+    public RestApi(ConfigurationInfo configurationInfo){
+        this.configurationInfo = configurationInfo;
+        this.gerritService = createGerritService();
     }
 
-
     public RestApi(String url, Client client) {
-        this.url = url;
+        this.configurationInfo = new ConfigurationInfo(null, url, null, null, false);
         this.gerritService = createGerritService(client);
     }
 
@@ -71,13 +75,16 @@ public class RestApi {
         this.gerritService = gerritService;
     }
 
+    public RestApi() {
+    }
+
     /**
      * Return default URL
      *
      * @return default URL
      */
     protected String createUrl() {
-        return url;
+        return this.configurationInfo.getUrl();
     }
 
     /**
@@ -110,7 +117,8 @@ public class RestApi {
                 .setExecutors(executor, executor)
                 .setEndpoint(url)
                 .setLogLevel(RestAdapter.LogLevel.BASIC)
-                .setClient(new GerritClient())
+                .setClient(new GerritClient(this.configurationInfo))
+                .setErrorHandler(new GerritErrorHandler())
                 .build();
     }
 
@@ -139,6 +147,22 @@ public class RestApi {
         return restAdapter.create(GerritService.class);
     }
 
+    public String getVersion(){
+
+        try {
+            return gerritService.getVersion();
+        } catch (NetworkException e) {
+            return null;
+        }
+    }
+
+    public AccountInfoDTO getAccountInfo(){
+        try {
+            return gerritService.getAccountInfo();
+        } catch(Exception ex) {
+            return null;
+        }
+    }
 
     /**
      * Download list of changes
@@ -252,13 +276,35 @@ public class RestApi {
         gerritService.putReview(change_id, revision_id, reviewInputDTO);
     }
 
-    public void putReview(String change_id,String revision_id,String message,int vote) {
-        ReviewInputDTO reviewInputDTO = ReviewInputDTO.createVoteReview(message,vote);
+    public void putReview(String change_id,String revision_id,String message,Map<String, Integer> votes) {
+        ReviewInputDTO reviewInputDTO = ReviewInputDTO.createVoteReview(message, votes);
         gerritService.putReview(change_id, revision_id, reviewInputDTO);
     }
 
+    private class GerritErrorHandler implements ErrorHandler{
+
+        @Override
+        public Throwable handleError(RetrofitError retrofitError) {
+
+            if(retrofitError.getCause() instanceof FileNotFoundException){
+                return new UnauthorizedRequestException();
+            }
+
+            if(retrofitError.isNetworkError()){
+                return new NetworkException();
+            }
+
+            return retrofitError;
+        }
+    }
 
     private class GerritClient implements Client {
+
+        private final ConfigurationInfo configurationInfo;
+
+        public GerritClient(ConfigurationInfo configurationInfo){
+            this.configurationInfo = configurationInfo;
+        }
 
         private HttpURLConnection tryAuth(HttpURLConnection connection, String username, String password)
                 throws IOException
@@ -279,7 +325,7 @@ public class RestApi {
             setConnectionProperties(request, urlConnection);
             urlConnection.connect();
 
-            HttpURLConnection authConnection = tryAuth(urlConnection, login, password);
+            HttpURLConnection authConnection = tryAuth(urlConnection, this.configurationInfo.getLogin(), this.configurationInfo.getPassword());
             if (authConnection != urlConnection) {
                 urlConnection = authConnection;
                 setConnectionProperties(request,urlConnection);

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.DiffContentDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
@@ -71,6 +72,11 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
     @Override
     public void putFileComment(String change_id, String revision_id, Comment comment) {
         // TODO something to show on the screen....
+    }
+
+    @Override
+    public void initialize(RestApi restApi) {
+        
     }
 }
 

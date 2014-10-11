@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Singleton;
+
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair;
@@ -21,12 +23,14 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.model.utilities.LabelInfoHelper;
+import roboguice.inject.ContextSingleton;
 
 /**
  * Data access object for information about Changes. It is
  * some kind of adapter between data from gerrit instance
  * and appropriates models
  */
+@Singleton
 public class ChangeInfoDAOImpl implements ChangeInfoDAO {
 
     /**
@@ -34,12 +38,15 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
      */
     private RestApi restApi;
 
+    @Override
+    public void initialize(RestApi restApi){
+        this.restApi = restApi;
+    }
+
     /**
      * Construct Object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
      */
-    public ChangeInfoDAOImpl() {
-        this( new AsynchronousRestApi( new RestApi() ) );
-    }
+    public ChangeInfoDAOImpl() { }
 
     /**
      * Construct Object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
@@ -156,8 +163,8 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
     }
 
     @Override
-    public void setReview(String changeId, String revisionId, String message, int vote) {
-        restApi.putReview(changeId,revisionId,message,vote);
+    public void setReview(String changeId, String revisionId, String message, Map<String, Integer> votes) {
+        restApi.putReview(changeId,revisionId,message,votes);
     }
 
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
@@ -47,6 +48,28 @@ public class AsynchronousRestApi extends RestApi{
         }
 
         return null;
+    }
+
+    @Override
+    public String getVersion(){
+        return runAsyncTask(new AsyncTask<Object, Void, String>() {
+
+            @Override
+            protected String doInBackground(Object... voids) {
+                return restApi.getVersion();
+            }
+        });
+    }
+
+    @Override
+    public AccountInfoDTO getAccountInfo(){
+        return runAsyncTask(new AsyncTask<Object, Void, AccountInfoDTO>() {
+
+            @Override
+            protected AccountInfoDTO doInBackground(Object... voids) {
+                return restApi.getAccountInfo();
+            }
+        });
     }
 
     /**
@@ -188,7 +211,7 @@ public class AsynchronousRestApi extends RestApi{
 
     @Override
     public void putReview(final String change_id, final String revision_id, final String message,
-                               final int vote){
+                               final Map<String, Integer> vote){
         runAsyncTask(new AsyncTask<Object, Void, Void>() {
             @Override
             protected Void doInBackground(Object... params) {

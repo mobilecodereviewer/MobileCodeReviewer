@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/launcher_icon"
         android:padding="10dp"/>
 
     <TextView

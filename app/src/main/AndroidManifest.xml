@@ -3,21 +3,30 @@
     package="pl.edu.agh.mobilecodereviewer">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/launcher_icon"
         android:label="@string/pl.agh.edu.mobilecodereviewer.title"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
-            android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title" >
+            android:name=".view.activities.Configuration"
+            android:label="@string/pl.agh.edu.mobilecodereviewer.title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
+            android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title"
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.Configuration" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.edu.agh.mobilecodereviewer.view.activities.Configuration" />
         </activity>
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails"
