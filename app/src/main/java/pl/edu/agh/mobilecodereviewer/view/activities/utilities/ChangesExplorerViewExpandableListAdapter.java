@@ -21,13 +21,13 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
 
     private final Activity context;
 
-    private final List<Pair<String, String>> groups;
+    private final List<ChangeInfo> groups;
 
     private final Map<String, Map<ChangeInfoHelper.ChildrenHeaders, String>> children;
 
     public ChangesExplorerViewExpandableListAdapter(Activity context, List<ChangeInfo> changeInfos){
         this.context = context;
-        groups = ChangeInfoHelper.getGroupsHeaders(changeInfos);
+        groups = changeInfos;
         children = ChangeInfoHelper.getChildren(changeInfos);
     }
 
@@ -48,7 +48,7 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return children.get(groups.get(groupPosition).first);
+        return children.get(groups.get(groupPosition).getChangeId());
     }
 
     @Override
@@ -77,12 +77,12 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
             goButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((ChangesExplorer) context).showChangeDetails(groups.get(groupPosition).first);
+                    ((ChangesExplorer) context).showChangeDetails(groups.get(groupPosition).getChangeId(), groups.get(groupPosition).getCurrentRevision());
                 }
             });
         }
 
-        String changeSubject = groups.get(groupPosition).second;
+        String changeSubject = groups.get(groupPosition).getSubject();
         TextView changeSubjectView = (TextView) convertView.findViewById(R.id.changesExplorerGroupLabel);
         changeSubjectView.setText(changeSubject);
 
@@ -105,7 +105,7 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
         TextView updated = (TextView) convertView.findViewById(R.id.changeExplorerChildUpdatedValue);
         TextView size = (TextView) convertView.findViewById(R.id.changeExplorerChildSizeValue);
 
-        Map<ChangeInfoHelper.ChildrenHeaders, String> childValues = children.get(groups.get(groupPosition).first);
+        Map<ChangeInfoHelper.ChildrenHeaders, String> childValues = children.get(groups.get(groupPosition).getChangeId());
         subject.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.SUBJECT));
         status.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.STATUS));
         owner.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.OWNER));

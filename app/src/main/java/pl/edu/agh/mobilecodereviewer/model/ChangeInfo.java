@@ -38,6 +38,8 @@ public class ChangeInfo {
 
     private Integer size;
 
+    private String currentRevision;
+
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
      */
@@ -182,6 +184,14 @@ public class ChangeInfo {
         this.created = created;
     }
 
+    public String getCurrentRevision() {
+        return currentRevision;
+    }
+
+    public void setCurrentRevision(String currentRevision) {
+        this.currentRevision = currentRevision;
+    }
+
     /**
      * Return textual representation of {@link pl.edu.agh.mobilecodereviewer.model.ChangeInfo}
      *
@@ -194,6 +204,14 @@ public class ChangeInfo {
                 "id='" + id + '\'' +
                 ", changeId='" + changeId + '\'' +
                 ", subject='" + subject + '\'' +
+                ", status='" + status + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                ", project='" + project + '\'' +
+                ", branch='" + branch + '\'' +
+                ", updated='" + updated + '\'' +
+                ", created='" + created + '\'' +
+                ", size=" + size +
+                ", currentRevision='" + currentRevision + '\'' +
                 '}';
     }
 

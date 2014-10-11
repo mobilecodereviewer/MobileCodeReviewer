@@ -113,9 +113,10 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     /**
      * Starts Change Details activity
      */
-    public void showChangeDetails(String changeId) {
+    public void showChangeDetails(String changeId, String revisionId) {
         Intent intent = new Intent(getApplicationContext(), ChangeDetails.class);
         intent.putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId);
+        intent.putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGES_REVISION_ID, revisionId);
         startActivity(intent);
     }
 }

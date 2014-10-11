@@ -16,17 +16,6 @@ public final class ChangeInfoHelper {
         SUBJECT, STATUS, OWNER, PROJECT, BRANCH, UPDATED, SIZE;
     }
 
-    public static List<Pair<String, String>> getGroupsHeaders(List<ChangeInfo> changeInfoList) {
-        return Lists.transform(changeInfoList,
-                new Function<ChangeInfo, Pair<String, String>>() {
-                    @Override
-                    public Pair<String, String> apply(ChangeInfo from) {
-                        return getGroupHeader(from);
-                    }
-                }
-        );
-    }
-
     public static Map<String, Map<ChildrenHeaders, String>> getChildren(List<ChangeInfo> changeInfoList){
         Map<String, Map<ChildrenHeaders, String>> childsMap = new HashMap<String, Map<ChildrenHeaders, String>>();
 
@@ -35,10 +24,6 @@ public final class ChangeInfoHelper {
         }
 
         return childsMap;
-    }
-
-    private static Pair<String, String> getGroupHeader(ChangeInfo changeInfo){
-        return new Pair(changeInfo.getChangeId(), changeInfo.getSubject());
     }
 
     private static Map<ChildrenHeaders, String> getChildContent(ChangeInfo changeInfo){

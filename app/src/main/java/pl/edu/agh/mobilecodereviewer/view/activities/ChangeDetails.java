@@ -99,6 +99,7 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
         TabHost changeDetailsTabHost = getTabHost();
         changeDetailsTabHost.getTabWidget().setStripEnabled(false);
         currentChangeId = intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID);
+        currentRevisionId = intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGES_REVISION_ID);
         addTabs(changeDetailsTabHost);
         changeDetailsTabHost.setCurrentTab(0);
     }
@@ -201,7 +202,7 @@ public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
                             }
                         }
 
-                        controller.setReview(currentChangeId, "1", message, votes);
+                        controller.setReview(currentChangeId, currentRevisionId, message, votes);
 
                         break;
 

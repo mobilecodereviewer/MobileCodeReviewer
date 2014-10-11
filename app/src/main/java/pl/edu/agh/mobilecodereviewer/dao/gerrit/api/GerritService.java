@@ -34,7 +34,7 @@ public interface GerritService {
      * Get all changes from file
      * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
-    @GET("/changes/")
+    @GET("/changes/?o=CURRENT_REVISION")
     List<ChangeInfoDTO> getChanges();
 
     /**

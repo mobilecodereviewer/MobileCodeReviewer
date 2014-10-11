@@ -90,6 +90,8 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
             changeInfoModel.setProject(changeInfoDTO.getProject());
             changeInfoModel.setBranch(changeInfoDTO.getBranch());
             changeInfoModel.setUpdated(changeInfoDTO.getUpdated());
+            changeInfoModel.setCurrentRevision(changeInfoDTO.getCurrentRevision());
+
             if ( changeInfoDTO.getInsertions() != null )
                 changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
             else
