@@ -4,12 +4,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -62,6 +66,8 @@ public class Configuration extends RoboActivity implements ConfigurationView {
     @InjectView(R.id.loginBox)
     private LinearLayout loginBox;
 
+    @InjectView(R.id.showHidePasswordCheckbox)
+    private CheckBox showHidePasswordCheckBox;
 
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_Configuration_toast_giveName)
     private String giveNameToast;
@@ -80,6 +86,12 @@ public class Configuration extends RoboActivity implements ConfigurationView {
 
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_Configuration_toast_noInternetConnection)
     private String noInternetConnectionToast;
+
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_Configuration_showPassword)
+    private String showPasswordText;
+
+    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_Configuration_hidePassword)
+    private String hidePasswordText;
 
     SavedConfigurationsSpinnerAdapter spinnerAdapter;
 
@@ -105,8 +117,29 @@ public class Configuration extends RoboActivity implements ConfigurationView {
             }
         });
 
+        showHidePasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean showPassword) {
+                if (showPassword) {
+                    showPasswordText();
+                } else {
+                    hidePasswordText();
+                }
+            }
+        });
+
         setAuthenticationVisibility();
         controller.updateSavedConfigurations(this);
+    }
+
+    private void hidePasswordText() {
+        showHidePasswordCheckBox.setText(showPasswordText);
+        passwordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
+    }
+
+    private void showPasswordText() {
+        showHidePasswordCheckBox.setText(hidePasswordText);
+        passwordEdit.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
     }
 
     @Override

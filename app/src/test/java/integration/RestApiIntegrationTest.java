@@ -1,5 +1,7 @@
 package integration;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 
 import org.junit.BeforeClass;
@@ -10,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
@@ -48,7 +51,7 @@ public class RestApiIntegrationTest {
         assertEquals("give yourself some free time with this stuff..." , sourceCodeDiff.getDiffContent().get(1).getLinesAfterChange().get(3) );
     }
 
-
+    @Ignore
     @Test
     public void shouldPutCommentSaveValuesToServer() throws Exception {
         String change_id = "I4b2ca228d25393ed58eee97bbaa46d5939d62767";
@@ -79,6 +82,13 @@ public class RestApiIntegrationTest {
         List<ChangeInfoDTO> changeInfoDTOs = restApi.getChanges();
         assertEquals(2, changeInfoDTOs.size());
         assertEquals( "Add file1.java" , changeInfoDTOs.get(0).getChangeId() );
+    }
+
+    @Test
+    public void shouldGetAccountSelfFromServer() throws Exception {
+        AccountInfoDTO accountInfo = restApi.getAccountInfo();
+        assertNotNull(accountInfo);
+        assertEquals("", accountInfo.toString());
     }
 }
 

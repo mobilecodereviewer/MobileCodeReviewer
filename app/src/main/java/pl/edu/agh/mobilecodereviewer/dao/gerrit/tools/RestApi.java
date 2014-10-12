@@ -52,7 +52,11 @@ public class RestApi {
     // private String password = "SdGiS0eM3ctw";
 
     public RestApi(String url) {
-        this.configurationInfo = new ConfigurationInfo(null, url, null, null, false);
+        this.configurationInfo = new ConfigurationInfo("http://apps.iisg.agh.edu.pl:8081/",
+                                                       url,
+                                                       "pili",
+                                                       "F9xlAF4XS4tz",
+                                                       false);
         this.gerritService = createGerritService();
     }
 

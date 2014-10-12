@@ -104,6 +104,11 @@
 
         </LinearLayout>
 
+        <CheckBox
+            style="@style/configuration_icon"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.showPassword"
+            android:id="@+id/showHidePasswordCheckbox" />
+
     </LinearLayout>
 
     <CheckBox

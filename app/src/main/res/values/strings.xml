@@ -33,6 +33,9 @@
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.wrongVersionNumber">Minimal required Gerrit version for application is 2.9. Current: </string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.noInternetConnection">You are not connected to internet.</string>
 
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.showPassword">Show Password</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.hidePassword">Hide Password</string>
+
     <!--Configuration end-->
 
     <!--ChangeDetails start-->
