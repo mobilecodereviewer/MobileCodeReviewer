@@ -20,4 +20,7 @@ public interface ChangesExplorerView {
      */
     void showChanges(List<ChangeInfo> changes);
 
+    void clearChangesList();
+
+    void hideSearchPanel();
 }

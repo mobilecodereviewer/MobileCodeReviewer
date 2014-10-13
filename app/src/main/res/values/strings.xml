@@ -89,11 +89,15 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.branch">Branch</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.updated">Updated</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.size">Size</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search">Search</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search_hint">Search...</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch">Discard Search</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
 
 
 </resources>

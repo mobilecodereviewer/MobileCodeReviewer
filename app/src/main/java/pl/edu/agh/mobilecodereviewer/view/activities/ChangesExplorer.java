@@ -1,13 +1,18 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.inject.Inject;
 
+import java.util.Collections;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -42,6 +47,8 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     @InjectView(R.id.changesExplorerExpandableListView)
     private ExpandableListView changesExplorerExpandableListView;
 
+    private Menu menu;
+
     /**
      * No arg constructor,main for use by di and android framework
      */
@@ -68,7 +75,21 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changes_explorer);
 
-        controller.updateChanges(this);
+        controller.initializeData(this);
+        controller.updateChanges();
+    }
+
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+
+        // Checks whether a hardware keyboard is available
+        if (newConfig.hardKeyboardHidden == android.content.res.Configuration.HARDKEYBOARDHIDDEN_YES) {
+            hideSearchPanel();
+        } else if (newConfig.hardKeyboardHidden == android.content.res.Configuration.HARDKEYBOARDHIDDEN_YES) {
+            hideSearchPanel();
+        }
     }
 
     /**
@@ -77,8 +98,20 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.changes_explorer, menu);
+        setSearchableConfiguration(menu);
         return true;
+    }
+
+    private void setSearchableConfiguration(Menu menu) {
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
     }
 
     /**
@@ -91,6 +124,9 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
 
         if(id == R.id.action_about) {
             AboutDialogHelper.showDialog(this);
+        } else if (id == R.id.discardSearch) {
+            hideSearchPanel();
+            controller.updateChanges();
         }
 
         return super.onOptionsItemSelected(item);
@@ -110,6 +146,13 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
         changesExplorerExpandableListView.setAdapter(expandableListAdapter);
     }
 
+    @Override
+    public void clearChangesList() {
+        List<ChangeInfo> changes = Collections.emptyList();
+        ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
+        changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+    }
+
     /**
      * Starts Change Details activity
      */
@@ -118,6 +161,27 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
         intent.putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, changeId);
         intent.putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGES_REVISION_ID, revisionId);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+
+            controller.search(query);
+            hideSearchPanel();
+        }
+    }
+
+    @Override
+    public void hideSearchPanel() {
+        menu.findItem(R.id.search).collapseActionView();
     }
 }
 

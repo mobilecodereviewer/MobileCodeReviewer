@@ -17,6 +17,7 @@ import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
+import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import retrofit.client.Client;
 import retrofit.client.Request;
 import retrofit.client.Response;
@@ -30,7 +31,8 @@ public class RestApiIntegrationTest {
 
     @BeforeClass
     public static void connectToRestServer() throws Exception {
-        restApi = new RestApi("http://apps.iisg.agh.edu.pl:8081/");
+        //restApi = new RestApi("http://apps.iisg.agh.edu.pl:8081/");
+        restApi = new RestApi("http://gerrit.ovirt.org");
     }
 
     @Ignore
@@ -84,11 +86,22 @@ public class RestApiIntegrationTest {
         assertEquals( "Add file1.java" , changeInfoDTOs.get(0).getChangeId() );
     }
 
+    @Ignore
     @Test
     public void shouldGetAccountSelfFromServer() throws Exception {
         AccountInfoDTO accountInfo = restApi.getAccountInfo();
         assertNotNull(accountInfo);
         assertEquals("", accountInfo.toString());
+    }
+
+    @Test
+    public void shouldGetListOfChanges() throws Exception {
+        List<ChangeInfoDTO> changes = restApi.getChanges();
+        assertEquals(0 , changes.size());
+        boolean check = false;
+        System.out.println( changes.size() );
+        for (ChangeInfoDTO changeInfoDTO : changes)
+            System.out.println( changeInfoDTO.getStatus() );
     }
 }
 

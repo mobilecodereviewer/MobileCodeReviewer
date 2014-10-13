@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
@@ -28,6 +29,10 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     @Inject
     private ChangeInfoDAO changeInfoDAO;
 
+    private ChangesExplorerView view;
+
+    private List<ChangeInfo> changeInfos;
+
     /**
      * Simple constructor. Used by DI framework.
      */
@@ -43,14 +48,45 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
         this.changeInfoDAO = changeInfoDAO;
     }
 
+    @Override
+    public void initializeData(ChangesExplorerView changesExplorerView) {
+        this.view = changesExplorerView;
+    }
+
+    public List<ChangeInfo> getChangeInfos() {
+        if (changeInfos == null) { // perform lazy initialization
+            changeInfos = changeInfoDAO.getAllChangesInfo();
+        }
+        return changeInfos;
+    }
+
     /**
      * Obtains information about all changes and informs view to show it.
      *
      * @param view View in which messages will be shown
      */
     @Override
-    public void updateChanges(ChangesExplorerView view) {
-        List<ChangeInfo> infos = changeInfoDAO.getAllChangesInfo();
+    public void updateChanges() {
+        List<ChangeInfo> infos = getChangeInfos();
         view.showChanges(infos);
     }
+
+    @Override
+    public void search(String query) {
+        view.clearChangesList();
+        List<ChangeInfo> allInfos = getChangeInfos();
+        List<ChangeInfo> searchedInfos = new LinkedList<ChangeInfo>();
+        if (query == "" || query == null)
+            view.showChanges(allInfos);
+        else {
+            for (ChangeInfo info : allInfos) {
+                if ( info.toString().contains(query) )
+                    searchedInfos.add(info);
+            }
+            view.showChanges(searchedInfos);
+        }
+    }
+
+
+
 }

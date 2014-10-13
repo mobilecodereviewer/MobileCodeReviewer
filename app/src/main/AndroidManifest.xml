@@ -23,10 +23,18 @@
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title"
-            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.Configuration" >
+            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.Configuration"
+            android:launchMode="singleTop" >
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.edu.agh.mobilecodereviewer.view.activities.Configuration" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails"
@@ -79,6 +87,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFiles" />
         </activity>
+
+        <meta-data android:name="android.app.default_searchable"
+            android:value="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" />
     </application>
 
 </manifest>

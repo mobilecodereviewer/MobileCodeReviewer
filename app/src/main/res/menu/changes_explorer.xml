@@ -2,6 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer" >
 
+    <item android:id="@+id/search"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView"
+        android:focusable="false" />
+
+    <item android:id="@+id/discardSearch"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:showAsAction="always"/>
+
     <item android:id="@+id/action_about"
         android:title="@string/pl.agh.edu.mobilecodereviewer.about"
         android:icon="@drawable/common_help_icon"

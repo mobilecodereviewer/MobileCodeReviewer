@@ -1,5 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 
 /**
@@ -12,11 +13,9 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
  * @since 0.1
  */
 public interface ChangesExplorerController {
+    void initializeData(ChangesExplorerView changesExplorerView);
 
-    /**
-     * Request for updating change list.
-     *
-     * @param view View in which changes will be shown
-     */
-    void updateChanges(ChangesExplorerView view);
+    void updateChanges();
+
+    void search(String query);
 }
