@@ -144,7 +144,7 @@ public class Configuration extends RoboActivity implements ConfigurationView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.changes_explorer, menu);
+        getMenuInflater().inflate(R.menu.configuration, menu);
         return true;
     }
 

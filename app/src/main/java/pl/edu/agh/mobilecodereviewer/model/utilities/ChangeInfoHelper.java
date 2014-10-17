@@ -30,7 +30,7 @@ public final class ChangeInfoHelper {
         Map<ChildrenHeaders, String> childContent = new HashMap<ChildrenHeaders, String>();
 
         childContent.put(ChildrenHeaders.SUBJECT, changeInfo.getSubject());
-        childContent.put(ChildrenHeaders.STATUS, changeInfo.getStatus());
+        childContent.put(ChildrenHeaders.STATUS, changeInfo.getStatus().toString());
         childContent.put(ChildrenHeaders.OWNER, changeInfo.getOwnerName());
         childContent.put(ChildrenHeaders.PROJECT, changeInfo.getProject());
         childContent.put(ChildrenHeaders.BRANCH, changeInfo.getBranch());

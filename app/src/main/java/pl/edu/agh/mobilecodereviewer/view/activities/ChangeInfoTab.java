@@ -83,7 +83,7 @@ public class ChangeInfoTab extends RoboActivity implements ChangeInfoTabView {
         changeUploadedView.setText(changeInfo.getCreated());
         changeUpdatedView.setText(changeInfo.getUpdated());
         changeSubmitTypeView.setText(mergeableInfo.getSubmitType());
-        changeStatusView.setText(changeInfo.getStatus());
+        changeStatusView.setText(changeInfo.getStatus().toString() );
         changeMergeableView.setText(mergeableInfo.isMergeable() ? trueString : falseString);
     }
 }

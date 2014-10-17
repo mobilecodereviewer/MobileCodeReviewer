@@ -3,16 +3,22 @@ package pl.edu.agh.mobilecodereviewer.model;
 /**
  * Created by lee on 2014-09-12.
  */
-public class DiffLine{
+public class DiffedLine {
 
     private final String content;
+
     private final int lineNumber;
+    private final int oldLineNumber;
+    private final int newLineNumber;
+
     private final DiffLineType lineType;
 
-    public DiffLine(int lineNumber, DiffLineType diffLineType, String content) {
-        this.lineNumber = lineNumber;
-        this.lineType = diffLineType;
+    public DiffedLine(String content, int lineNumber, int oldLineNumber, int newLineNumber, DiffLineType lineType) {
         this.content = content;
+        this.lineNumber = lineNumber;
+        this.oldLineNumber = oldLineNumber;
+        this.newLineNumber = newLineNumber;
+        this.lineType = lineType;
     }
 
     public String getContent() {
@@ -27,12 +33,20 @@ public class DiffLine{
         return lineType;
     }
 
+    public int getOldLineNumber() {
+        return oldLineNumber;
+    }
+
+    public int getNewLineNumber() {
+        return newLineNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DiffLine line = (DiffLine) o;
+        DiffedLine line = (DiffedLine) o;
 
         if (lineNumber != line.lineNumber) return false;
         if (content != null ? !content.equals(line.content) : line.content != null) return false;

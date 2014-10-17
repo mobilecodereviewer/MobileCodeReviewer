@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.view.api;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 
 /**
  * Represents the view which will show information about changes
@@ -23,4 +24,10 @@ public interface ChangesExplorerView {
     void clearChangesList();
 
     void hideSearchPanel();
+
+    void showFoundChanges(String query, List<ChangeInfo> searchedInfos);
+
+    void showMessage(String message);
+
+    void showListOfAvalaibleStatus(ChangeStatus currentStatus, ChangeStatus[] changeStatuses);
 }

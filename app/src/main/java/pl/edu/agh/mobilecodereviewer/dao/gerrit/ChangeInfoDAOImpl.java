@@ -85,7 +85,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         for(ChangeInfoDTO changeInfoDTO : changeInfoDtos){
             ChangeInfo changeInfoModel = ChangeInfo.valueOf(changeInfoDTO.getId(), changeInfoDTO.getChangeId(), changeInfoDTO.getSubject());
 
-            changeInfoModel.setStatus(changeInfoDTO.getStatus());
+            changeInfoModel.setStatus(changeInfoDTO.getStatus().toString());
             changeInfoModel.setOwnerName(changeInfoDTO.getOwner().getName());
             changeInfoModel.setProject(changeInfoDTO.getProject());
             changeInfoModel.setBranch(changeInfoDTO.getBranch());

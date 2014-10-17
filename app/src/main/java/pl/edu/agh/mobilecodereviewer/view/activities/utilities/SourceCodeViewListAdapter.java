@@ -73,6 +73,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.layout_source_line, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.codeText);
+        TextView txtNumber = (TextView) rowView.findViewById(R.id.lineNumberText);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +93,8 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
                 }
             }
         });
-        txtTitle.setText((position+1) + "|\t" +  content.get(position) );
+        txtNumber.setText( Integer.toString(position+1) );
+        txtTitle.setText( " \t" +  content.get(position) );
         if ( hasComments.get(position) )
             imageView.setImageResource( R.drawable.source_explorer_line_comment_icon );
         else

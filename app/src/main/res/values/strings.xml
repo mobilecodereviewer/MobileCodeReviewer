@@ -92,12 +92,13 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search">Search</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search_hint">Search...</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch">Discard Search</string>
+    <string name="pl_agh_edu_mobilecodereviewer_ChangesExplorer_no_search_results_found">No results found</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.selectStatus">Select status</string>
 
 
 </resources>

@@ -13,7 +13,6 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Base64;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
@@ -22,7 +21,6 @@ import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
-import roboguice.inject.ContextSingleton;
 
 /**
  * Data access object for a source code. It is some

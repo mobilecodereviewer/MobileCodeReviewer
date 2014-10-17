@@ -11,8 +11,14 @@
 
     <item android:id="@+id/discardSearch"
         android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:icon="@android:drawable/ic_media_previous"
         android:showAsAction="always"/>
+
+    <item android:id="@+id/selectStatus"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.selectStatus"
+        android:icon="@android:drawable/ic_menu_view"
+        android:showAsAction="always" />
+
 
     <item android:id="@+id/action_about"
         android:title="@string/pl.agh.edu.mobilecodereviewer.about"

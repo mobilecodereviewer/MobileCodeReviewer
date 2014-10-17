@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.R;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.utilities.ChangeInfoHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer;
@@ -84,10 +83,11 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
 
         String changeSubject = groups.get(groupPosition).getSubject();
         TextView changeSubjectView = (TextView) convertView.findViewById(R.id.changesExplorerGroupLabel);
-        changeSubjectView.setText(changeSubject);
+        setTextViewContent(changeSubjectView,changeSubject);
 
         return convertView;
     }
+
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
@@ -106,15 +106,27 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
         TextView size = (TextView) convertView.findViewById(R.id.changeExplorerChildSizeValue);
 
         Map<ChangeInfoHelper.ChildrenHeaders, String> childValues = children.get(groups.get(groupPosition).getChangeId());
-        subject.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.SUBJECT));
-        status.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.STATUS));
-        owner.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.OWNER));
-        project.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.PROJECT));
-        branch.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.BRANCH));
-        updated.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.UPDATED));
-        size.setText(childValues.get(ChangeInfoHelper.ChildrenHeaders.SIZE));
+        String changeSubject = childValues.get(ChangeInfoHelper.ChildrenHeaders.SUBJECT);
+        String changeStatus = childValues.get(ChangeInfoHelper.ChildrenHeaders.STATUS);
+        String changeOwner = childValues.get(ChangeInfoHelper.ChildrenHeaders.OWNER);
+        String changeProject = childValues.get(ChangeInfoHelper.ChildrenHeaders.PROJECT);
+        String changeBranch = childValues.get(ChangeInfoHelper.ChildrenHeaders.BRANCH);
+        String changeUpdated = childValues.get(ChangeInfoHelper.ChildrenHeaders.UPDATED);
+        String changeSize = childValues.get(ChangeInfoHelper.ChildrenHeaders.SIZE);
+
+        setTextViewContent(subject, changeSubject);
+        setTextViewContent(status, changeStatus);
+        setTextViewContent(owner, changeOwner);
+        setTextViewContent(project, changeProject);
+        setTextViewContent(branch, changeBranch);
+        setTextViewContent(updated, changeUpdated);
+        setTextViewContent(size, changeSize);
 
         return convertView;
+    }
+
+    protected void setTextViewContent(TextView textView, String content) {
+        textView.setText(content);
     }
 
     @Override

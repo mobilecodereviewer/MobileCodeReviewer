@@ -24,7 +24,8 @@
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title"
             android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.Configuration"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:uiOptions="splitActionBarWhenNarrow" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

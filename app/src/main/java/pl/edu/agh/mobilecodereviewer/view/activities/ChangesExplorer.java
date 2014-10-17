@@ -1,7 +1,9 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,14 +14,18 @@ import android.widget.Toast;
 
 import com.google.inject.Inject;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 import roboguice.activity.RoboActivity;
@@ -79,19 +85,6 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
         controller.updateChanges();
     }
 
-    @Override
-    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-
-        // Checks whether a hardware keyboard is available
-        if (newConfig.hardKeyboardHidden == android.content.res.Configuration.HARDKEYBOARDHIDDEN_YES) {
-            hideSearchPanel();
-        } else if (newConfig.hardKeyboardHidden == android.content.res.Configuration.HARDKEYBOARDHIDDEN_YES) {
-            hideSearchPanel();
-        }
-    }
-
     /**
      * Preparing activity's options menu.
      * @inheritDoc
@@ -127,6 +120,8 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
         } else if (id == R.id.discardSearch) {
             hideSearchPanel();
             controller.updateChanges();
+        } else if (id == R.id.selectStatus) {
+            controller.chooseStatus();
         }
 
         return super.onOptionsItemSelected(item);
@@ -144,6 +139,12 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     public void showChanges(final List<ChangeInfo> changes) {
         ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
         changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+    }
+
+    @Override
+    public void showFoundChanges(String query, List<ChangeInfo> searchedInfos) {
+        ChangesExplorerSearchViewExpandableListAdapter expandableSearchListAdapter = new ChangesExplorerSearchViewExpandableListAdapter(this, searchedInfos, query);
+        changesExplorerExpandableListView.setAdapter( expandableSearchListAdapter );
     }
 
     @Override
@@ -183,6 +184,35 @@ public class ChangesExplorer extends RoboActivity implements ChangesExplorerView
     public void hideSearchPanel() {
         menu.findItem(R.id.search).collapseActionView();
     }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showListOfAvalaibleStatus(ChangeStatus currentStatus, final ChangeStatus[] changeStatuses) {
+        final String[] statuses = new String[ changeStatuses.length ];
+        int currStatus = -1;
+        for (int i=0;i< changeStatuses.length;i++) {
+            statuses[i] = changeStatuses[i].toString();
+            if (currentStatus == changeStatuses[i])
+                currStatus = i;
+        }
+        AlertDialog statusDialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose status:");
+        builder.setSingleChoiceItems(statuses, currStatus, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int selectedStatus) {
+                controller.changeStatus( changeStatuses[selectedStatus] );
+                dialogInterface.dismiss();
+            }
+        });
+        statusDialog = builder.create();
+        statusDialog.show();
+    }
+
 }
 
 

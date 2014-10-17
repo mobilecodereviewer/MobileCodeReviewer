@@ -24,7 +24,7 @@ public class ChangeInfo {
      */
     private String subject;
 
-    private String status;
+    private ChangeStatus status;
 
     private String ownerName;
 
@@ -128,12 +128,12 @@ public class ChangeInfo {
         this.subject = subject;
     }
 
-    public String getStatus() {
+    public ChangeStatus getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = ChangeStatus.createStatusFromString(status);
     }
 
     public String getOwnerName() {
