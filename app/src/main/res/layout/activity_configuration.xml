@@ -8,64 +8,70 @@
     style="@style/common_activity_margins"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.Configuration">
 
-    <pl.edu.agh.mobilecodereviewer.view.activities.utilities.SavedConfigurationsCustomSpinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/savedConfigurationsSpinner"
-        android:prompt="@string/pl.agh.edu.mobilecodereviewer.Configuration.spinner.prompt"
-        android:spinnerMode="dropdown"
-        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:id="@+id/crashReportLayout"
 
-        <ImageView
-            style="@style/configuration_icon"
-            android:src="@drawable/common_label_icon" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.configName"
-            android:minEms="10"
-            android:id="@+id/configName" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <ImageView
-            style="@style/configuration_icon"
-            android:src="@drawable/common_web_icon" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/url"
-            android:minEms="10"
-            android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.url" />
-
-    </LinearLayout>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.authenticatedUser"
-        android:id="@+id/authenticateUser"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
-
-    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginBox">
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/common_error_icon"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.recovered"
+            android:id="@+id/textView"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pl.agh.edu.common.cancel"
+                android:id="@+id/cancelCrashReportButton"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pl.agh.edu.common.ok"
+                android:id="@+id/sendCrashReportButton"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/configurationLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <pl.edu.agh.mobilecodereviewer.view.activities.utilities.SavedConfigurationsCustomSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/savedConfigurationsSpinner"
+            android:prompt="@string/pl.agh.edu.mobilecodereviewer.Configuration.spinner.prompt"
+            android:spinnerMode="dropdown"
+            android:layout_marginBottom="10dp"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -74,56 +80,108 @@
 
             <ImageView
                 style="@style/configuration_icon"
-                android:src="@drawable/common_user_icon" />
+                android:src="@drawable/common_label_icon" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/login"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.configName"
                 android:minEms="10"
-                android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.login"/>
-
+                android:id="@+id/configName" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <ImageView
                 style="@style/configuration_icon"
-                android:src="@drawable/common_password_icon" />
+                android:src="@drawable/common_web_icon" />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.password"
+                android:id="@+id/url"
                 android:minEms="10"
-                android:id="@+id/password"/>
+                android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.url" />
 
         </LinearLayout>
 
         <CheckBox
-            style="@style/configuration_icon"
-            android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.showPassword"
-            android:id="@+id/showHidePasswordCheckbox" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.authenticatedUser"
+            android:id="@+id/authenticateUser"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginBox">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    style="@style/configuration_icon"
+                    android:src="@drawable/common_user_icon" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/login"
+                    android:minEms="10"
+                    android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.login"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    style="@style/configuration_icon"
+                    android:src="@drawable/common_password_icon" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="@string/pl.agh.edu.mobilecodereviewer.Configuration.password"
+                    android:minEms="10"
+                    android:id="@+id/password"/>
+
+            </LinearLayout>
+
+            <CheckBox
+                style="@style/configuration_icon"
+                android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.showPassword"
+                android:id="@+id/showHidePasswordCheckbox" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.saveConfiguration"
+            android:id="@+id/saveConfiguration"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.apply"
+            android:id="@+id/applyButton"
+            android:layout_gravity="right" />
     </LinearLayout>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.saveConfiguration"
-        android:id="@+id/saveConfiguration"
-        android:layout_marginTop="10dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.apply"
-        android:id="@+id/applyButton"
-        android:layout_gravity="right" />
 
 
 </LinearLayout>

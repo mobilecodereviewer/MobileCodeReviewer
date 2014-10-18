@@ -12,13 +12,13 @@ import java.util.List;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeMessagesTabController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangeMessagesViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeMessagesTabView;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
-public class ChangeMessagesTab extends RoboActivity implements ChangeMessagesTabView {
+public class ChangeMessagesTab extends BaseActivity implements ChangeMessagesTabView {
 
     @Inject
     private ChangeMessagesTabController controller;

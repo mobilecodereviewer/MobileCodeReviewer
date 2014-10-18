@@ -22,4 +22,6 @@ public interface ConfigurationView {
     void showNoInternetConnectionInformation();
 
     void onAuthenticationSuccess();
+
+    void showUnsentCrashReportInformation();
 }

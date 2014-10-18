@@ -10,13 +10,13 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeInfoTabView;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
-public class ChangeInfoTab extends RoboActivity implements ChangeInfoTabView {
+public class ChangeInfoTab extends BaseActivity implements ChangeInfoTabView {
 
     @Inject
     private ChangeInfoTabController controller;

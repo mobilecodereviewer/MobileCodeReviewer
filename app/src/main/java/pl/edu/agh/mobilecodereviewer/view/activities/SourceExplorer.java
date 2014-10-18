@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.ListView;
 
 import com.google.inject.Inject;
 
@@ -21,12 +23,12 @@ import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 /**
@@ -38,7 +40,7 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class SourceExplorer extends RoboActivity implements SourceExplorerView{
+public class SourceExplorer extends BaseActivity implements SourceExplorerView{
     private String change_id;
     private String revision_id;
     private String file_id;

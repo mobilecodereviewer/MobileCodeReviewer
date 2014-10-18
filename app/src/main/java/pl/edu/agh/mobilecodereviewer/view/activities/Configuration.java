@@ -3,8 +3,8 @@ package pl.edu.agh.mobilecodereviewer.view.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
@@ -20,10 +20,12 @@ import android.widget.Toast;
 
 import com.google.inject.Inject;
 
+import java.io.File;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
+import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandlerHelper;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
@@ -68,6 +70,18 @@ public class Configuration extends RoboActivity implements ConfigurationView {
 
     @InjectView(R.id.showHidePasswordCheckbox)
     private CheckBox showHidePasswordCheckBox;
+
+    @InjectView(R.id.crashReportLayout)
+    private LinearLayout crashReportLayout;
+
+    @InjectView(R.id.configurationLayout)
+    private LinearLayout configurationLayout;
+
+    @InjectView(R.id.sendCrashReportButton)
+    private Button sendCrashReportButton;
+
+    @InjectView(R.id.cancelCrashReportButton)
+    private Button cancelCrashReportButton;
 
     @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_Configuration_toast_giveName)
     private String giveNameToast;
@@ -129,7 +143,7 @@ public class Configuration extends RoboActivity implements ConfigurationView {
         });
 
         setAuthenticationVisibility();
-        controller.updateSavedConfigurations(this);
+        controller.checkCrashReports(this);
     }
 
     private void hidePasswordText() {
@@ -176,6 +190,10 @@ public class Configuration extends RoboActivity implements ConfigurationView {
 
     @Override
     public void showSavedConfigurations(List<ConfigurationInfo> savedConfigurationInfos) {
+
+        crashReportLayout.setVisibility(View.GONE);
+        configurationLayout.setVisibility(View.VISIBLE);
+
         this.savedConfigurationInfos = savedConfigurationInfos;
 
         spinnerAdapter = new SavedConfigurationsSpinnerAdapter(this, savedConfigurationInfos, controller);
@@ -227,6 +245,47 @@ public class Configuration extends RoboActivity implements ConfigurationView {
     public void onAuthenticationSuccess() {
         Intent intent = new Intent(getApplicationContext(), ChangesExplorer.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showUnsentCrashReportInformation() {
+
+        crashReportLayout.setVisibility(View.VISIBLE);
+        configurationLayout.setVisibility(View.GONE);
+
+        UncaughtExceptionHandlerHelper.prepareFileToSend();
+
+        sendCrashReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+
+                sendIntent.setType("plain/text");
+                sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{UncaughtExceptionHandlerHelper.CRASH_REPORT_EMAIL_ADDRESS});
+                sendIntent.putExtra(Intent.EXTRA_TEXT, UncaughtExceptionHandlerHelper.CRASH_REPORT_EMAIL_BODY);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, UncaughtExceptionHandlerHelper.CRASH_REPORT_EMAIL_SUBJECT);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(UncaughtExceptionHandlerHelper.getCrashLogFilePath())));
+
+                sendIntent.setType("message/rfc822");
+                startActivity(Intent.createChooser(sendIntent, UncaughtExceptionHandlerHelper.SEND_EMAIL_DIALOG_TITLE));
+
+                controller.updateSavedConfigurations(Configuration.this);
+            }
+        });
+
+        cancelCrashReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.updateSavedConfigurations(Configuration.this);
+            }
+        });
+
+        removeCrashReportTmpFile();
+    }
+
+    private void removeCrashReportTmpFile(){
+        File toDelete = new File(UncaughtExceptionHandlerHelper.getCrashLogTmpFilePath());
+        toDelete.delete();
     }
 
     private void setAuthenticationVisibility(){

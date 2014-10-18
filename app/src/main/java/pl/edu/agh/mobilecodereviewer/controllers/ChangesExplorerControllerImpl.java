@@ -63,9 +63,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     }
 
     public List<ChangeInfo> getChangeInfos() {
-        if (changeInfos == null) { // perform lazy initialization
-            changeInfos = changeInfoDAO.getAllChangesInfo();
-        }
+        changeInfos = changeInfoDAO.getAllChangesInfo();
         return filterWithAppropriateStatus(changeInfos);
     }
 
