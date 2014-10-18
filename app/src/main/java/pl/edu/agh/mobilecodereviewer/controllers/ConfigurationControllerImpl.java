@@ -1,10 +1,13 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
+import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandler;
+import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandlerHelper;
 import pl.edu.agh.mobilecodereviewer.commons.PreferencesAccessor;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
@@ -17,6 +20,15 @@ public class ConfigurationControllerImpl implements ConfigurationController {
     public static enum ConfigurationError {INCORRECT_URL, INCORRECT_LOGIN_INFORMATION, GERRIT_VERSION_TO_LOW};
 
     private String retrievedVersion;
+
+    @Override
+    public void checkCrashReports(ConfigurationView view) {
+        if(UncaughtExceptionHandlerHelper.checkIfPendingReportsExist()) {
+            view.showUnsentCrashReportInformation();
+        }else {
+            updateSavedConfigurations(view);
+        }
+    }
 
     @Override
     public void authenticate(MobileCodeReviewerApplication mobileCodeReviewerApplication, ConfigurationView view, ConfigurationInfo configurationInfo, boolean saveConfiguration, boolean authenticateUser) {

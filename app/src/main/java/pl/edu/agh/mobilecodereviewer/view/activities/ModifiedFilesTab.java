@@ -15,10 +15,10 @@ import java.util.List;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ModifiedFilesViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 /**
@@ -29,7 +29,7 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class ModifiedFilesTab extends RoboActivity implements ModifiedFilesTabView {
+public class ModifiedFilesTab extends BaseActivity implements ModifiedFilesTabView {
 
     /**
      * Associated controller which make actions to activity events

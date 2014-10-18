@@ -30,6 +30,8 @@ import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 import roboguice.activity.RoboTabActivity;
+import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseTabActivity;
+import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import roboguice.inject.InjectResource;
 
 /**
@@ -41,7 +43,7 @@ import roboguice.inject.InjectResource;
  * @version 0.1
  * @since 0.1
  */
-public class ChangeDetails extends RoboTabActivity implements ChangeDetailsView{
+public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
 
     @Inject
     private ChangeDetailsController controller;

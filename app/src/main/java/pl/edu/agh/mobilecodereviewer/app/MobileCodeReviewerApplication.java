@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import com.google.inject.Inject;
 
+import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandler;
 import pl.edu.agh.mobilecodereviewer.commons.PreferencesAccessor;
 import pl.edu.agh.mobilecodereviewer.configuration.InjectionModule;
 import pl.edu.agh.mobilecodereviewer.dao.api.AccountDAO;
@@ -89,6 +90,5 @@ public class MobileCodeReviewerApplication extends android.app.Application {
         RoboGuice.setBaseApplicationInjector(this, RoboGuice.DEFAULT_STAGE,
                 RoboGuice.newDefaultRoboModule(this), new InjectionModule());
     }
-
 }
 

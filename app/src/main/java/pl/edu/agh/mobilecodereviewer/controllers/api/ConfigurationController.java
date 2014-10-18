@@ -6,9 +6,11 @@ import pl.edu.agh.mobilecodereviewer.view.api.ConfigurationView;
 
 public interface ConfigurationController {
 
-    public void authenticate(MobileCodeReviewerApplication mobileCodeReviewerApplication, ConfigurationView view, ConfigurationInfo configurationInfo, boolean saveConfiguration, boolean authenticateUser);
+    void checkCrashReports(ConfigurationView view);
 
-    public void updateSavedConfigurations(ConfigurationView view);
+    void authenticate(MobileCodeReviewerApplication mobileCodeReviewerApplication, ConfigurationView view, ConfigurationInfo configurationInfo, boolean saveConfiguration, boolean authenticateUser);
+
+    void updateSavedConfigurations(ConfigurationView view);
 
     void removeAuthenticationConfiguration(ConfigurationView view, ConfigurationInfo configurationInfo);
 

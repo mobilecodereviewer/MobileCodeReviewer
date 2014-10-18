@@ -17,7 +17,9 @@
     <!-- commons end -->
 
     <!--Configuration start-->
-
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.recovered">Application recovered after unexpected exception.
+        \n\nWould you like to send report to help us repair this problem?
+        \n\nPlease note that if you choose not to send this report it will be deleted.</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.spinner.prompt">Saved configurations</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.configName">Configuration name</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.url">URL</string>
