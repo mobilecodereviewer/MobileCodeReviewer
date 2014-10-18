@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
+package pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities;
 
 
 

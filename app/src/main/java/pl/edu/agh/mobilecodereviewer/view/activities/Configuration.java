@@ -25,9 +25,9 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
-import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandlerHelper;
+import pl.edu.agh.mobilecodereviewer.exceptions.handlers.UncaughtExceptionHandlerHelper;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SavedConfigurationsCustomSpinner;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SavedConfigurationsSpinnerAdapter;

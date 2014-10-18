@@ -6,16 +6,16 @@ import android.net.NetworkInfo;
 
 import com.google.inject.Inject;
 
-import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandler;
-import pl.edu.agh.mobilecodereviewer.commons.PreferencesAccessor;
+import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
+import pl.edu.agh.mobilecodereviewer.utilities.PreferencesAccessor;
 import pl.edu.agh.mobilecodereviewer.configuration.InjectionModule;
 import pl.edu.agh.mobilecodereviewer.dao.api.AccountDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
-import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.AsynchronousRestApi;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import roboguice.RoboGuice;
 
 /**
@@ -40,23 +40,21 @@ public class MobileCodeReviewerApplication extends android.app.Application {
     @Inject
     private AccountDAO accountDAO;
 
-    private AccountInfo loggedUser;
-
-    private boolean isAuthenticated;
-
     private RestApi restApi;
 
     public void initialize(ConfigurationInfo configurationInfo) {
         this.restApi = new AsynchronousRestApi( new RestApi(configurationInfo) );
-        this.isAuthenticated = configurationInfo.isAuthenticatedUser();
 
         changeInfoDAO.initialize(restApi);
         sourceCodeDAO.initialize(restApi);
         accountDAO.initialize(restApi);
 
-        if(isAuthenticated()) {
-            loggedUser = accountDAO.getAccountInfo();
+        AccountInfo accountInfo = null;
+        if(configurationInfo.isAuthenticatedUser()){
+            accountInfo = accountDAO.getAccountInfo();
         }
+
+        new ConfigurationContainer(configurationInfo, accountInfo);
     }
 
     public boolean isNetworkAvailable(){
@@ -64,12 +62,6 @@ public class MobileCodeReviewerApplication extends android.app.Application {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    public AccountInfo getLoggedUser() {return loggedUser;}
-
-    public boolean isAuthenticated(){
-        return isAuthenticated;
     }
 
     /**

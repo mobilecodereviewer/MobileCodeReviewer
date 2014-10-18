@@ -1,7 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
 import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
 import pl.edu.agh.mobilecodereviewer.view.api.ConfigurationView;
 
 public interface ConfigurationController {

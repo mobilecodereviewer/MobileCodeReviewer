@@ -3,7 +3,7 @@ package pl.edu.agh.mobilecodereviewer.view.activities.base;
 
 import android.os.Bundle;
 
-import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandler;
+import pl.edu.agh.mobilecodereviewer.exceptions.handlers.UncaughtExceptionHandler;
 import roboguice.activity.RoboActivity;
 
 public class BaseActivity extends RoboActivity{

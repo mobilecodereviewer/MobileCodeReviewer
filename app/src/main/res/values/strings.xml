@@ -76,7 +76,7 @@
 
     <!--SourceExplorer start-->
     <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.title">Source explorer</string>
-    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.comment.placeholder">Type your comment...</string>
+    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.comment">Add comment to selected line</string>
     <!--SourceExplorer end-->
 
 

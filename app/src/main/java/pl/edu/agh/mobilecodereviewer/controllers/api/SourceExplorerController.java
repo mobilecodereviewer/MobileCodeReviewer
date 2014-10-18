@@ -19,25 +19,9 @@ public interface SourceExplorerController {
 
     void toggleDiffView();
 
-    /**
-     * Request for updating source code.
-     *
-     * @param view View in which source code will be shown
-     * @param change_id id of change containing revision with file
-     * @param revision_id id of revision containing file
-     * @param file_id id of file for which source code will be shown
-     */
-    void updateSourceCode();
-
-    void updateSourceCodeDiff();
-
     void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id);
 
-    void insertComment(String content);
-
-    void cancelComment();
-
-    void toggleCommentWriteMode();
+    void insertComment(String content, int lineNumber);
 
     void setCurrentLinePosition(int currLine);
 

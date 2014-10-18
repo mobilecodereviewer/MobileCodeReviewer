@@ -15,74 +15,8 @@
         android:layout_height="fill_parent"
         android:id="@+id/sourceLinesListView"
         android:footerDividersEnabled="false"
-        android:layout_above="@+id/optionsLayout"
         android:choiceMode="singleChoice"
         android:listSelector="@android:color/holo_blue_light"
         android:background="?android:attr/activatedBackgroundIndicator" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/optionsLayout"
-        android:orientation="vertical"
-        >
-
-        <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/common_expand_icon"
-            android:id="@+id/showHideCommentOptionsButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="-10dp"
-            android:visibility="visible" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="173dp"
-                android:orientation="vertical"
-                android:weightSum="1"
-                android:id="@+id/addCommentOptions"
-                android:background="@drawable/rectangle_border_black"
-                >
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/optionsRelativeLayout"
-                    android:layout_alignParentBottom="true">
-
-                    <EditText
-                        android:layout_width="fill_parent"
-                        android:layout_height="100dp"
-                        android:id="@+id/commentContentTextView"
-                        android:background="@drawable/rectangle_border_blue"
-                        android:hint="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.comment.placeholder"
-                        android:layout_margin="15dp"
-                        android:padding="5dp"/>
-
-
-                    <ImageButton
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/common_cancel_icon"
-                        android:id="@+id/cancelCommentButton"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true" />
-
-                    <ImageButton
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/common_accept_icon"
-                        android:id="@+id/sendCommentButton"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true" />
-
-                </RelativeLayout>
-            </LinearLayout>
-    </LinearLayout>
 
 </RelativeLayout>

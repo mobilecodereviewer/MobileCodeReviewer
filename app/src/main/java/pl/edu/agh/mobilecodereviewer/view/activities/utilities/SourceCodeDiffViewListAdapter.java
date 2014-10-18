@@ -11,6 +11,7 @@ import android.widget.TextView;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeDiffHelper;
 
 public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
 
@@ -19,7 +20,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
 
     public SourceCodeDiffViewListAdapter(Activity context,
                                          SourceCodeDiff sourceCodeDiff) {
-        super(context, R.layout.layout_source_diff_line, new String[sourceCodeDiff.getLinesCount()]);
+        super(context, R.layout.layout_source_diff_line, SourceCodeDiffHelper.getContent(sourceCodeDiff));
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
     }

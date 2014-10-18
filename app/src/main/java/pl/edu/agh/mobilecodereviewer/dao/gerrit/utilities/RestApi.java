@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
+package pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities;
 
 import org.apache.commons.io.IOUtils;
 
@@ -14,9 +14,11 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import pl.edu.agh.mobilecodereviewer.utilities.Pair;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.NetworkException;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.UnauthorizedRequestException;
+import pl.edu.agh.mobilecodereviewer.exceptions.NetworkException;
+import pl.edu.agh.mobilecodereviewer.exceptions.UnauthorizedRequestException;
 import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
@@ -34,7 +36,7 @@ import retrofit.client.Request;
 import retrofit.client.Response;
 import retrofit.mime.TypedInput;
 
-import static pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.HttpDigestAuth.tryDigestAuthentication;
+import static pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.HttpDigestAuth.tryDigestAuthentication;
 
 /**
  * Element responsible for getting data from gerrit instance
@@ -190,7 +192,7 @@ public class RestApi {
     /**
      * Get current revision with list of files.
      * @param id identifier of change
-     * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
+     * @return {@link pl.edu.agh.mobilecodereviewer.utilities.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
      */
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithFiles(final String id){
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithFiles(id);
@@ -200,7 +202,7 @@ public class RestApi {
     /**
      * Get current revision with commit message.
      * @param id identifier of change
-     * @return {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
+     * @return {@link pl.edu.agh.mobilecodereviewer.utilities.Pair} of changeId, and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO} object representing revision
      */
     public Pair<String, RevisionInfoDTO> getCurrentRevisionWithCommit(final String id) {
         ChangeInfoDTO changeInfoDTO = gerritService.getCurrentRevisionWithCommit(id);

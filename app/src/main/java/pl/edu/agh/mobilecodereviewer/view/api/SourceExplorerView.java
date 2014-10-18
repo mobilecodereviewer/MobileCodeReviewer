@@ -26,12 +26,6 @@ public interface SourceExplorerView {
 
     void setInterfaceForDiff();
 
-    void clearCommentContent();
-
-    void showCommentOptions();
-
-    void hideCommentOptions();
-
     void showMessage(String message);
 
     void gotoLine(int line);

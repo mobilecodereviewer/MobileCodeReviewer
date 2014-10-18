@@ -1,7 +1,5 @@
 package integration;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 
 import org.junit.BeforeClass;
@@ -11,13 +9,10 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
-import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
-import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
-import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import retrofit.client.Client;
 import retrofit.client.Request;
 import retrofit.client.Response;

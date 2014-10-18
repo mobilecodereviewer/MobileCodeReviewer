@@ -1,18 +1,16 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
-import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandler;
-import pl.edu.agh.mobilecodereviewer.app.utils.UncaughtExceptionHandlerHelper;
-import pl.edu.agh.mobilecodereviewer.commons.PreferencesAccessor;
+import pl.edu.agh.mobilecodereviewer.exceptions.handlers.UncaughtExceptionHandlerHelper;
+import pl.edu.agh.mobilecodereviewer.utilities.PreferencesAccessor;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.AsynchronousRestApi;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.view.api.ConfigurationView;
 
 public class ConfigurationControllerImpl implements ConfigurationController {

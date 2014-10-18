@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/lineNumberText"
-                android:layout_width="0dp"
+                android:layout_width="20dp"
                 android:layout_weight="0.05"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/common_medium_font_size"

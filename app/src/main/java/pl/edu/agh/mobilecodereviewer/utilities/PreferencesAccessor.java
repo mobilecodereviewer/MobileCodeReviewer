@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.commons;
+package pl.edu.agh.mobilecodereviewer.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,8 +8,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
-
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
 
 public class PreferencesAccessor {
 

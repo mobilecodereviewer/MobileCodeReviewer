@@ -3,8 +3,8 @@ package pl.edu.agh.mobilecodereviewer.dao.gerrit.api;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.NetworkException;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions.UnauthorizedRequestException;
+import pl.edu.agh.mobilecodereviewer.exceptions.NetworkException;
+import pl.edu.agh.mobilecodereviewer.exceptions.UnauthorizedRequestException;
 import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;

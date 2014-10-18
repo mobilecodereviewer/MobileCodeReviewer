@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -10,6 +12,7 @@ import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.inject.InjectResource;
 
@@ -102,9 +105,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         return sourceCodeDiff;
     }
 
-
-    @Override
-    public void updateSourceCode() {
+    private void updateSourceCode() {
         SourceCode sourceCode = getSourceCode();
 
         view.clearSourceCode();
@@ -113,9 +114,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     }
 
 
-
-    @Override
-    public void updateSourceCodeDiff() {
+    private void updateSourceCodeDiff() {
         SourceCodeDiff sourceCodeDiff = getSourceCodeDiff();
 
         view.showSourceCodeDiff(sourceCodeDiff );
@@ -123,41 +122,23 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     }
 
     @Override
-    public void insertComment(String content) {
-        if (currentSelectedLine != -1) {
-            DiffedLine line = sourceCodeDiff.getLine(currentSelectedLine);
-            if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
-                view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
-            }
-
-            int linenum = line.getNewLineNumber();
-            Comment comment = new Comment(linenum, file_id, content, null, null);
-
-            sourceCodeDAO.putFileComment(change_id, revision_id, comment);
-            sourceCode.getLine(linenum).getComments().add(comment);
-            updateSourceCodeDiff();
+    public void insertComment(String content, int lineNumber) {
+        DiffedLine line = sourceCodeDiff.getLine(lineNumber);
+        if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
+            view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
         }
-    }
 
-    @Override
-    public void cancelComment() {
-        view.clearCommentContent();
-    }
+        int linenum = line.getNewLineNumber();
+        Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
 
-    @Override
-    public void toggleCommentWriteMode() {
-        isAddingCommentOptionsVisible = !isAddingCommentOptionsVisible;
-        if ( isAddingCommentOptionsVisible ) {
-            view.showCommentOptions();
-        } else {
-            view.clearCommentContent();
-            view.hideCommentOptions();
-        }
+        sourceCodeDAO.putFileComment(change_id, revision_id, comment);
+        sourceCode.getLine(linenum).getComments().add(comment);
+        updateSourceCodeDiff();
     }
 
     @Override
     public void setCurrentLinePosition(int currLine) {
-        currentSelectedLine = currLine+1;
+        this.currentSelectedLine = currLine;
     }
 
     @Override

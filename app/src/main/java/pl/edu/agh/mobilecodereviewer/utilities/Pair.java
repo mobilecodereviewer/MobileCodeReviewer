@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao.gerrit.tools;
+package pl.edu.agh.mobilecodereviewer.utilities;
 
 /**
  * Tuple of the two element

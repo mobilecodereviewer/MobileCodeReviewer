@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.DiffContentDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;

@@ -1,10 +1,5 @@
-package pl.edu.agh.mobilecodereviewer.app.utils;
+package pl.edu.agh.mobilecodereviewer.exceptions.handlers;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-
-import java.io.File;
 
 public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 

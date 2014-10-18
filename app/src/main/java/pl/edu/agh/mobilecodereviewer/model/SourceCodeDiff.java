@@ -10,7 +10,7 @@ import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 /**
  * Created by lee on 2014-10-16.
  */
-public class SourceCodeDiff {
+public class SourceCodeDiff{
     private DiffInfoDTO diffInfoDTO;
     private Map<Integer, DiffedLine> lines;
     private int countOfLines;

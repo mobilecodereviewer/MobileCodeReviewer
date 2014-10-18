@@ -2,8 +2,7 @@ package pl.edu.agh.mobilecodereviewer.view.api;
 
 import java.util.List;
 
-import pl.edu.agh.mobilecodereviewer.controllers.ConfigurationControllerImpl;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
 
 public interface ConfigurationView {
 

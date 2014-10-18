@@ -25,13 +25,12 @@ import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.*;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
-import roboguice.activity.RoboTabActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseTabActivity;
-import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import roboguice.inject.InjectResource;
 
 /**
@@ -148,7 +147,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.change_details, menu);
 
-        if(!((MobileCodeReviewerApplication) getApplication()).isAuthenticated()) {
+        if(!ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()) {
             menu.setGroupVisible(R.id.changeDetailsPrivilegedGroup, false);
         }
 
@@ -183,7 +182,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
 
         final EditText userInput = (EditText) addReviewView.findViewById(R.id.editTextDialogUserInput);
 
-        AccountInfo loggedUser = ((MobileCodeReviewerApplication) getApplication()).getLoggedUser();
+        AccountInfo loggedUser = ConfigurationContainer.getInstance().getLoggedUser();
         final ListView votesList = (ListView) addReviewView.findViewById(R.id.votesList);
         votesList.setAdapter(new AddReviewVotesListAdapter(this, labelInfos, loggedUser));
 

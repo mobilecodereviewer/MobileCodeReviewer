@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.app.utils;
+package pl.edu.agh.mobilecodereviewer.exceptions.handlers;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -10,7 +10,6 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

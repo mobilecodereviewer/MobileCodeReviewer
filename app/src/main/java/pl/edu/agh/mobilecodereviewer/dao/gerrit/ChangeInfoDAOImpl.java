@@ -8,9 +8,8 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.AsynchronousRestApi;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.utilities.Pair;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeMessageInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.FileInfoDTO;
@@ -23,7 +22,6 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.model.utilities.LabelInfoHelper;
-import roboguice.inject.ContextSingleton;
 
 /**
  * Data access object for information about Changes. It is
@@ -44,12 +42,12 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
     }
 
     /**
-     * Construct Object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * Construct Object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
      */
     public ChangeInfoDAOImpl() { }
 
     /**
-     * Construct Object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * Construct Object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
      * @param restApi
      */
     public ChangeInfoDAOImpl(RestApi restApi) {

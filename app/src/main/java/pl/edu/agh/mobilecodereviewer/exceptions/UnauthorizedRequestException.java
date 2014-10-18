@@ -1,4 +1,4 @@
-package pl.edu.agh.mobilecodereviewer.dao.gerrit.exceptions;
+package pl.edu.agh.mobilecodereviewer.exceptions;
 
 public class UnauthorizedRequestException extends Exception{
 }

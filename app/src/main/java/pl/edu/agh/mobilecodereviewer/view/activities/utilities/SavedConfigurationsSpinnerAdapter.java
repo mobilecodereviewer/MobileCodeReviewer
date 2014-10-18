@@ -12,7 +12,7 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
 import pl.edu.agh.mobilecodereviewer.view.api.ConfigurationView;
 
 public class SavedConfigurationsSpinnerAdapter extends ArrayAdapter<ConfigurationInfo> {

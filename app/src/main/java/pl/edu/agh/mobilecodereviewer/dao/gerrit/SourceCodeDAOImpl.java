@@ -13,8 +13,8 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Base64;
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.Base64;
+import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
@@ -30,7 +30,7 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 @Singleton
 public class SourceCodeDAOImpl implements SourceCodeDAO {
     /**
-     * {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
      */
     private RestApi restApi;
 
@@ -40,15 +40,15 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
     }
 
     /**
-     * Construct object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * Construct object with default {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
      */
     public SourceCodeDAOImpl() {
 
     }
 
     /**
-     * Construct object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
-     * @param restApi {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.RestApi}
+     * Construct object from given {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
+     * @param restApi {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
      */
     public SourceCodeDAOImpl(RestApi restApi) {
         this.restApi = restApi;

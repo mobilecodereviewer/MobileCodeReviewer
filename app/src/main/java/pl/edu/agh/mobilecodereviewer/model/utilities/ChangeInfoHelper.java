@@ -1,13 +1,9 @@
 package pl.edu.agh.mobilecodereviewer.model.utilities;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.mobilecodereviewer.dao.gerrit.tools.Pair;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 
 public final class ChangeInfoHelper {

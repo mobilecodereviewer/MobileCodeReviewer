@@ -1,28 +1,26 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.RelativeLayout;
-import android.widget.ListView;
 
 import com.google.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
-import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
@@ -49,6 +47,8 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
     private MenuItem prevChangeNavigation;
     private MenuItem nextChangeNavigation;
 
+    private boolean isDiffView = false;
+
     private final Context context = this;
     /**
      *  Associated controller which make actions to activity events
@@ -61,21 +61,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
      */
     @InjectView(R.id.sourceLinesListView)
     private ListView sourceLinesListView;
-
-    @InjectView(R.id.addCommentOptions)
-    private LinearLayout addCommentOptions;
-
-    @InjectView(R.id.showHideCommentOptionsButton)
-    private ImageButton showHideCommentOptionsButton;
-
-    @InjectView(R.id.sendCommentButton)
-    private ImageButton sendCommentButton;
-
-    @InjectView(R.id.cancelCommentButton)
-    private ImageButton cancelCommentButton;
-
-    @InjectView(R.id.commentContentTextView)
-    private EditText commentContentText;
 
     /**
      * Initialize view and request update of source code list
@@ -93,42 +78,63 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     private void initializeView() {
         final SourceExplorerView sourceView = this;
+
         sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 controller.setCurrentLinePosition(i);
             }
         });
-        sendCommentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.insertComment(commentContentText.getText().toString() );
-            }
-        });
-        cancelCommentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.cancelComment();
-            }
-        });
-        showHideCommentOptionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.toggleCommentWriteMode();
-            }
-        });
 
-        setCommentOptionsVisibility(null);
+        if(ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()) {
+            sourceLinesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
+
+                    if(isDiffView) {
+                        LayoutInflater li = LayoutInflater.from(SourceExplorer.this);
+                        View commentLineView = li.inflate(R.layout.layout_comment_line, null);
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SourceExplorer.this);
+                        alertDialogBuilder.setView(commentLineView);
+
+                        final EditText userInput = (EditText) commentLineView.findViewById(R.id.commentContentTextView);
+                        final TextView selectedLineView = (TextView) commentLineView.findViewById(R.id.selectedCodeLine);
+
+                        selectedLineView.setText((String) adapterView.getItemAtPosition(i));
+
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        controller.insertComment(userInput.getText().toString(), i);
+                                        break;
+
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        dialog.cancel();
+                                        break;
+                                }
+                            }
+                        };
+
+                        alertDialogBuilder
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
+                                .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        alertDialog.show();
+                    }
+
+                    return true;
+                }
+            });
+        }
 
         controller.initializeView();
-    }
-
-    private void setCommentOptionsVisibility(Boolean visibility){
-        if(!((MobileCodeReviewerApplication) getApplication()).isAuthenticated()){
-            showHideCommentOptionsButton.setVisibility(View.GONE);
-        } else if(visibility != null){
-            showHideCommentOptionsButton.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        }
     }
 
     @Override
@@ -170,6 +176,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
         int id = item.getItemId();
 
         if(id == R.id.sourceDiffToggleButton) {
+            isDiffView = !isDiffView;
             controller.toggleDiffView();
         }else if(id == R.id.action_about) {
             AboutDialogHelper.showDialog(this);
@@ -207,9 +214,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
         if(menu != null) {
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
         }
-        addCommentOptions.setVisibility(View.GONE);
-        setCommentOptionsVisibility(false);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
         hideNavigationButtons();
     }
 
@@ -226,8 +230,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
     public void setInterfaceForDiff() {
         if(menu != null)
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
-        addCommentOptions.setVisibility(View.GONE);
-        setCommentOptionsVisibility(true);
         showNavigationButtons();
     }
 
@@ -236,49 +238,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
         nextChangeNavigation.setVisible(true);
         prevChangeNavigation.setEnabled(true);
         nextChangeNavigation.setEnabled(true);
-    }
-
-    @Override
-    public void clearCommentContent() {
-        commentContentText.setText("");
-    }
-
-    @Override
-    public void showCommentOptions() {
-        Animation bottomUp = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.bottom_up);
-
-        addCommentOptions.startAnimation(bottomUp);
-        addCommentOptions.setVisibility(View.VISIBLE);
-
-        showHideCommentOptionsButton.startAnimation(bottomUp);
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_collapse_icon);
-    }
-
-    @Override
-    public void hideCommentOptions() {
-
-        Animation topDown = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.top_down);
-        topDown.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                addCommentOptions.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        addCommentOptions.startAnimation(topDown);
-
-        showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
-        showHideCommentOptionsButton.startAnimation(topDown);
     }
 
     @Override
