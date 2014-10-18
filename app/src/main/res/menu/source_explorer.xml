@@ -13,4 +13,16 @@
         android:icon="@drawable/source_code_diff_icon"
         android:orderInCategory="0"
         android:showAsAction="always" />
+
+    <item android:id="@+id/gotoPrevChange"
+        android:icon="@android:drawable/ic_media_previous"
+        android:showAsAction="always"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoPrevChange" />
+
+    <item android:id="@+id/gotoNextChange"
+        android:icon="@android:drawable/ic_media_next"
+        android:showAsAction="always"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextChange" />
+
+
 </menu>

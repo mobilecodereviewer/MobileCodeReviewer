@@ -40,4 +40,8 @@ public interface SourceExplorerController {
     void toggleCommentWriteMode();
 
     void setCurrentLinePosition(int currLine);
+
+    void navigateToNextChange();
+
+    void navigateToPrevChange();
 }

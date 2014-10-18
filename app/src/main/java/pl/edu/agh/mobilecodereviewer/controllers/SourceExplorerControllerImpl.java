@@ -2,12 +2,16 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import javax.inject.Inject;
 
+import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
+import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
+import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
+import roboguice.inject.InjectResource;
 
 /**
  * Implementation for controlling action after event in source explorer
@@ -25,6 +29,8 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Inject
     SourceCodeDAO sourceCodeDAO;
 
+    public static final String INAPROPRIATE_LINE_FOR_COMMENT_INSERTION = "Comment cannot be inserted to skipped or removed line";
+
     boolean isDiffView = false;
     boolean isAddingCommentOptionsVisible = false;
     int currentSelectedLine = -1;
@@ -33,6 +39,9 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     private String change_id;
     private String revision_id;
     private String file_id;
+
+    private SourceCode sourceCode;
+    private SourceCodeDiff sourceCodeDiff;
 
     /**
      * Simple constructor. Used by DI framework.
@@ -79,19 +88,35 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         isAddingCommentOptionsVisible = false;
     }
 
+    private SourceCode getSourceCode() {
+        if (sourceCode == null) { // Lazy initialization
+            sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id);
+        }
+        return sourceCode;
+    }
+
+    private SourceCodeDiff getSourceCodeDiff() {
+        if (sourceCodeDiff == null) { // Lazy initialization
+            sourceCodeDiff =  sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+        }
+        return sourceCodeDiff;
+    }
+
 
     @Override
     public void updateSourceCode() {
-        SourceCode sourceCode = sourceCodeDAO.getSourceCode(change_id,revision_id,file_id);
+        SourceCode sourceCode = getSourceCode();
 
         view.clearSourceCode();
         view.showSourceCode(sourceCode);
         view.setInterfaceForCode();
     }
 
+
+
     @Override
     public void updateSourceCodeDiff() {
-        SourceCodeDiff sourceCodeDiff = sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+        SourceCodeDiff sourceCodeDiff = getSourceCodeDiff();
 
         view.showSourceCodeDiff(sourceCodeDiff );
         view.setInterfaceForDiff();
@@ -100,12 +125,17 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Override
     public void insertComment(String content) {
         if (currentSelectedLine != -1) {
-            Comment comment = new Comment(currentSelectedLine, file_id, content, null, null);
+            DiffedLine line = sourceCodeDiff.getLine(currentSelectedLine);
+            if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
+                view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
+            }
 
-            //sourceCodeDAO.putReview(change_id, revision_id, comment);
-            //TODO zahardcodowana wartosc, z normalnym revision_id byl bug trzeba to zmienic , ale na ten moment nie ma czasu....
-            sourceCodeDAO.putFileComment(change_id, "1", comment);
-            updateSourceCode();
+            int linenum = line.getNewLineNumber();
+            Comment comment = new Comment(linenum, file_id, content, null, null);
+
+            sourceCodeDAO.putFileComment(change_id, revision_id, comment);
+            sourceCode.getLine(linenum).getComments().add(comment);
+            updateSourceCodeDiff();
         }
     }
 
@@ -128,6 +158,24 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Override
     public void setCurrentLinePosition(int currLine) {
         currentSelectedLine = currLine+1;
+    }
+
+    @Override
+    public void navigateToNextChange() {
+        int nextChangedLine = sourceCodeDiff.findNextChangedLine(currentSelectedLine+1);
+        if (nextChangedLine > -1) {
+            view.gotoLine(nextChangedLine);
+            currentSelectedLine = nextChangedLine;
+        }
+    }
+
+    @Override
+    public void navigateToPrevChange() {
+        int prevChangedLine = sourceCodeDiff.findPrevChangedLine(currentSelectedLine-1);
+        if (prevChangedLine > -1) {
+            view.gotoLine(prevChangedLine);
+            currentSelectedLine = prevChangedLine;
+        }
     }
 
 }

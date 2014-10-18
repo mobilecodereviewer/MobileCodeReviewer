@@ -31,4 +31,8 @@ public interface SourceExplorerView {
     void showCommentOptions();
 
     void hideCommentOptions();
+
+    void showMessage(String message);
+
+    void gotoLine(int line);
 }

@@ -81,4 +81,63 @@ public class SourceCodeDiff {
     public int getLinesCount() {
         return countOfLines;
     }
+
+
+    // return -1 if next change wasnt found
+    public int findNextChangedLine(int startFrom) {
+        int start = startFrom > 0 ? startFrom : 0;
+        int i;
+        for (i=start;i<lines.size();i++) {
+            DiffedLine diffedLine = lines.get(i);
+            if (diffedLine.getLineType() == DiffLineType.REMOVED || diffedLine.getLineType() == DiffLineType.ADDED)
+                break;
+        }
+        if ( i < lines.size() )
+            return i;
+        else return -1;
+    }
+
+    // return -1 if prev change wasnt found
+    public int findPrevChangedLine(int startBackwordFrom) {
+        if (startBackwordFrom <= 0) return -1;
+        int i;
+        for (i = startBackwordFrom; i > -1; i--) {
+            DiffedLine diffedLine = lines.get(i);
+            if (diffedLine.getLineType() == DiffLineType.REMOVED || diffedLine.getLineType() == DiffLineType.ADDED)
+                break;
+        }
+
+        return i;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

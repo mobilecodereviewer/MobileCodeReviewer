@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.inject.Inject;
 
@@ -43,6 +44,8 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     private String file_id;
 
     private Menu menu;
+    private MenuItem prevChangeNavigation;
+    private MenuItem nextChangeNavigation;
 
     private final Context context = this;
     /**
@@ -88,7 +91,6 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
     private void initializeView() {
         final SourceExplorerView sourceView = this;
-        //sourceLinesListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -151,6 +153,9 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.source_explorer, menu);
+        this.prevChangeNavigation = menu.findItem(R.id.gotoPrevChange);
+        this.nextChangeNavigation = menu.findItem(R.id.gotoNextChange);
+        hideNavigationButtons();
         return true;
     }
 
@@ -164,10 +169,12 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
         if(id == R.id.sourceDiffToggleButton) {
             controller.toggleDiffView();
-        }
-
-        if(id == R.id.action_about) {
+        }else if(id == R.id.action_about) {
             AboutDialogHelper.showDialog(this);
+        }else if( id == R.id.gotoNextChange) {
+            controller.navigateToNextChange();
+        }else if (id == R.id.gotoPrevChange) {
+            controller.navigateToPrevChange();
         }
 
         return super.onOptionsItemSelected(item);
@@ -199,17 +206,34 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
         }
         addCommentOptions.setVisibility(View.GONE);
-        setCommentOptionsVisibility(true);
+        setCommentOptionsVisibility(false);
         showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
+        hideNavigationButtons();
+    }
+
+    private void hideNavigationButtons() {
+        if (prevChangeNavigation == null || nextChangeNavigation == null)
+            return;
+        prevChangeNavigation.setVisible(false);
+        nextChangeNavigation.setVisible(false);
+        prevChangeNavigation.setEnabled(false);
+        nextChangeNavigation.setEnabled(false);
     }
 
     @Override
     public void setInterfaceForDiff() {
-        if(menu != null) {
+        if(menu != null)
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
-        }
         addCommentOptions.setVisibility(View.GONE);
-        setCommentOptionsVisibility(false);
+        setCommentOptionsVisibility(true);
+        showNavigationButtons();
+    }
+
+    private void showNavigationButtons() {
+        prevChangeNavigation.setVisible(true);
+        nextChangeNavigation.setVisible(true);
+        prevChangeNavigation.setEnabled(true);
+        nextChangeNavigation.setEnabled(true);
     }
 
     @Override
@@ -253,6 +277,18 @@ public class SourceExplorer extends RoboActivity implements SourceExplorerView{
 
         showHideCommentOptionsButton.setBackgroundResource(R.drawable.common_expand_icon);
         showHideCommentOptionsButton.startAnimation(topDown);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void gotoLine(int line) {
+        sourceLinesListView.smoothScrollToPosition(line);
+        sourceLinesListView.setSelection(line);
+        sourceLinesListView.setSelected(true);
     }
 }
 
