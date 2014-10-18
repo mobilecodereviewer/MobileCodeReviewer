@@ -24,6 +24,8 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  */
 public class SourceExplorerControllerImpl implements SourceExplorerController{
 
+    public static final String NO_PREVIOUS_CHANGE_FOUND = "No previous change found";
+    public static final String NO_NEXT_CHANGE_FOUND = "No next change found";
     /**
      * Object gives information about source code
      */
@@ -154,7 +156,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         if (nextChangedLine > -1) {
             view.gotoLine(nextChangedLine);
             currentSelectedLine = nextChangedLine;
-        }
+        } else view.showMessage(NO_NEXT_CHANGE_FOUND);
     }
 
     @Override
@@ -163,7 +165,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         if (prevChangedLine > -1) {
             view.gotoLine(prevChangedLine);
             currentSelectedLine = prevChangedLine;
-        }
+        } else view.showMessage(NO_PREVIOUS_CHANGE_FOUND);
     }
 
 }

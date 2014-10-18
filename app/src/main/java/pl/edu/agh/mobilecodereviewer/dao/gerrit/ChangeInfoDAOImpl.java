@@ -153,7 +153,6 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         Map<String, LabelInfoDTO> labelInfoDTOs = restApi.getChangeDetails(id).getLabels();
         List<LabelInfo> labelInfos = new ArrayList<LabelInfo>();
 
-
         for(String labelName : labelInfoDTOs.keySet()){
             LabelInfoDTO labelInfoDTO = labelInfoDTOs.get(labelName);
             labelInfos.add(LabelInfoHelper.createLabelInfoFromDTO(labelName, labelInfoDTOs.get(labelName)));
