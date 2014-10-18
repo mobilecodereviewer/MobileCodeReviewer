@@ -38,7 +38,7 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class SourceExplorer extends BaseActivity implements SourceExplorerView{
+public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private String change_id;
     private String revision_id;
     private String file_id;
@@ -51,7 +51,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     private final Context context = this;
     /**
-     *  Associated controller which make actions to activity events
+     * Associated controller which make actions to activity events
      */
     @Inject
     private SourceExplorerController controller;
@@ -64,6 +64,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     /**
      * Initialize view and request update of source code list
+     *
      * @param savedInstanceState Saved instance of the activity
      */
     @Override
@@ -72,7 +73,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
         setContentView(R.layout.activity_source_explorer);
 
         initializeSourceProperties();
-        controller.initializeData(this,change_id,revision_id,file_id);
+        controller.initializeData(this, change_id, revision_id, file_id);
         initializeView();
     }
 
@@ -86,48 +87,47 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
             }
         });
 
-        if(ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()) {
+        if (ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()) {
             sourceLinesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
 
-                    if(isDiffView) {
-                        LayoutInflater li = LayoutInflater.from(SourceExplorer.this);
-                        View commentLineView = li.inflate(R.layout.layout_comment_line, null);
 
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SourceExplorer.this);
-                        alertDialogBuilder.setView(commentLineView);
+                    LayoutInflater li = LayoutInflater.from(SourceExplorer.this);
+                    View commentLineView = li.inflate(R.layout.layout_comment_line, null);
 
-                        final EditText userInput = (EditText) commentLineView.findViewById(R.id.commentContentTextView);
-                        final TextView selectedLineView = (TextView) commentLineView.findViewById(R.id.selectedCodeLine);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SourceExplorer.this);
+                    alertDialogBuilder.setView(commentLineView);
 
-                        selectedLineView.setText((String) adapterView.getItemAtPosition(i));
+                    final EditText userInput = (EditText) commentLineView.findViewById(R.id.commentContentTextView);
+                    final TextView selectedLineView = (TextView) commentLineView.findViewById(R.id.selectedCodeLine);
 
-                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        controller.insertComment(userInput.getText().toString(), i);
-                                        break;
+                    selectedLineView.setText((String) adapterView.getItemAtPosition(i));
 
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        dialog.cancel();
-                                        break;
-                                }
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    controller.insertComment(userInput.getText().toString(), i);
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    dialog.cancel();
+                                    break;
                             }
-                        };
+                        }
+                    };
 
-                        alertDialogBuilder
-                                .setCancelable(false)
-                                .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
-                                .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
+                            .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
 
-                        AlertDialog alertDialog = alertDialogBuilder.create();
+                    AlertDialog alertDialog = alertDialogBuilder.create();
 
-                        alertDialog.show();
-                    }
+                    alertDialog.show();
 
                     return true;
                 }
@@ -155,6 +155,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     /**
      * Preparing activity's options menu.
+     *
      * @inheritDoc
      */
     @Override
@@ -169,20 +170,21 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     /**
      * Preparing activity's options menu onclick actions.
+     *
      * @inheritDoc
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.sourceDiffToggleButton) {
+        if (id == R.id.sourceDiffToggleButton) {
             isDiffView = !isDiffView;
             controller.toggleDiffView();
-        }else if(id == R.id.action_about) {
+        } else if (id == R.id.action_about) {
             AboutDialogHelper.showDialog(this);
-        }else if( id == R.id.gotoNextChange) {
+        } else if (id == R.id.gotoNextChange) {
             controller.navigateToNextChange();
-        }else if (id == R.id.gotoPrevChange) {
+        } else if (id == R.id.gotoPrevChange) {
             controller.navigateToPrevChange();
         }
 
@@ -191,12 +193,13 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     /**
      * Show content from given source code
+     *
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     @Override
     public void showSourceCode(final SourceCode sourceCode) {
         final SourceCodeViewListAdapter sourceCodeViewListAdapter =
-                new SourceCodeViewListAdapter(this,sourceCode);
+                new SourceCodeViewListAdapter(this, sourceCode);
 
         sourceLinesListView.setAdapter(sourceCodeViewListAdapter);
     }
@@ -204,14 +207,14 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
     @Override
     public void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff) {
         final SourceCodeDiffViewListAdapter sourceCodeDiffViewListAdapter =
-                new SourceCodeDiffViewListAdapter(this,sourceCodeDiff);
+                new SourceCodeDiffViewListAdapter(this, sourceCodeDiff);
 
         sourceLinesListView.setAdapter(sourceCodeDiffViewListAdapter);
     }
 
     @Override
     public void setInterfaceForCode() {
-        if(menu != null) {
+        if (menu != null) {
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_diff_icon));
         }
         hideNavigationButtons();
@@ -228,7 +231,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     @Override
     public void setInterfaceForDiff() {
-        if(menu != null)
+        if (menu != null)
             menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.source_code_code_icon));
         showNavigationButtons();
     }
@@ -242,7 +245,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView{
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override

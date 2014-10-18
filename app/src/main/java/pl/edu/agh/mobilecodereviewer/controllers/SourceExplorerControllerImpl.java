@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
@@ -14,7 +13,6 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
-import roboguice.inject.InjectResource;
 
 /**
  * Implementation for controlling action after event in source explorer
@@ -123,17 +121,26 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void insertComment(String content, int lineNumber) {
-        DiffedLine line = sourceCodeDiff.getLine(lineNumber);
-        if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
-            view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
-        }
+        int linenum;
+        if (isDiffView) {
+            DiffedLine line = sourceCodeDiff.getLine(lineNumber);
+            if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
+                view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
+                return;
+            }
 
-        int linenum = line.getNewLineNumber();
+            linenum = line.getNewLineNumber()+1;
+        } else {
+            linenum = lineNumber+1;
+        }
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
 
         sourceCodeDAO.putFileComment(change_id, revision_id, comment);
         sourceCode.getLine(linenum).getComments().add(comment);
-        updateSourceCodeDiff();
+        if (isDiffView)
+            updateSourceCodeDiff();
+        else
+            updateSourceCode();
     }
 
     @Override
