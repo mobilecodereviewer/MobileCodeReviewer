@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -34,14 +35,16 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
         TextView txtLineNumberBeforeChange = (TextView) rowView.findViewById(R.id.lineNumberBeforeChangeText);
         TextView txtLineNumberAfterChange = (TextView) rowView.findViewById(R.id.lineNumberAfterChangeText);
 
+        TableLayout lineContainer = (TableLayout) rowView.findViewById(R.id.diffLineMainLayout);
+
         if ( sourceCodeDiff != null) {
-            writeLineToTextView(txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, sourceCodeDiff.getLine(position)) ;
+            writeLineToTextView(lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, sourceCodeDiff.getLine(position)) ;
         }
 
         return rowView;
     }
 
-    private void writeLineToTextView(TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line) {
+    private void writeLineToTextView(TableLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line) {
         if (line == null) {
             linenumBefore.setText("");
             linenumAfter.setText("");
@@ -58,16 +61,14 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
                             linenumAfter.setText( Integer.toString(line.getNewLineNumber()+1) );
                             content.setText("+\t" + line.getContent());
 
-                            setBackgroundColorForTextViews(content, linenumBefore, linenumAfter,
-                                    Color.parseColor("#D1FFED"));
+                            setBackgroundColorForTextViews(lineContainer, Color.parseColor("#D1FFED"));
                             break;
                         case REMOVED:
                             linenumBefore.setText( Integer.toString(line.getOldLineNumber()+1) );
                             linenumAfter.setText("");
                             content.setText("-\t" + line.getContent());
 
-                            setBackgroundColorForTextViews(content, linenumBefore, linenumAfter,
-                                    Color.parseColor("#FFE3EA"));
+                            setBackgroundColorForTextViews(lineContainer, Color.parseColor("#FFE3EA"));
                             break;
                         case SKIPPED:
                             linenumBefore.setText("");
@@ -79,9 +80,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
         }
     }
 
-    private void setBackgroundColorForTextViews(TextView content, TextView linenumBefore, TextView linenumAfter, int color) {
-        content.setBackgroundColor(color);
-        linenumBefore.setBackgroundColor(color);
-        linenumAfter.setBackgroundColor(color);
+    private void setBackgroundColorForTextViews(TableLayout lineContainer, int color) {
+        lineContainer.setBackgroundColor(color);
     }
 }
