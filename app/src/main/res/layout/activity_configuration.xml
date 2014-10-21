@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:id="@+id/crashReportLayout"
-
+        android:visibility="gone"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -59,7 +59,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
+
         android:id="@+id/configurationLayout"
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -123,6 +123,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/loginBox">
+
+            <TextView
+                style="@style/configuration_icon"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pl.agh.edu.mobilecodereviewer.Configuration.CredentialType"/>
 
             <LinearLayout
                 android:orientation="horizontal"

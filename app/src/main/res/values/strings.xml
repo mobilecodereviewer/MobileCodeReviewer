@@ -37,7 +37,7 @@
 
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.showPassword">Show Password</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.hidePassword">Hide Password</string>
-
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.CredentialType">HTTP Credentials</string>
     <!--Configuration end-->
 
     <!--ChangeDetails start-->
