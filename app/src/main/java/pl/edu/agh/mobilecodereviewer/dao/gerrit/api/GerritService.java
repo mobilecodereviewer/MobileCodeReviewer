@@ -27,7 +27,7 @@ public interface GerritService {
     @GET("/config/server/version")
     String getVersion() throws NetworkException;
 
-    @GET("/a/accounts/self")
+    @GET("/accounts/self")
     AccountInfoDTO getAccountInfo() throws UnauthorizedRequestException, NetworkException;
 
     /**
@@ -103,7 +103,7 @@ public interface GerritService {
     DiffInfoDTO getDiffInfo(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
                             @Path("file-id") String file_id);
 
-    @POST("/a/changes/{change-id}/revisions/{revision-id}/review")
+    @POST("/changes/{change-id}/revisions/{revision-id}/review")
     ReviewInfoDTO putReview(@Path("change-id") String change_id, @Path("revision-id") String revision_id,
                             @Body ReviewInputDTO reviewInputDTO);
 

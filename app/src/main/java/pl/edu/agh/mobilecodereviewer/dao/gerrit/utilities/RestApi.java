@@ -328,37 +328,35 @@ public class RestApi {
         @Override
         public Response execute(Request request) throws IOException {
 
-            Request processedRequest;
+            Request preProcessedRequest;
 
             if(configurationInfo.isAuthenticatedUser()){
                 String[] splittedAddress = request.getUrl().split(configurationInfo.getUrl());
                 String authenticatedUrl = configurationInfo.getUrl();
 
-                if(!(splittedAddress[1].startsWith("/a/") || splittedAddress[1].startsWith("a/"))){
-                    if(authenticatedUrl.endsWith("/")){
-                        authenticatedUrl += "a/";
-                    } else {
-                        authenticatedUrl += "/a";
-                    }
+                if(authenticatedUrl.endsWith("/")){
+                    authenticatedUrl += "a/";
+                } else {
+                    authenticatedUrl += "/a";
                 }
 
                 authenticatedUrl += splittedAddress[1];
 
-                processedRequest = new Request(request.getMethod(), authenticatedUrl, request.getHeaders(), request.getBody());
+                preProcessedRequest = new Request(request.getMethod(), authenticatedUrl, request.getHeaders(), request.getBody());
 
             } else {
-                processedRequest = request;
+                preProcessedRequest = request;
             }
 
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(processedRequest.getUrl()).openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(preProcessedRequest.getUrl()).openConnection();
 
-            setConnectionProperties(request, urlConnection);
+            setConnectionProperties(preProcessedRequest, urlConnection);
             urlConnection.connect();
 
             HttpURLConnection authConnection = tryAuth(urlConnection, this.configurationInfo.getLogin(), this.configurationInfo.getPassword());
             if (authConnection != urlConnection) {
                 urlConnection = authConnection;
-                setConnectionProperties(request,urlConnection);
+                setConnectionProperties(preProcessedRequest,urlConnection);
                 urlConnection.connect();
             }
             return createResponseFromConnection(urlConnection);
