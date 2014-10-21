@@ -28,7 +28,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.password">password</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.saveConfiguration">Save configuration</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.apply">Apply</string>
-    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.incorrectURL">Incorrect URL</string>
+    <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.incorrectURL">Incorrect URL. Please make sure you provided port number. Your url should look like this "server.domain:portNum"</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.incorrectLogin">Incorrect login/password</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.giveName">Please provide name for this configuration</string>
     <string name="pl.agh.edu.mobilecodereviewer.Configuration.toast.overwrite">Configuration with given name exists. Do you want to overwrite it?</string>

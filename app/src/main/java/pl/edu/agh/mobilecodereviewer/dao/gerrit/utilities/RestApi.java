@@ -327,7 +327,31 @@ public class RestApi {
 
         @Override
         public Response execute(Request request) throws IOException {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(request.getUrl()).openConnection();
+
+            Request processedRequest;
+
+            if(configurationInfo.isAuthenticatedUser()){
+                String[] splittedAddress = request.getUrl().split(configurationInfo.getUrl());
+                String authenticatedUrl = configurationInfo.getUrl();
+
+                if(!(splittedAddress[1].startsWith("/a/") || splittedAddress[1].startsWith("a/"))){
+                    if(authenticatedUrl.endsWith("/")){
+                        authenticatedUrl += "a/";
+                    } else {
+                        authenticatedUrl += "/a";
+                    }
+                }
+
+                authenticatedUrl += splittedAddress[1];
+
+                processedRequest = new Request(request.getMethod(), authenticatedUrl, request.getHeaders(), request.getBody());
+
+            } else {
+                processedRequest = request;
+            }
+
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(processedRequest.getUrl()).openConnection();
+
             setConnectionProperties(request, urlConnection);
             urlConnection.connect();
 
