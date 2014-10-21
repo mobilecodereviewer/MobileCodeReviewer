@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:id="@+id/diffLineMainLayout">
 
-    <TableRow android:weightSum="1">
-
         <TextView
             android:id="@+id/lineNumberBeforeChangeText"
-            android:minWidth="20dp"
-            android:layout_weight="0.05"
             android:layout_height="@dimen/common_medium_line_height"
+            android:layout_width="50dp"
             android:textSize="@dimen/common_medium_font_size"
             android:textColor="@android:color/darker_gray"
             />
@@ -23,9 +20,8 @@
 
         <TextView
             android:id="@+id/lineNumberAfterChangeText"
-            android:minWidth="20dp"
-            android:layout_weight="0.05"
             android:layout_height="@dimen/common_medium_line_height"
+            android:layout_width="50dp"
             android:textSize="@dimen/common_medium_font_size"
             android:textColor="@android:color/darker_gray"
             />
@@ -39,9 +35,9 @@
         <TextView
             android:id="@+id/codeDiffText"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textSize="@dimen/common_medium_font_size"
             />
-    </TableRow>
-</TableLayout>
+
+</LinearLayout>

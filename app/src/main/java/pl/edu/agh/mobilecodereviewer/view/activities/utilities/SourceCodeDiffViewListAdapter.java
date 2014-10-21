@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
         TextView txtLineNumberBeforeChange = (TextView) rowView.findViewById(R.id.lineNumberBeforeChangeText);
         TextView txtLineNumberAfterChange = (TextView) rowView.findViewById(R.id.lineNumberAfterChangeText);
 
-        TableLayout lineContainer = (TableLayout) rowView.findViewById(R.id.diffLineMainLayout);
+        LinearLayout lineContainer = (LinearLayout) rowView.findViewById(R.id.diffLineMainLayout);
 
         if ( sourceCodeDiff != null) {
             writeLineToTextView(lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, sourceCodeDiff.getLine(position)) ;
@@ -44,7 +45,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
         return rowView;
     }
 
-    private void writeLineToTextView(TableLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line) {
+    private void writeLineToTextView(LinearLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line) {
         if (line == null) {
             linenumBefore.setText("");
             linenumAfter.setText("");
@@ -80,7 +81,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
         }
     }
 
-    private void setBackgroundColorForTextViews(TableLayout lineContainer, int color) {
+    private void setBackgroundColorForTextViews(LinearLayout lineContainer, int color) {
         lineContainer.setBackgroundColor(color);
     }
 }
