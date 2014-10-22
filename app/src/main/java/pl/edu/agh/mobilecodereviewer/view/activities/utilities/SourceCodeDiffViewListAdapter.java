@@ -15,16 +15,18 @@ import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeDiffHelper;
 
-public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
+public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  implements SourceCodeListAdapter {
 
     private final Activity context;
     private final SourceCodeDiff sourceCodeDiff;
+    private boolean showLineNumbers;
 
     public SourceCodeDiffViewListAdapter(Activity context,
                                          SourceCodeDiff sourceCodeDiff) {
         super(context, R.layout.layout_source_diff_line, SourceCodeDiffHelper.getContent(sourceCodeDiff));
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
+        showLineNumbers = false;
     }
 
     @Override
@@ -40,6 +42,11 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
 
         if ( sourceCodeDiff != null) {
             writeLineToTextView(lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, sourceCodeDiff.getLine(position)) ;
+        }
+
+        if (!showLineNumbers) {
+            txtLineNumberBeforeChange.setVisibility(View.GONE);
+            txtLineNumberAfterChange.setVisibility(View.GONE);
         }
 
         return rowView;
@@ -83,5 +90,17 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String> {
 
     private void setBackgroundColorForTextViews(LinearLayout lineContainer, int color) {
         lineContainer.setBackgroundColor(color);
+    }
+
+    @Override
+    public void showLineNumbers() {
+        showLineNumbers = true;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void hideLineNumbers() {
+        showLineNumbers = false;
+        notifyDataSetChanged();
     }
 }

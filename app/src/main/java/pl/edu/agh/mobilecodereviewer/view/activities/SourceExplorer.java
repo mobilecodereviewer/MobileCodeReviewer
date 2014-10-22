@@ -25,6 +25,7 @@ import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 import roboguice.inject.InjectView;
@@ -186,6 +187,9 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
             controller.navigateToNextChange();
         } else if (id == R.id.gotoPrevChange) {
             controller.navigateToPrevChange();
+        } else if (id == R.id.showHideLinesNumber) {
+            SourceCodeListAdapter sourceCodeListAdapter = (SourceCodeListAdapter) sourceLinesListView.getAdapter();
+            controller.toogleVisibilityOfLineNumbers( sourceCodeListAdapter );
         }
 
         return super.onOptionsItemSelected(item);

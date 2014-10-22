@@ -12,6 +12,7 @@ import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 
 /**
@@ -36,6 +37,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     boolean isDiffView = false;
     boolean isAddingCommentOptionsVisible = false;
+    boolean showLineNumbers = false;
     int currentSelectedLine = -1;
 
     private SourceExplorerView view;
@@ -166,6 +168,16 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
             view.gotoLine(prevChangedLine);
             currentSelectedLine = prevChangedLine;
         } else view.showMessage(NO_PREVIOUS_CHANGE_FOUND);
+    }
+
+    @Override
+    public void toogleVisibilityOfLineNumbers(SourceCodeListAdapter sourceCodeListAdapter) {
+        showLineNumbers = !showLineNumbers;
+        if (showLineNumbers) {
+            sourceCodeListAdapter.showLineNumbers();
+        } else {
+            sourceCodeListAdapter.hideLineNumbers();
+        }
     }
 
 }

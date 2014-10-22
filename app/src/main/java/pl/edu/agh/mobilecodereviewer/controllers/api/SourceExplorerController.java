@@ -2,6 +2,7 @@ package pl.edu.agh.mobilecodereviewer.controllers.api;
 
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
 
 /**
@@ -28,4 +29,6 @@ public interface SourceExplorerController {
     void navigateToNextChange();
 
     void navigateToPrevChange();
+
+    void toogleVisibilityOfLineNumbers(SourceCodeListAdapter sourceCodeListAdapter);
 }

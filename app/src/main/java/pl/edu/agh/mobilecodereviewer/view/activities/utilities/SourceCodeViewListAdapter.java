@@ -29,7 +29,7 @@ import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeHelper;
  * @version 0.1
  * @since 0.1
  */
-public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
+public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements SourceCodeListAdapter{
     /**
      * Activity in which source code view list adapter will be used
      */
@@ -46,6 +46,8 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
     private final List<Boolean> hasComments;
     private final SourceCode sourceCode;
 
+    boolean showLineNumbers;
+
     /**
      * Construct Adapter from given activity and sourcecode
      * @param context {@link android.app.Activity}
@@ -59,6 +61,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
         this.content = SourceCodeHelper.getContent(sourceCode);
         this.hasComments = SourceCodeHelper.getHasLineComments(sourceCode);
         this.sourceCode = sourceCode;
+        this.showLineNumbers = false;
     }
 
     /**
@@ -99,6 +102,20 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> {
             imageView.setImageResource( R.drawable.source_explorer_line_comment_icon );
         else
             imageView.setImageDrawable(null);
+        if (!showLineNumbers)
+            txtNumber.setVisibility(View.GONE);
         return rowView;
+    }
+
+    @Override
+    public void showLineNumbers() {
+        showLineNumbers = true;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void hideLineNumbers() {
+        showLineNumbers = false;
+        notifyDataSetChanged();
     }
 }

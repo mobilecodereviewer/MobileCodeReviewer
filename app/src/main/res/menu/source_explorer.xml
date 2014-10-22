@@ -24,5 +24,10 @@
         android:showAsAction="always"
         android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextChange" />
 
+    <item android:id="@+id/showHideLinesNumber"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:showAsAction="always"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextChange" />
+
 
 </menu>
