@@ -34,8 +34,11 @@ public interface GerritService {
      * Get all changes from file
      * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
-    @GET("/changes/?o=CURRENT_REVISION")
-    List<ChangeInfoDTO> getChanges();
+    // @TODO TO query jest popieprzone ale bez tego nie dziala - moze w przyslyszhc wersjach nie bedzie
+    // @TODO potrzeby zeby ono bylo, a dodatkowo ten potworek zwraca liste otwartych i liste zamknietych
+    // @TODO w dwoch listach...
+    @GET("/changes/?q=is:open+&q=is:closed")
+    List<List<ChangeInfoDTO>> getChanges();
 
     /**
      * Get detailed information about change

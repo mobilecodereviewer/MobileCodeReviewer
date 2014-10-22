@@ -1,5 +1,8 @@
 package pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileNotFoundException;
@@ -176,7 +179,8 @@ public class RestApi {
      * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO}
      */
     public List<ChangeInfoDTO> getChanges() {
-        return gerritService.getChanges();
+        List<List<ChangeInfoDTO>> allChanges = gerritService.getChanges();
+        return Lists.newArrayList(Iterables.concat(allChanges));
     }
 
     /**

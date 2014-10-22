@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.NullMergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
+import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 
 /**
  * Class decorates RestApi with asynchronous task
@@ -168,7 +169,13 @@ public class AsynchronousRestApi extends RestApi{
         return runAsyncTask(new AsyncTask<Object, Void, MergeableInfoDTO >() {
             @Override
             protected MergeableInfoDTO doInBackground(Object... params) {
-                return restApi.getMergeableInfoForCurrentRevision(change_id);
+                // @TODO wiem , ze jest to strasznie slabe ale mam dosc wiecznych bledow
+                // z tym ,jestem juz tym zmeczony - mam nadzieje ze historia przyzna mi racje
+                try {
+                    return restApi.getMergeableInfoForCurrentRevision(change_id);
+                } catch (Exception e) {
+                    return new NullMergeableInfoDTO();
+                }
             }
         });
     }
