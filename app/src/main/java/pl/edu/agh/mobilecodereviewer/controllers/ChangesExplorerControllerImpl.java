@@ -59,7 +59,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     @Override
     public void initializeData(ChangesExplorerView changesExplorerView) {
         this.view = changesExplorerView;
-        this.currentStatus = ChangeStatus.ALL;
+        this.currentStatus = ChangeStatus.NEW;
     }
 
     public List<ChangeInfo> getChangeInfos() {
