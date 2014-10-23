@@ -4,16 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
+import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
@@ -79,14 +78,15 @@ public class ModifiedFilesTab extends BaseActivity implements ModifiedFilesTabVi
      * on the list of modified files on frame
      *
      * @param filesList List of modified files to display
+     * @param status
      */
     @Override
-    public void showFiles(final List<FileInfo> filesList) {
+    public void showFiles(final List<FileInfo> filesList, final ChangeStatus status) {
         modifiedFilesTabListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 FileInfo selectedFile = filesList.get(i);
-                showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName());
+                showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName(),status);
             }
         });
         modifiedFilesTabListView.setAdapter(new ModifiedFilesViewListAdapter(this, filesList));
@@ -95,12 +95,13 @@ public class ModifiedFilesTab extends BaseActivity implements ModifiedFilesTabVi
     /**
      * Show content of the file {@link pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer}
      */
-    private void showFileDetails(String changeId, String revisionId, String fileName) {
+    private void showFileDetails(String changeId, String revisionId, String fileName, ChangeStatus status) {
         Intent intent = new Intent(getApplicationContext(), SourceExplorer.class);
 
         intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID, changeId);
         intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID, revisionId);
         intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME, fileName);
+        intent.putExtra(ExtraMessages.MODIFIED_FILES_CHANGE_STATUS, status.toString() );
 
         startActivity(intent);
     }

@@ -15,6 +15,5 @@ public class ExtraMessages {
 
     public static final String MODIFIED_FILES_SELECTED_FILE_FILE_NAME = "MODIFIED_FILES_SELECTED_FILE_FILE_NAME";
 
-
-
+    public static final String MODIFIED_FILES_CHANGE_STATUS = "MODIFIED_FILES_CHANGE_STATUS";
 }

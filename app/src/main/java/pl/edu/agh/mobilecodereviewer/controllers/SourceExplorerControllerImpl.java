@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
+import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
@@ -44,10 +45,10 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     private String change_id;
     private String revision_id;
     private String file_id;
+    private ChangeStatus change_status;
 
     private SourceCode sourceCode;
     private SourceCodeDiff sourceCodeDiff;
-
     /**
      * Simple constructor. Used by DI framework.
      */
@@ -69,11 +70,12 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
 
     @Override
-    public void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id) {
+    public void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id, String changeStatus) {
         this.view = view;
         this.change_id = change_id;
         this.revision_id = revision_id;
         this.file_id = file_id;
+        this.change_status = ChangeStatus.createStatusFromString( changeStatus);
     }
 
     @Override
@@ -180,6 +182,11 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         }
     }
 
+    @Override
+    public boolean isAddingCommentAvalaible() {
+        return ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()
+                && change_status != ChangeStatus.ABANDONED && change_status != ChangeStatus.MERGED;
+    }
 }
 
 

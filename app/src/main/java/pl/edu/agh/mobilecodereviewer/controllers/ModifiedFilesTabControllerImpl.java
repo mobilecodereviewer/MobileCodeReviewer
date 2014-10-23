@@ -7,6 +7,7 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 
@@ -51,7 +52,8 @@ public class ModifiedFilesTabControllerImpl implements ModifiedFilesTabControlle
      */
     @Override
     public void updateFiles(ModifiedFilesTabView view, String changeId) {
-        List<FileInfo> changeInfos = changeInfoDAO.getModifiedFiles(changeId);
-        view.showFiles(changeInfos);
+        List<FileInfo> changeModifiedFiles = changeInfoDAO.getModifiedFiles(changeId);
+        ChangeInfo changeInfo = changeInfoDAO.getChangeInfoById(changeId);
+        view.showFiles(changeModifiedFiles, changeInfo.getStatus() );
     }
 }

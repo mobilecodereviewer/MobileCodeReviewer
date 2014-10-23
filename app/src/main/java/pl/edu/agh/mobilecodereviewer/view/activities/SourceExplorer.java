@@ -20,10 +20,8 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
-import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
@@ -40,9 +38,11 @@ import roboguice.inject.InjectView;
  * @since 0.1
  */
 public class SourceExplorer extends BaseActivity implements SourceExplorerView {
+    public static final String COMMENT_ADDING_NOT_AVALAIBLE = "Adding comment is not avalaible for Anonymous or when change status is merged or abandoned";
     private String change_id;
     private String revision_id;
     private String file_id;
+    private String changeStatus;
 
     private Menu menu;
     private MenuItem prevChangeNavigation;
@@ -74,7 +74,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         setContentView(R.layout.activity_source_explorer);
 
         initializeSourceProperties();
-        controller.initializeData(this, change_id, revision_id, file_id);
+        controller.initializeData(this, change_id, revision_id, file_id, changeStatus);
         initializeView();
     }
 
@@ -88,54 +88,66 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
             }
         });
 
-        if (ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()) {
+        if (controller.isAddingCommentAvalaible()) {
             sourceLinesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                    return showCommentAddDialog(adapterView, i);
+                }
+            });
+        } else  {
+            sourceLinesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
-
-                    LayoutInflater li = LayoutInflater.from(SourceExplorer.this);
-                    View commentLineView = li.inflate(R.layout.layout_comment_line, null);
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SourceExplorer.this);
-                    alertDialogBuilder.setView(commentLineView);
-
-                    final EditText userInput = (EditText) commentLineView.findViewById(R.id.commentContentTextView);
-                    final TextView selectedLineView = (TextView) commentLineView.findViewById(R.id.selectedCodeLine);
-
-                    selectedLineView.setText((String) adapterView.getItemAtPosition(i));
-
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    controller.insertComment(userInput.getText().toString(), i);
-                                    break;
-
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    dialog.cancel();
-                                    break;
-                            }
-                        }
-                    };
-
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
-                            .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
-
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    alertDialog.show();
-
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                    showMessage(COMMENT_ADDING_NOT_AVALAIBLE);
                     return true;
                 }
             });
+   
         }
 
         controller.initializeView();
+    }
+
+    private boolean showCommentAddDialog(AdapterView<?> sourceCodeLayout, final int lineClicked) {
+        LayoutInflater li = LayoutInflater.from(this);
+        View commentLineView = li.inflate(R.layout.layout_comment_line, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(commentLineView);
+
+        final EditText userInput = (EditText) commentLineView.findViewById(R.id.commentContentTextView);
+        final TextView selectedLineView = (TextView) commentLineView.findViewById(R.id.selectedCodeLine);
+
+        selectedLineView.setText((String) sourceCodeLayout.getItemAtPosition(lineClicked));
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        controller.insertComment(userInput.getText().toString(), lineClicked);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        dialog.cancel();
+                        break;
+                }
+            }
+        };
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
+                .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+
+        return true;
     }
 
     @Override
@@ -151,6 +163,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         change_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID);
         revision_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID);
         file_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME);
+        changeStatus = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_CHANGE_STATUS);
     }
 
 
@@ -187,7 +200,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
             controller.navigateToPrevChange();
         } else if (id == R.id.showHideLinesNumber) {
             SourceCodeListAdapter sourceCodeListAdapter = (SourceCodeListAdapter) sourceLinesListView.getAdapter();
-            controller.toogleVisibilityOfLineNumbers( sourceCodeListAdapter );
+            controller.toogleVisibilityOfLineNumbers(sourceCodeListAdapter);
         }
 
         return super.onOptionsItemSelected(item);

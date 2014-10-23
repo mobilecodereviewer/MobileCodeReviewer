@@ -20,7 +20,7 @@ public interface SourceExplorerController {
 
     void toggleDiffView();
 
-    void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id);
+    void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id, String changeStatus);
 
     void insertComment(String content, int lineNumber);
 
@@ -31,4 +31,6 @@ public interface SourceExplorerController {
     void navigateToPrevChange();
 
     void toogleVisibilityOfLineNumbers(SourceCodeListAdapter sourceCodeListAdapter);
+
+    boolean isAddingCommentAvalaible();
 }
