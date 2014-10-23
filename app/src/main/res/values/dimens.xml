@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
 
+    <dimen name="common_small_maring">4dp</dimen>
+
     <dimen name="common_big_line_height">45dp</dimen>
     <dimen name="common_medium_line_height">30dp</dimen>
     <dimen name="common_small_line_height">20dp</dimen>

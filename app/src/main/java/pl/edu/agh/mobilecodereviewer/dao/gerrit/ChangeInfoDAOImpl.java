@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
@@ -65,10 +66,10 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         changeInfoModel.setOwnerName(changeInfoDTO.getOwner().getName());
         changeInfoModel.setProject(changeInfoDTO.getProject());
         changeInfoModel.setBranch(changeInfoDTO.getBranch());
-        changeInfoModel.setUpdated(changeInfoDTO.getUpdated());
+        changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
         if (changeInfoDTO.getInsertions() != null)
             changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
-        changeInfoModel.setCreated(changeInfoDTO.getCreated());
+        changeInfoModel.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
 
         return changeInfoModel;
     }
@@ -87,14 +88,14 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
             changeInfoModel.setOwnerName(changeInfoDTO.getOwner().getName());
             changeInfoModel.setProject(changeInfoDTO.getProject());
             changeInfoModel.setBranch(changeInfoDTO.getBranch());
-            changeInfoModel.setUpdated(changeInfoDTO.getUpdated());
+            changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
             changeInfoModel.setCurrentRevision(changeInfoDTO.getCurrentRevision());
 
             if ( changeInfoDTO.getInsertions() != null )
                 changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
             else
                 changeInfoModel.setSize(0);
-            changeInfoModel.setCreated(changeInfoDTO.getCreated());
+            changeInfoModel.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
 
             changeInfoModels.add(changeInfoModel);
         }
@@ -142,7 +143,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         List<ChangeMessageInfo> changeMessageInfos = new ArrayList<ChangeMessageInfo>();
 
         for(ChangeMessageInfoDTO changeMessageInfoDTO : changeMessageInfoDTOs){
-            changeMessageInfos.add(new ChangeMessageInfo(changeMessageInfoDTO.getAuthor().getName(), changeMessageInfoDTO.getDate().substring(0, 19), changeMessageInfoDTO.getMessage()));
+            changeMessageInfos.add(new ChangeMessageInfo(changeMessageInfoDTO.getAuthor().getName(), DateUtils.getPrettyDate(changeMessageInfoDTO.getDate()), changeMessageInfoDTO.getMessage()));
         }
 
         return changeMessageInfos;

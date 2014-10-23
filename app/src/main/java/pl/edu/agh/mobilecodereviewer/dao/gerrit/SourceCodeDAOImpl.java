@@ -21,6 +21,7 @@ import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 
 /**
  * Data access object for a source code. It is some
@@ -154,7 +155,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
             List<Comment> lineComments = new LinkedList<>();
             if ( comments.containsKey(i) )
                 for (CommentInfoDTO commentInfoDTO : comments.get(i) )
-                        lineComments.add( new Comment(i,path,commentInfoDTO.getMessage(), commentInfoDTO.getAuthor().getName(), commentInfoDTO.getUpdated() ) );
+                        lineComments.add( new Comment(i,path,commentInfoDTO.getMessage(), commentInfoDTO.getAuthor().getName(), DateUtils.getPrettyDate(commentInfoDTO.getUpdated()) ) );
 
             Line sourceLine = new Line(i,line,lineComments );
             sourceLines.add(sourceLine);

@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:weightSum="1"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray">
+        android:background="@android:color/darker_gray"
+        style="@style/common_small_margins">
 
         <TextView
             android:layout_width="0dp"
@@ -35,6 +36,7 @@
     </LinearLayout>
 
     <TextView
+        style="@style/common_small_margins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mesage text"
