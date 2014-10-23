@@ -17,8 +17,8 @@ public class ConfigurationContainer {
         return ourInstance;
     }
 
-    public ConfigurationContainer(ConfigurationInfo configurationInfo, AccountInfo accountInfo) {
-        if(ourInstance == null){
+    public ConfigurationContainer(ConfigurationInfo configurationInfo, AccountInfo accountInfo, boolean force) {
+        if(ourInstance == null || force){
             this.configurationInfo = configurationInfo;
             loggedUser = accountInfo;
             ConfigurationContainer.ourInstance = this;

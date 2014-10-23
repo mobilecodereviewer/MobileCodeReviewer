@@ -54,7 +54,7 @@ public class MobileCodeReviewerApplication extends android.app.Application {
             accountInfo = accountDAO.getAccountInfo();
         }
 
-        new ConfigurationContainer(configurationInfo, accountInfo);
+        new ConfigurationContainer(configurationInfo, accountInfo, true);
     }
 
     public boolean isNetworkAvailable(){
