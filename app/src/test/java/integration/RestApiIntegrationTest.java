@@ -89,15 +89,6 @@ public class RestApiIntegrationTest {
         assertEquals("", accountInfo.toString());
     }
 
-    @Test
-    public void shouldGetListOfChanges() throws Exception {
-        List<ChangeInfoDTO> changes = restApi.getChanges();
-        assertEquals(0 , changes.size());
-        boolean check = false;
-        System.out.println( changes.size() );
-        for (ChangeInfoDTO changeInfoDTO : changes)
-            System.out.println( changeInfoDTO.getStatus() );
-    }
 }
 
 

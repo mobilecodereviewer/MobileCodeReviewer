@@ -24,7 +24,6 @@ public class RevisionInfoDTOCharacteristicsTest {
         assertEquals("{}",json);
     }
 
-
     @Test
     public void testJsonViewWithNumber() throws Exception {
         RevisionInfoDTO revisionInfoDTO = new RevisionInfoDTO();
@@ -32,15 +31,6 @@ public class RevisionInfoDTOCharacteristicsTest {
         Gson gson = new Gson();
         String json = gson.toJson(revisionInfoDTO);
         assertEquals("{\"_number\":\"10\"}", json);
-    }
-
-    @Test
-    public void testJsonViewWithFile() throws Exception {
-        RevisionInfoDTO revisionInfoDTO = new RevisionInfoDTO();
-        revisionInfoDTO.setFiles(Collections.singletonMap("1",new FileInfoDTO("ok",15)) );
-        Gson gson = new Gson();
-        String json = gson.toJson(revisionInfoDTO);
-        assertEquals("{\"files\":{\"1\":{\"status\":\"ok\",\"lines_inserted\":15}}}",json);
     }
 
 }
