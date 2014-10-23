@@ -181,8 +181,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         if (id == R.id.sourceDiffToggleButton) {
             isDiffView = !isDiffView;
             controller.toggleDiffView();
-        } else if (id == R.id.action_about) {
-            AboutDialogHelper.showDialog(this);
         } else if (id == R.id.gotoNextChange) {
             controller.navigateToNextChange();
         } else if (id == R.id.gotoPrevChange) {

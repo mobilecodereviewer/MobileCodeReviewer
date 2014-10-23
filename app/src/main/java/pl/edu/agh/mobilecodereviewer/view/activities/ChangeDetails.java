@@ -165,9 +165,6 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         if (id == R.id.action_addReview) {
             controller.updateSetReviewPopup(this, currentChangeId);
         }
-        if(id == R.id.action_about) {
-            AboutDialogHelper.showDialog(this);
-        }
 
         return super.onOptionsItemSelected(item);
     }
