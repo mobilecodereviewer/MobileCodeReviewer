@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 /**
@@ -137,6 +140,8 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
      */
     @Override
     public void showChanges(final List<ChangeInfo> changes) {
+        findViewById(R.id.noChangesLayout).setVisibility(View.GONE);
+        findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.VISIBLE);
         ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
         changesExplorerExpandableListView.setAdapter(expandableListAdapter);
     }
@@ -211,6 +216,12 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
         });
         statusDialog = builder.create();
         statusDialog.show();
+    }
+
+    @Override
+    public void showNoChangesToDisplay() {
+        findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.GONE);
+        findViewById(R.id.noChangesLayout).setVisibility(View.VISIBLE);
     }
 
 }

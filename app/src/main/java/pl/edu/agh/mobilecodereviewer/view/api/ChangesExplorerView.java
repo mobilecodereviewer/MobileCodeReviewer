@@ -30,4 +30,6 @@ public interface ChangesExplorerView {
     void showMessage(String message);
 
     void showListOfAvalaibleStatus(ChangeStatus currentStatus, ChangeStatus[] changeStatuses);
+
+    void showNoChangesToDisplay();
 }

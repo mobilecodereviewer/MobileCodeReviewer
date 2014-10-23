@@ -94,8 +94,8 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search">Search</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search_hint">Search...</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch">Discard Search</string>
-    <string name="pl_agh_edu_mobilecodereviewer_ChangesExplorer_no_search_results_found">No results found</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.selectStatus">Select status</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.noChanges">No changes to display</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>

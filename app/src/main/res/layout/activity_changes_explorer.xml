@@ -6,10 +6,36 @@
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer">
 
     <ExpandableListView
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/changesExplorerExpandableListView"
     />
+
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/noChangesLayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/noChangesText"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/common_info_icon"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noChangesText"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.noChanges" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

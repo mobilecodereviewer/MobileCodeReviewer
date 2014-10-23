@@ -77,12 +77,12 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         View rowView = inflater.inflate(R.layout.layout_source_line, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.codeText);
         TextView txtNumber = (TextView) rowView.findViewById(R.id.lineNumberText);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
+        final ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ( sourceCode.getLine(position+1).hasComments() ) {
-
+                imageView.setEnabled(false);
+                if ( sourceCode.getLine(position+1).hasComments()) {
                     View lineCommentsView = context.getLayoutInflater().inflate(R.layout.layout_line_comments, null);
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                     alertDialogBuilder.setView(lineCommentsView);
@@ -91,9 +91,16 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
                     listView.setAdapter(new SingleLineCommentViewListAdapter(context, sourceCode.getLine(position+1) ) );
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
 
+                    alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            imageView.setEnabled(true);
+                        }
+                    });
+                    alertDialog.show();
                 }
+
             }
         });
         txtNumber.setText( Integer.toString(position+1) );

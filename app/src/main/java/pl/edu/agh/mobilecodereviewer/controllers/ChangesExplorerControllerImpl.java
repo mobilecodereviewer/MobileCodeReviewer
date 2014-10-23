@@ -36,9 +36,6 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
 
     private List<ChangeInfo> changeInfos;
 
-    @InjectResource(R.string.pl_agh_edu_mobilecodereviewer_ChangesExplorer_no_search_results_found)
-    private String NO_SEARCH_RESULTS_FOUND;
-
     private ChangeStatus currentStatus;
 
     /**
@@ -62,7 +59,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
         this.currentStatus = ChangeStatus.NEW;
     }
 
-    public List<ChangeInfo> getChangeInfos() {
+    private List<ChangeInfo> getChangeInfos() {
         changeInfos = changeInfoDAO.getAllChangesInfo();
         return filterWithAppropriateStatus(changeInfos);
     }
@@ -81,7 +78,12 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     @Override
     public void updateChanges() {
         List<ChangeInfo> infos = getChangeInfos();
-        view.showChanges(infos);
+        if(infos.size() != 0){
+            view.showChanges(infos);
+        } else {
+            view.showNoChangesToDisplay();
+        }
+
     }
 
     @Override
@@ -97,7 +99,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
                     searchedInfos.add(info);
             }
             if (searchedInfos.size() == 0) {
-                view.showMessage(NO_SEARCH_RESULTS_FOUND);
+                view.showNoChangesToDisplay();
             } else view.showFoundChanges(query, searchedInfos);
         }
     }
