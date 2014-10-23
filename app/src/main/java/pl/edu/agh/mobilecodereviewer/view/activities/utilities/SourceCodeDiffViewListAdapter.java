@@ -89,6 +89,8 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
     }
 
     private void setBackgroundColorForTextViews(LinearLayout lineContainer, int color) {
+        float alpha = 0.7f;
+        lineContainer.setAlpha(alpha);
         lineContainer.setBackgroundColor(color);
     }
 
