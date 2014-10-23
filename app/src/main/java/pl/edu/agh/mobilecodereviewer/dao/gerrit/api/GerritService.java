@@ -21,10 +21,18 @@ import retrofit.http.Path;
 /**
  * Tool class which annotated data access method with
  * appropriate url paths.
+ *
+ * Adding /--u-- prefix to endpoint indicates RestApi not to add
+ * /a/ prefix when executing method on given endpoint for authenticated user.
+ *
+ * /a/ prefix is responsible for authentication on server side
+ *
+ * As a result method with /--u-- prefix will be executed as for anonymous
+ * user no matter if user works as authenticated or not.
  */
 public interface GerritService {
 
-    @GET("/config/server/version")
+    @GET("/--u--/config/server/version")
     String getVersion() throws NetworkException;
 
     @GET("/accounts/self")

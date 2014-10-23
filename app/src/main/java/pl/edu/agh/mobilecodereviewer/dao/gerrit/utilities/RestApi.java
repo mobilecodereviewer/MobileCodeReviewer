@@ -332,25 +332,7 @@ public class RestApi {
         @Override
         public Response execute(Request request) throws IOException {
 
-            Request preProcessedRequest;
-
-            if(configurationInfo.isAuthenticatedUser()){
-                String[] splittedAddress = request.getUrl().split(configurationInfo.getUrl());
-                String authenticatedUrl = configurationInfo.getUrl();
-
-                if(authenticatedUrl.endsWith("/")){
-                    authenticatedUrl += "a/";
-                } else {
-                    authenticatedUrl += "/a";
-                }
-
-                authenticatedUrl += splittedAddress[1];
-
-                preProcessedRequest = new Request(request.getMethod(), authenticatedUrl, request.getHeaders(), request.getBody());
-
-            } else {
-                preProcessedRequest = request;
-            }
+            Request preProcessedRequest = new Request(request.getMethod(), prepareUrl(request.getUrl()), request.getHeaders(), request.getBody());
 
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(preProcessedRequest.getUrl()).openConnection();
 
@@ -364,6 +346,25 @@ public class RestApi {
                 urlConnection.connect();
             }
             return createResponseFromConnection(urlConnection);
+        }
+
+        private String prepareUrl(String initialUrl){
+
+            String serverUrl = configurationInfo.getUrl();
+
+            String initialEndpoint = initialUrl.split(configurationInfo.getUrl())[1];
+            String preparedEndpoint = "";
+
+            if(initialEndpoint.startsWith("/--u--")) {
+                preparedEndpoint = initialEndpoint.substring("/--u--".length());
+            } else if(configurationInfo.isAuthenticatedUser()){
+                preparedEndpoint += "/a";
+                preparedEndpoint += initialEndpoint;
+            } else {
+                preparedEndpoint = initialEndpoint;
+            }
+
+            return serverUrl + preparedEndpoint;
         }
 
         private Response createResponseFromConnection(final HttpURLConnection urlConnection) throws IOException {

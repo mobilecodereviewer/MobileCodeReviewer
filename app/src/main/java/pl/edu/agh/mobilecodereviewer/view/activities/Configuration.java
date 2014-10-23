@@ -310,7 +310,16 @@ public class Configuration extends RoboActivity implements ConfigurationView {
 
     public void applyConfiguration(View v){
         String name = configNameEdit.getText().toString();
-        String url = urlEdit.getText().toString();
+
+        //removing / slash from end of given url if exists - useful in rest api
+        String url;
+        String givenUrl = urlEdit.getText().toString();
+        if(givenUrl.endsWith("/")){
+            url = (givenUrl.substring(0, givenUrl.length()-1));
+        } else {
+            url = givenUrl;
+        }
+
         String login = loginEdit.getText().toString();
         String password = passwordEdit.getText().toString();
         boolean saveConfiguration = saveConfigurationCheck.isChecked();
