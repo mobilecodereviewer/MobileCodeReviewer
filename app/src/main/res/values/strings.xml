@@ -96,6 +96,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch">Discard Search</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.selectStatus">Select status</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.noChanges">No changes to display</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration">Change configuration</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>

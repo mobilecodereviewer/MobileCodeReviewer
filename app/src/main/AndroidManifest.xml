@@ -15,7 +15,8 @@
 
         <activity
             android:name=".view.activities.Configuration"
-            android:label="@string/pl.agh.edu.mobilecodereviewer.title" >
+            android:label="@string/pl.agh.edu.mobilecodereviewer.title"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,14 +26,8 @@
         <activity
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.title"
-            android:parentActivityName="pl.edu.agh.mobilecodereviewer.view.activities.Configuration"
             android:launchMode="singleTop"
             android:uiOptions="splitActionBarWhenNarrow" >
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.edu.agh.mobilecodereviewer.view.activities.Configuration" />
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

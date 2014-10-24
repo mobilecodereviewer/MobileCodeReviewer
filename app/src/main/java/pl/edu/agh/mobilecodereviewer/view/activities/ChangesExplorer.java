@@ -10,15 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -31,7 +28,6 @@ import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
-import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
 /**
@@ -125,6 +121,10 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
             controller.updateChanges();
         } else if (id == R.id.selectStatus) {
             controller.chooseStatus();
+        } else if (id == R.id.changeConfiguration){
+            Intent intent = new Intent(getApplicationContext(), Configuration.class);
+            intent.putExtra(ExtraMessages.CONFIGURATION_DONT_LOAD_LAST_SAVED, "Y");
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

@@ -23,4 +23,6 @@ public interface ConfigurationView {
     void onAuthenticationSuccess();
 
     void showUnsentCrashReportInformation();
+
+    void authenticateUsingSavedConfiguration(ConfigurationInfo configurationInfo);
 }
