@@ -16,9 +16,10 @@ public interface SourceExplorerView {
 
     /**
      * Update source code in the view from a given source code ({@link pl.edu.agh.mobilecodereviewer.model.SourceCode} )
+     * @param file_path
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
-    void showSourceCode(SourceCode sourceCode);
+    void showSourceCode(String file_path, SourceCode sourceCode);
 
     void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff);
 

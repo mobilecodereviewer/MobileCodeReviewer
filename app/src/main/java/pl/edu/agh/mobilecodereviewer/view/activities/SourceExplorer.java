@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -209,12 +210,14 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     /**
      * Show content from given source code
      *
+     * @param file_path
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     @Override
-    public void showSourceCode(final SourceCode sourceCode) {
+    public void showSourceCode(String file_path, final SourceCode sourceCode) {
+        String extension = Files.getFileExtension(file_path);
         final SourceCodeViewListAdapter sourceCodeViewListAdapter =
-                new SourceCodeViewListAdapter(this, sourceCode);
+                new SourceCodeViewListAdapter(this, extension,sourceCode);
 
         sourceLinesListView.setAdapter(sourceCodeViewListAdapter);
     }

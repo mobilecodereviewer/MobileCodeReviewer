@@ -63,10 +63,11 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
     /**
      * Construct Adapter from given activity and sourcecode
      * @param context {@link android.app.Activity}
+     * @param extension
      * @param sourceCode {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     public SourceCodeViewListAdapter(Activity context,
-                                     SourceCode sourceCode) {
+                                     String extension, SourceCode sourceCode) {
         super(context, R.layout.layout_source_line, SourceCodeHelper.getContent(sourceCode) );
         this.context = context;
 
@@ -81,7 +82,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
             joinedSourceBuilder.append(sourceLine + "\n");
         }
         String joinedSourceCode = joinedSourceBuilder.toString();
-        String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, "java");
+        String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, extension);
         this.htmlContent =  prettifiedSourceCode.split("\n");
     }
 

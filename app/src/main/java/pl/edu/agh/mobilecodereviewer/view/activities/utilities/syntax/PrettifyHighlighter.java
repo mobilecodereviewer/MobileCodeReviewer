@@ -63,13 +63,13 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
 
     private static Map<String, String> buildColorsMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("typ", "87cefa");
-        map.put("tag", "87cefa");
-        map.put("kwd", "00ff00");
-        map.put("lit", "ffff00");
-        map.put("com", "999999");
-        map.put("str", "ff4500");
-        map.put("pun", "eeeeee");
+        map.put("typ", "990033");
+        map.put("tag", "3BAFF7");
+        map.put("kwd", "000080");
+        map.put("lit", "FF0000");
+        map.put("com", "CCCC99");
+        map.put("str", "2EC7FF");
+        map.put("pun", "000000");
         map.put("pln", "000000");
         return map;
     }

@@ -113,7 +113,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         SourceCode sourceCode = getSourceCode();
 
         view.clearSourceCode();
-        view.showSourceCode(sourceCode);
+        view.showSourceCode(file_id,sourceCode);
         view.setInterfaceForCode();
     }
 
