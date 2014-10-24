@@ -57,6 +57,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
      */
     private final List<Boolean> hasComments;
     private final SourceCode sourceCode;
+    private final String extension;
 
     boolean showLineNumbers;
 
@@ -75,15 +76,20 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         this.hasComments = SourceCodeHelper.getHasLineComments(sourceCode);
         this.sourceCode = sourceCode;
         this.showLineNumbers = false;
+        this.extension = extension;
 
+        this.htmlContent = buildHtmlContentOfLines(this.extension,this.content);
+    }
+
+    private String[] buildHtmlContentOfLines(String extension,List<String> content) {
         SyntaxHighlighter prettifyHighlighter = new PrettifyHighlighter();
         StringBuilder joinedSourceBuilder = new StringBuilder();
-        for (String sourceLine : this.content) {
+        for (String sourceLine : content) {
             joinedSourceBuilder.append(sourceLine + "\n");
         }
         String joinedSourceCode = joinedSourceBuilder.toString();
         String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, extension);
-        this.htmlContent =  prettifiedSourceCode.split("\n");
+        return prettifiedSourceCode.split("\n");
     }
 
     /**

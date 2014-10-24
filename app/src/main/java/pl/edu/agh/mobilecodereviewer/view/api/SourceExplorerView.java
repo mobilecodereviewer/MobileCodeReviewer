@@ -21,7 +21,7 @@ public interface SourceExplorerView {
      */
     void showSourceCode(String file_path, SourceCode sourceCode);
 
-    void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff);
+    void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff);
 
     void setInterfaceForCode();
 

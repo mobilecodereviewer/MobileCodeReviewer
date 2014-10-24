@@ -121,7 +121,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     private void updateSourceCodeDiff() {
         SourceCodeDiff sourceCodeDiff = getSourceCodeDiff();
 
-        view.showSourceCodeDiff(sourceCodeDiff );
+        view.showSourceCodeDiff(file_id,sourceCodeDiff );
         view.setInterfaceForDiff();
     }
 

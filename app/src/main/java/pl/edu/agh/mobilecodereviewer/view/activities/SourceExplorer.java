@@ -223,9 +223,10 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     }
 
     @Override
-    public void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff) {
+    public void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff) {
+        String extension = Files.getFileExtension(file_path);
         final SourceCodeDiffViewListAdapter sourceCodeDiffViewListAdapter =
-                new SourceCodeDiffViewListAdapter(this, sourceCodeDiff);
+                new SourceCodeDiffViewListAdapter(this, extension,sourceCodeDiff);
 
         sourceLinesListView.setAdapter(sourceCodeDiffViewListAdapter);
     }

@@ -2,6 +2,7 @@ package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +11,41 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeDiffHelper;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.PrettifyHighlighter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.SyntaxHighlighter;
 
 public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  implements SourceCodeListAdapter {
 
     private final Activity context;
     private final SourceCodeDiff sourceCodeDiff;
     private boolean showLineNumbers;
+    private String htmlContent[];
 
     public SourceCodeDiffViewListAdapter(Activity context,
-                                         SourceCodeDiff sourceCodeDiff) {
+                                         String extension,SourceCodeDiff sourceCodeDiff) {
         super(context, R.layout.layout_source_diff_line, SourceCodeDiffHelper.getContent(sourceCodeDiff));
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
+        this.htmlContent = buildHtmlContentOfLines( extension , SourceCodeDiffHelper.getContent(sourceCodeDiff) );
+
         showLineNumbers = false;
+    }
+
+    private String[] buildHtmlContentOfLines(String extension,List<String> content) {
+        SyntaxHighlighter prettifyHighlighter = new PrettifyHighlighter();
+        StringBuilder joinedSourceBuilder = new StringBuilder();
+        for (String sourceLine : content) {
+            joinedSourceBuilder.append(sourceLine + "\n");
+        }
+        String joinedSourceCode = joinedSourceBuilder.toString();
+        String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, extension);
+        return prettifiedSourceCode.split("\n");
     }
 
     @Override
@@ -41,7 +60,9 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         LinearLayout lineContainer = (LinearLayout) rowView.findViewById(R.id.diffLineMainLayout);
 
         if ( sourceCodeDiff != null) {
-            writeLineToTextView(lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, sourceCodeDiff.getLine(position)) ;
+            DiffedLine line = sourceCodeDiff.getLine(position);
+            String lineContentPrettyfied = htmlContent[position];
+            writeLineToTextView(lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, line, lineContentPrettyfied) ;
         }
 
         if (!showLineNumbers) {
@@ -52,7 +73,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         return rowView;
     }
 
-    private void writeLineToTextView(LinearLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line) {
+    private void writeLineToTextView(LinearLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line, String lineContentPrettyfied) {
         if (line == null) {
             linenumBefore.setText("");
             linenumAfter.setText("");
@@ -62,19 +83,19 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
                         case UNCHANGED:
                             linenumBefore.setText( Integer.toString(line.getOldLineNumber()+1) );
                             linenumAfter.setText( Integer.toString(line.getNewLineNumber()+1) );
-                            content.setText(" \t" + line.getContent());
+                            writePrettyLineToTextView(content, " \t" + lineContentPrettyfied);
                             break;
                         case ADDED:
                             linenumBefore.setText("");
                             linenumAfter.setText( Integer.toString(line.getNewLineNumber()+1) );
-                            content.setText("+\t" + line.getContent());
+                            writePrettyLineToTextView(content, "+\t" + lineContentPrettyfied);
 
                             setBackgroundColorForTextViews(lineContainer, Color.parseColor("#D1FFED"));
                             break;
                         case REMOVED:
                             linenumBefore.setText( Integer.toString(line.getOldLineNumber()+1) );
                             linenumAfter.setText("");
-                            content.setText("-\t" + line.getContent());
+                            writePrettyLineToTextView(content, "-\t" + lineContentPrettyfied);
 
                             setBackgroundColorForTextViews(lineContainer, Color.parseColor("#FFE3EA"));
                             break;
@@ -82,10 +103,14 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
                             linenumBefore.setText("");
                             linenumAfter.setText("");
 
-                            content.setText(" \t" + line.getContent());
+                            writePrettyLineToTextView(content, " \t" + lineContentPrettyfied);
                             break;
             }
         }
+    }
+
+    private void writePrettyLineToTextView(TextView content, String linePrettyfied) {
+        content.setText( Html.fromHtml(linePrettyfied) );
     }
 
     private void setBackgroundColorForTextViews(LinearLayout lineContainer, int color) {
