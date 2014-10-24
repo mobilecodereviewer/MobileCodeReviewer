@@ -36,6 +36,7 @@
             android:id="@+id/codeDiffText"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:minHeight="@dimen/common_medium_line_height"
             android:layout_height="wrap_content"
             android:textSize="@dimen/common_medium_font_size"
             />
