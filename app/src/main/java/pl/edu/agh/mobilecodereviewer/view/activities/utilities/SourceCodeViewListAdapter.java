@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,21 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.common.base.Joiner;
+
 import java.util.Arrays;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeHelper;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.PrettifyHighlighter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.SyntaxHighlighter;
+import prettify.PrettifyParser;
+import prettify.theme.ThemeDefault;
+import roboguice.util.Strings;
+import syntaxhighlight.ParseResult;
+import syntaxhighlight.Parser;
 
 /**
  * SourceCodeViewListAdapter adapts class {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
@@ -39,6 +49,8 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
      * List of lines content from a given {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     private final List<String> content;
+
+    private final String[] htmlContent;
 
     /**
      * List of information if given line has comment
@@ -62,6 +74,15 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         this.hasComments = SourceCodeHelper.getHasLineComments(sourceCode);
         this.sourceCode = sourceCode;
         this.showLineNumbers = false;
+
+        SyntaxHighlighter prettifyHighlighter = new PrettifyHighlighter();
+        StringBuilder joinedSourceBuilder = new StringBuilder();
+        for (String sourceLine : this.content) {
+            joinedSourceBuilder.append(sourceLine + "\n");
+        }
+        String joinedSourceCode = joinedSourceBuilder.toString();
+        String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, "java");
+        this.htmlContent =  prettifiedSourceCode.split("\n");
     }
 
     /**
@@ -75,7 +96,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
     public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.layout_source_line, null, true);
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.codeText);
+        TextView txtCodeContent = (TextView) rowView.findViewById(R.id.codeText);
         TextView txtNumber = (TextView) rowView.findViewById(R.id.lineNumberText);
         final ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +125,8 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
             }
         });
         txtNumber.setText( Integer.toString(position+1) );
-        txtTitle.setText( " \t" +  content.get(position) );
+        String htmlCode = htmlContent[position];
+        setCodeTextViewContent(txtCodeContent, htmlCode);
         if ( hasComments.get(position) )
             imageView.setImageResource( R.drawable.source_explorer_line_comment_icon );
         else
@@ -112,6 +134,10 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         if (!showLineNumbers)
             txtNumber.setVisibility(View.GONE);
         return rowView;
+    }
+
+    private void setCodeTextViewContent(TextView txtCodeContent, String highlightCode) {
+        txtCodeContent.setText( Html.fromHtml(" \t" + highlightCode) );
     }
 
     @Override
