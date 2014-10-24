@@ -132,8 +132,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
             }
         });
         txtNumber.setText( Integer.toString(position+1) );
-        String htmlCode = htmlContent[position];
-        setCodeTextViewContent(txtCodeContent, htmlCode);
+        setCodeTextViewContent(txtCodeContent," \t", position);
         if ( hasComments.get(position) )
             imageView.setImageResource( R.drawable.source_explorer_line_comment_icon );
         else
@@ -143,8 +142,10 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         return rowView;
     }
 
-    private void setCodeTextViewContent(TextView txtCodeContent, String highlightCode) {
-        txtCodeContent.setText( Html.fromHtml(" \t" + highlightCode) );
+    @Override
+    public void setCodeTextViewContent(TextView txtCodeContent,String prefix,int position) {
+        String htmlCode = htmlContent[position];
+        txtCodeContent.setText( Html.fromHtml(prefix + htmlCode) );
     }
 
     @Override

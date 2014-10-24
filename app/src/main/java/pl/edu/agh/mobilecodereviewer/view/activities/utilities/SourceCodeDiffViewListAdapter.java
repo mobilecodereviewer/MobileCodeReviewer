@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -61,8 +60,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
 
         if ( sourceCodeDiff != null) {
             DiffedLine line = sourceCodeDiff.getLine(position);
-            String lineContentPrettyfied = htmlContent[position];
-            writeLineToTextView(lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, line, lineContentPrettyfied) ;
+            writeLineToTextView(position,lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, line ) ;
         }
 
         if (!showLineNumbers) {
@@ -73,7 +71,9 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         return rowView;
     }
 
-    private void writeLineToTextView(LinearLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line, String lineContentPrettyfied) {
+    private void writeLineToTextView(int position,LinearLayout lineContainer,
+                                     TextView content, TextView linenumBefore,
+                                     TextView linenumAfter, DiffedLine line) {
         if (line == null) {
             linenumBefore.setText("");
             linenumAfter.setText("");
@@ -83,19 +83,19 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
                         case UNCHANGED:
                             linenumBefore.setText( Integer.toString(line.getOldLineNumber()+1) );
                             linenumAfter.setText( Integer.toString(line.getNewLineNumber()+1) );
-                            writePrettyLineToTextView(content, " \t" + lineContentPrettyfied);
+                            setCodeTextViewContent(content, " \t" ,position);
                             break;
                         case ADDED:
                             linenumBefore.setText("");
-                            linenumAfter.setText( Integer.toString(line.getNewLineNumber()+1) );
-                            writePrettyLineToTextView(content, "+\t" + lineContentPrettyfied);
+                            linenumAfter.setText(Integer.toString(line.getNewLineNumber() + 1));
+                            setCodeTextViewContent(content, "+\t" ,position);
 
                             setBackgroundColorForTextViews(lineContainer, Color.parseColor("#D1FFED"));
                             break;
                         case REMOVED:
                             linenumBefore.setText( Integer.toString(line.getOldLineNumber()+1) );
                             linenumAfter.setText("");
-                            writePrettyLineToTextView(content, "-\t" + lineContentPrettyfied);
+                            setCodeTextViewContent(content, "-\t" ,position);
 
                             setBackgroundColorForTextViews(lineContainer, Color.parseColor("#FFE3EA"));
                             break;
@@ -103,14 +103,16 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
                             linenumBefore.setText("");
                             linenumAfter.setText("");
 
-                            writePrettyLineToTextView(content, " \t" + lineContentPrettyfied);
+                            setCodeTextViewContent(content, " \t" , position);
                             break;
             }
         }
     }
 
-    private void writePrettyLineToTextView(TextView content, String linePrettyfied) {
-        content.setText( Html.fromHtml(linePrettyfied) );
+    @Override
+    public void setCodeTextViewContent(TextView content, String prefix, int position) {
+        String linePrettyfied = htmlContent[position];
+        content.setText(Html.fromHtml(prefix + linePrettyfied));
     }
 
     private void setBackgroundColorForTextViews(LinearLayout lineContainer, int color) {
