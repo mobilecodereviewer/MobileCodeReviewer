@@ -39,6 +39,17 @@ public class HtmlPrettifier {
 
         String joinedSourceCode = joinedSourceBuilder.toString();
         String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, extension);
-        return prettifiedSourceCode.split("\n");
+        String[] sourceCodeAfterPrettyfying = prettifiedSourceCode.split("\n");
+        if (this.extension.toLowerCase().equals("py")) {
+            removeAdditionalSemicolonFromLineToDealWithBugInJavaPrettifyLibraryWithPythonFiles(sourceCodeAfterPrettyfying);
+        }
+        return sourceCodeAfterPrettyfying;
+    }
+
+    private void removeAdditionalSemicolonFromLineToDealWithBugInJavaPrettifyLibraryWithPythonFiles(String[] sourceCodeAfterPrettyfying) {
+        for (int i = 0; i < sourceCodeAfterPrettyfying.length; i++) {
+            String currLine = sourceCodeAfterPrettyfying[i];
+            sourceCodeAfterPrettyfying[i] = currLine.substring(0, currLine.length() );
+        }
     }
 }
