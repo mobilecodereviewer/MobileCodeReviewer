@@ -17,17 +17,15 @@ public class HtmlPrettifier {
         this.extension = extension;
         this.content = new LinkedList<String>(content);
         if ( extension.toLowerCase().equals("py") ) {
-            addAdditionalSemicolonToLinesWithImportToDealWithBugInJavaPrettifyWithPythonFiles();
+            addAdditionalSemicolonToLinesToDealWithBugInJavaPrettifyLibraryWithPythonFiles();
         }
     }
 
     // Python stwarza na ten moment zajebiste problemy,trza sie bedzie zastanowic czy jest sens
     // zeby on wogle byl....
-    private void addAdditionalSemicolonToLinesWithImportToDealWithBugInJavaPrettifyWithPythonFiles() {
+    private void addAdditionalSemicolonToLinesToDealWithBugInJavaPrettifyLibraryWithPythonFiles() {
         for (int i = 0; i < content.size(); i++) {
-            if (content.get(i).startsWith("import") || content.get(i).startsWith("from") ) {
                 content.set(i , content.get(i) + ";");
-            }
         }
     }
 
