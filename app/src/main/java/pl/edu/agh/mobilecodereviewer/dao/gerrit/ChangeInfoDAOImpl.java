@@ -67,6 +67,8 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         changeInfoModel.setProject(changeInfoDTO.getProject());
         changeInfoModel.setBranch(changeInfoDTO.getBranch());
         changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
+        changeInfoModel.setNumber(changeInfoDTO.getNumber());
+
         if (changeInfoDTO.getInsertions() != null)
             changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
         changeInfoModel.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
@@ -90,6 +92,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
             changeInfoModel.setBranch(changeInfoDTO.getBranch());
             changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
             changeInfoModel.setCurrentRevision(changeInfoDTO.getCurrentRevision());
+            changeInfoModel.setNumber(changeInfoDTO.getNumber());
 
             if ( changeInfoDTO.getInsertions() != null )
                 changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());

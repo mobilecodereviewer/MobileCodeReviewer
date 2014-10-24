@@ -69,17 +69,17 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
 
-        if(convertView == null){
+        if(convertView == null) {
             convertView = inflater.inflate(R.layout.layout_changes_explorer_group, null);
-
-            Button goButton = (Button) convertView.findViewById(R.id.changesExplorerGroupGoButton);
-            goButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ChangesExplorer) context).showChangeDetails(groups.get(groupPosition).getChangeId(), groups.get(groupPosition).getCurrentRevision());
-                }
-            });
         }
+
+        Button goButton = (Button) convertView.findViewById(R.id.changesExplorerGroupGoButton);
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ChangesExplorer) context).showChangeDetails(groups.get(groupPosition).getChangeId(), groups.get(groupPosition).getCurrentRevision());
+            }
+        });
 
         String changeSubject = groups.get(groupPosition).getSubject();
         TextView changeSubjectView = (TextView) convertView.findViewById(R.id.changesExplorerGroupLabel);

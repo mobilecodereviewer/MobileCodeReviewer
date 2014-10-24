@@ -139,7 +139,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         };
 
         alertDialogBuilder
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
                 .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
 

@@ -48,6 +48,17 @@ public class ChangeInfoDTO {
 
     private Map<String, LabelInfoDTO> labels;
 
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    @SerializedName("_number")
+    private Integer number;
+
 
     /**
      * Current revision identifier

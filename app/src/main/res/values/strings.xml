@@ -57,6 +57,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message">Review message</string>
 
     <!--ChangeInfoTab start-->
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.number">Number</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.changeId">Change ID</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.owner">Owner</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.project">Project</string>

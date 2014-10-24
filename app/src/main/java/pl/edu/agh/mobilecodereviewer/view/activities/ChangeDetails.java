@@ -212,7 +212,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         };
 
         alertDialogBuilder
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
                 .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
 

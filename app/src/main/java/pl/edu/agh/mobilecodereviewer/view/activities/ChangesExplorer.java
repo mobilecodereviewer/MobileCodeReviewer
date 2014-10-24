@@ -84,6 +84,11 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
         controller.updateChanges();
     }
 
+    @Override
+    public void onBackPressed() {
+        //disable going back to configuration activity
+    }
+
     /**
      * Preparing activity's options menu.
      * @inheritDoc
