@@ -1,5 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.PrettifyHighlighter;
@@ -14,7 +15,20 @@ public class HtmlPrettifier {
 
     public HtmlPrettifier(String extension, List<String> content) {
         this.extension = extension;
-        this.content = content;
+        this.content = new LinkedList<String>(content);
+        if ( extension.toLowerCase().equals("py") ) {
+            addAdditionalSemicolonToLinesWithImportToDealWithBugInJavaPrettifyWithPythonFiles();
+        }
+    }
+
+    // Python stwarza na ten moment zajebiste problemy,trza sie bedzie zastanowic czy jest sens
+    // zeby on wogle byl....
+    private void addAdditionalSemicolonToLinesWithImportToDealWithBugInJavaPrettifyWithPythonFiles() {
+        for (int i = 0; i < content.size(); i++) {
+            if (content.get(i).startsWith("import") || content.get(i).startsWith("from") ) {
+                content.set(i , content.get(i) + ";");
+            }
+        }
     }
 
     public String[] buildHtmlContent() {
