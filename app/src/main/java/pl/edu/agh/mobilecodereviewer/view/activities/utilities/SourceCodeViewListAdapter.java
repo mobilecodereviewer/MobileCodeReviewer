@@ -45,11 +45,6 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
      */
     private final Activity context;
 
-    /**
-     * List of lines content from a given {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
-     */
-    private final List<String> content;
-
     private final String[] htmlContent;
 
     /**
@@ -72,25 +67,16 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         super(context, R.layout.layout_source_line, SourceCodeHelper.getContent(sourceCode) );
         this.context = context;
 
-        this.content = SourceCodeHelper.getContent(sourceCode);
         this.hasComments = SourceCodeHelper.getHasLineComments(sourceCode);
         this.sourceCode = sourceCode;
         this.showLineNumbers = false;
         this.extension = extension;
 
-        this.htmlContent = buildHtmlContentOfLines(this.extension,this.content);
+        HtmlPrettifier htmlPretty = new HtmlPrettifier(this.extension,SourceCodeHelper.getContent(sourceCode) );
+        this.htmlContent = htmlPretty.buildHtmlContent();
     }
 
-    private String[] buildHtmlContentOfLines(String extension,List<String> content) {
-        SyntaxHighlighter prettifyHighlighter = new PrettifyHighlighter();
-        StringBuilder joinedSourceBuilder = new StringBuilder();
-        for (String sourceLine : content) {
-            joinedSourceBuilder.append(sourceLine + "\n");
-        }
-        String joinedSourceCode = joinedSourceBuilder.toString();
-        String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, extension);
-        return prettifiedSourceCode.split("\n");
-    }
+
 
     /**
      * Adapts data to be shown in layout_source_line layout from given position and view

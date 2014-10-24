@@ -31,20 +31,10 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         super(context, R.layout.layout_source_diff_line, SourceCodeDiffHelper.getContent(sourceCodeDiff));
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
-        this.htmlContent = buildHtmlContentOfLines( extension , SourceCodeDiffHelper.getContent(sourceCodeDiff) );
-
-        showLineNumbers = false;
-    }
-
-    private String[] buildHtmlContentOfLines(String extension,List<String> content) {
-        SyntaxHighlighter prettifyHighlighter = new PrettifyHighlighter();
-        StringBuilder joinedSourceBuilder = new StringBuilder();
-        for (String sourceLine : content) {
-            joinedSourceBuilder.append(sourceLine + "\n");
-        }
-        String joinedSourceCode = joinedSourceBuilder.toString();
-        String prettifiedSourceCode = prettifyHighlighter.highlight(joinedSourceCode, extension);
-        return prettifiedSourceCode.split("\n");
+        HtmlPrettifier htmlPrettifier =
+                new HtmlPrettifier(extension, SourceCodeDiffHelper.getContent(sourceCodeDiff) );
+        this.htmlContent = htmlPrettifier.buildHtmlContent();
+        this.showLineNumbers = false;
     }
 
     @Override
