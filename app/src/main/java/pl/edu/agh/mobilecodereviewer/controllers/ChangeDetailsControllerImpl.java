@@ -2,10 +2,12 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.inject.Inject;
 
+import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 
 public class ChangeDetailsControllerImpl implements ChangeDetailsController {
@@ -15,7 +17,8 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController {
 
     @Override
     public void updateSetReviewPopup(ChangeDetailsView view, String changeId) {
-        view.showSetReviewPopup(changeInfoDAO.getLabels(changeId));
+        List<PermittedLabel> permittedLabels = changeInfoDAO.getPermittedLabels(changeId);
+        view.showSetReviewPopup(permittedLabels);
     }
 
     @Override

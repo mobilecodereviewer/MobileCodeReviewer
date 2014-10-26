@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
@@ -150,6 +151,18 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         }
 
         return changeMessageInfos;
+    }
+
+    @Override
+    public List<PermittedLabel> getPermittedLabels(String changeId) {
+        Map<String, List<Integer>> permittedLabels = restApi.getChangeDetails(changeId).getPermittedLabels();
+
+        List<PermittedLabel> result = new ArrayList<PermittedLabel>();
+        for(String labelName : permittedLabels.keySet()){
+            result.add(new PermittedLabel(labelName, permittedLabels.get(labelName)));
+        }
+
+        return result;
     }
 
     @Override

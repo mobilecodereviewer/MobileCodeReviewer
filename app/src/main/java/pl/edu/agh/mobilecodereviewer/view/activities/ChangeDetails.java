@@ -25,6 +25,7 @@ import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.*;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
@@ -170,7 +171,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
     }
 
     @Override
-    public void showSetReviewPopup(final List<LabelInfo> labelInfos) {
+    public void showSetReviewPopup(final List<PermittedLabel> permittedLabels) {
         LayoutInflater li = LayoutInflater.from(ChangeDetails.this);
         View addReviewView = li.inflate(R.layout.layout_add_review, null);
 
@@ -181,7 +182,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
 
         AccountInfo loggedUser = ConfigurationContainer.getInstance().getLoggedUser();
         final ListView votesList = (ListView) addReviewView.findViewById(R.id.votesList);
-        votesList.setAdapter(new AddReviewVotesListAdapter(this, labelInfos, loggedUser));
+        votesList.setAdapter(new AddReviewVotesListAdapter(this, permittedLabels, loggedUser));
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -192,11 +193,11 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
                         String message = userInput.getText().toString();
 
                         Map<String, Integer> votes = new HashMap<String, Integer>();
-                        for(int i = 0; i<labelInfos.size(); i++){
+                        for(int i = 0; i<permittedLabels.size(); i++){
                             View voteItem = (View) votesList.getChildAt(i);
                             Spinner voteSpinner = (Spinner) voteItem.findViewById(R.id.singleVoteSpinner);
                             if(voteSpinner.getSelectedItem() != null && voteSpinner.getAdapter().getCount() != 0) {
-                                votes.put(labelInfos.get(i).getName(), (Integer) voteSpinner.getSelectedItem());
+                                votes.put(permittedLabels.get(i).getName(), (Integer) voteSpinner.getSelectedItem());
                             }
                         }
 

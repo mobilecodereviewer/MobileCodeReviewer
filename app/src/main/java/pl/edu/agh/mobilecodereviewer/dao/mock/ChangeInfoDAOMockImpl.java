@@ -13,6 +13,7 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 
 /**
  * Simple Stub for ChangeInfoDAO with hardcoded values
@@ -112,5 +113,10 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
     @Override
     public void initialize(RestApi restApi) {
 
+    }
+
+    @Override
+    public List<PermittedLabel> getPermittedLabels(String changeId) {
+        return null;
     }
 }

@@ -48,17 +48,11 @@ public class ChangeInfoDTO {
 
     private Map<String, LabelInfoDTO> labels;
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
+    @SerializedName("permitted_labels")
+    private Map<String, List<Integer>> permittedLabels;
 
     @SerializedName("_number")
     private Integer number;
-
 
     /**
      * Current revision identifier
@@ -71,12 +65,28 @@ public class ChangeInfoDTO {
      */
     private Map<String, RevisionInfoDTO> revisions;
 
+    public Map<String, List<Integer>> getPermittedLabels() {
+        return permittedLabels;
+    }
+
+    public void setPermittedLabels(Map<String, List<Integer>> permittedLabels) {
+        this.permittedLabels = permittedLabels;
+    }
+
     /**
      * Return current revision of the given change
      * @return Name of the revision
      */
     public String getCurrentRevision() {
         return currentRevision;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     /**
