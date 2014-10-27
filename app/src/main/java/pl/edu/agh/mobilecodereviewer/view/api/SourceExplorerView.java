@@ -24,7 +24,11 @@ public interface SourceExplorerView {
 
     void setInterfaceForCode();
 
+    void hideNavigationButtons();
+
     void setInterfaceForDiff();
+
+    void showNavigationButtons();
 
     void showMessage(String message);
 

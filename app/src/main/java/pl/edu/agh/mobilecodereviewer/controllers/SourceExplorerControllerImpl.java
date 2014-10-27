@@ -40,7 +40,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     public static final String INAPROPRIATE_LINE_FOR_COMMENT_INSERTION = "Comment cannot be inserted to skipped or removed line";
 
-    boolean isDiffView = false;
+    boolean isDiffView = true;
     boolean isAddingCommentOptionsVisible = false;
     boolean showLineNumbers = false;
     int currentSelectedLine = -1;
@@ -88,19 +88,23 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         if ( Files.getFileExtension(file_id) != null && !Files.getFileExtension(file_id).equals(""))
             fileNameWithExtension += "." + Files.getFileExtension(file_id);
         view.setTitle(fileNameWithExtension);
-        updateSourceCode();
+        updateAppropriateSourceCodeMode();
     }
 
     @Override
     public void toggleDiffView() {
         view.clearSourceCode();
         isDiffView = !isDiffView;
+        updateAppropriateSourceCodeMode();
+        isAddingCommentOptionsVisible = false;
+    }
+
+    private void updateAppropriateSourceCodeMode() {
         if (isDiffView) {
             updateSourceCodeDiff();
         } else {
             updateSourceCode();
         }
-        isAddingCommentOptionsVisible = false;
     }
 
     private SourceCode getSourceCode() {
@@ -150,11 +154,8 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
 
         sourceCodeDAO.putFileComment(change_id, revision_id, comment);
-        sourceCode.getLine(linenum).getComments().add(comment);
-        if (isDiffView)
-            updateSourceCodeDiff();
-        else
-            updateSourceCode();
+        getSourceCode().getLine(linenum).getComments().add(comment);
+        updateAppropriateSourceCodeMode();
     }
 
     @Override
@@ -194,6 +195,14 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     public boolean isAddingCommentAvalaible() {
         return ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()
                 && change_status != ChangeStatus.ABANDONED && change_status != ChangeStatus.MERGED;
+    }
+
+    @Override
+    public void setVisibilityOnSourceCodeNavigation() {
+        if (isDiffView) {
+            view.showNavigationButtons();
+        } else
+            view.hideNavigationButtons();
     }
 }
 

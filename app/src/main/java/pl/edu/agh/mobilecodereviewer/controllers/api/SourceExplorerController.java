@@ -33,4 +33,6 @@ public interface SourceExplorerController {
     void toogleVisibilityOfLineNumbers(SourceCodeListAdapter sourceCodeListAdapter);
 
     boolean isAddingCommentAvalaible();
+
+    void setVisibilityOnSourceCodeNavigation();
 }

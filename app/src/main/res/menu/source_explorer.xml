@@ -5,7 +5,7 @@
 
     <item android:id="@+id/sourceDiffToggleButton"
         android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.title"
-        android:icon="@drawable/source_code_diff_icon"
+        android:icon="@drawable/source_code_code_icon"
         android:orderInCategory="0"
         android:showAsAction="always" />
 

@@ -48,8 +48,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private MenuItem prevChangeNavigation;
     private MenuItem nextChangeNavigation;
 
-    private boolean isDiffView = false;
-
     private final Context context = this;
     /**
      * Associated controller which make actions to activity events
@@ -178,7 +176,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         getMenuInflater().inflate(R.menu.source_explorer, menu);
         this.prevChangeNavigation = menu.findItem(R.id.gotoPrevChange);
         this.nextChangeNavigation = menu.findItem(R.id.gotoNextChange);
-        hideNavigationButtons();
+        controller.setVisibilityOnSourceCodeNavigation();
         return true;
     }
 
@@ -192,7 +190,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         int id = item.getItemId();
 
         if (id == R.id.sourceDiffToggleButton) {
-            isDiffView = !isDiffView;
             controller.toggleDiffView();
         } else if (id == R.id.gotoNextChange) {
             controller.navigateToNextChange();
@@ -235,7 +232,8 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         hideNavigationButtons();
     }
 
-    private void hideNavigationButtons() {
+    @Override
+    public void hideNavigationButtons() {
         if (prevChangeNavigation == null || nextChangeNavigation == null)
             return;
         prevChangeNavigation.setVisible(false);
@@ -251,7 +249,10 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         showNavigationButtons();
     }
 
-    private void showNavigationButtons() {
+    @Override
+    public void showNavigationButtons() {
+        if (prevChangeNavigation == null || nextChangeNavigation == null)
+            return;
         prevChangeNavigation.setVisible(true);
         nextChangeNavigation.setVisible(true);
         prevChangeNavigation.setEnabled(true);
