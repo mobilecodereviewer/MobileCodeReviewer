@@ -6,9 +6,6 @@ import java.util.List;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.PrettifyHighlighter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.SyntaxHighlighter;
 
-/**
- * Created by lee on 2014-10-24.
- */
 public class HtmlPrettifier {
     private String extension;
     private List<String> content;
