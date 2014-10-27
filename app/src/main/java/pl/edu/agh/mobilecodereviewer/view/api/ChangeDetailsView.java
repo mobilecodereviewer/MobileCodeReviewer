@@ -11,4 +11,5 @@ public interface ChangeDetailsView {
 
     void showSetReviewPopup(List<PermittedLabel> permittedLabels);
 
+    void setPutReviewVisibility(boolean putReviewVisibility);
 }

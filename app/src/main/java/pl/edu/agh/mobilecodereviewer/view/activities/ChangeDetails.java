@@ -21,14 +21,11 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
-import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
-import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.*;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseTabActivity;
@@ -85,6 +82,8 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
 
     private String currentRevisionId;
 
+    private boolean putReviewVisibility;
+
     /**
      * Invoked on start of the acivity.
      * Prepares tabs to be shown, passes intents to each tab and sets currently
@@ -104,6 +103,8 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         currentRevisionId = intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGES_REVISION_ID);
         addTabs(changeDetailsTabHost);
         changeDetailsTabHost.setCurrentTab(0);
+
+        controller.initializeData(this, currentChangeId, currentRevisionId);
     }
 
     /**
@@ -116,7 +117,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         tabHost.addTab(tabHost.newTabSpec(changeInfoTabId)
                 .setIndicator("", changeInfoTabIcon)
                 .setContent(new Intent(this, ChangeInfoTab.class)
-                    .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
+                        .putExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID, currentChangeId)));
 
         tabHost.addTab(tabHost.newTabSpec(commitMessageTabId)
                 .setIndicator("", commitMessageTabIcon)
@@ -148,11 +149,13 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.change_details, menu);
 
-        if(!ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()) {
-            menu.setGroupVisible(R.id.changeDetailsPrivilegedGroup, false);
-        }
-
+        menu.setGroupVisible(R.id.changeDetailsPrivilegedGroup, putReviewVisibility);
         return true;
+    }
+
+    @Override
+    public void setPutReviewVisibility(boolean putReviewVisibility) {
+        this.putReviewVisibility = putReviewVisibility;
     }
 
     /**
@@ -164,7 +167,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_addReview) {
-            controller.updateSetReviewPopup(this, currentChangeId);
+            controller.updateSetReviewPopup();
         }
 
         return super.onOptionsItemSelected(item);
@@ -201,7 +204,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
                             }
                         }
 
-                        controller.setReview(currentChangeId, currentRevisionId, message, votes);
+                        controller.setReview(message, votes);
 
                         break;
 
@@ -221,4 +224,5 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
 
         alertDialog.show();
     }
+
 }
