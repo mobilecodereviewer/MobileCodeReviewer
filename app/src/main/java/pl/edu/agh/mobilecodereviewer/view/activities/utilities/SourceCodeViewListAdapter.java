@@ -5,12 +5,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.text.Html;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -89,40 +92,21 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
     public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.layout_source_line, null, true);
-        TextView txtCodeContent = (TextView) rowView.findViewById(R.id.codeText);
+
+        LinearLayout lineContainer = (LinearLayout) rowView.findViewById(R.id.sourceLineMainLayout);
+
+        TextView txtContent = (TextView) rowView.findViewById(R.id.codeText);
         TextView txtNumber = (TextView) rowView.findViewById(R.id.lineNumberText);
-        final ImageView imageView = (ImageView) rowView.findViewById(R.id.commentImage);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                imageView.setEnabled(false);
-                if ( sourceCode.getLine(position+1).hasComments()) {
-                    View lineCommentsView = context.getLayoutInflater().inflate(R.layout.layout_line_comments, null);
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                    alertDialogBuilder.setView(lineCommentsView);
+        if ( hasComments.get(position) ) {
+            float alpha = 0.7f;
+            lineContainer.setAlpha(alpha);
+            lineContainer.setBackgroundColor( Color.YELLOW );
+            txtContent.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        }
 
-                    ListView listView = (ListView) lineCommentsView.findViewById(R.id.lineCommentsList);
-                    listView.setAdapter(new SingleLineCommentViewListAdapter(context, sourceCode.getLine(position+1) ) );
-
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                    alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            imageView.setEnabled(true);
-                        }
-                    });
-                    alertDialog.show();
-                }
-
-            }
-        });
         txtNumber.setText( Integer.toString(position+1) );
-        setCodeTextViewContent(txtCodeContent," \t", position);
-        if ( hasComments.get(position) )
-            imageView.setImageResource( R.drawable.source_explorer_line_comment_icon );
-        else
-            imageView.setImageDrawable(null);
+        setCodeTextViewContent(txtContent," \t", position);
+
         if (!showLineNumbers)
             txtNumber.setVisibility(View.GONE);
         return rowView;

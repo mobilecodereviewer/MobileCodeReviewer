@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This code (with minor changes) is taken from mcr application
+ * created by fracz
+ * https://github.com/fracz
+ */
+
 public class PrettifyHighlighter implements SyntaxHighlighter {
     public static final String LF = "\n";
 

@@ -40,6 +40,20 @@ public class ChangeInfo {
 
     private String currentRevision;
 
+    private Integer number;
+
+    public void setStatus(ChangeStatus status) {
+        this.status = status;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
      */
@@ -204,7 +218,7 @@ public class ChangeInfo {
                 "id='" + id + '\'' +
                 ", changeId='" + changeId + '\'' +
                 ", subject='" + subject + '\'' +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 ", ownerName='" + ownerName + '\'' +
                 ", project='" + project + '\'' +
                 ", branch='" + branch + '\'' +
@@ -212,6 +226,7 @@ public class ChangeInfo {
                 ", created='" + created + '\'' +
                 ", size=" + size +
                 ", currentRevision='" + currentRevision + '\'' +
+                ", number=" + number +
                 '}';
     }
 

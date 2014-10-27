@@ -17,12 +17,16 @@ import android.widget.Toast;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 
+import java.util.List;
+
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
+import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SingleLineCommentViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
@@ -48,8 +52,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private Menu menu;
     private MenuItem prevChangeNavigation;
     private MenuItem nextChangeNavigation;
-
-    private boolean isDiffView = false;
 
     private final Context context = this;
     /**
@@ -82,13 +84,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private void initializeView() {
         final SourceExplorerView sourceView = this;
 
-        sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                controller.setCurrentLinePosition(i);
-            }
-        });
-
         if (controller.isAddingCommentAvalaible()) {
             sourceLinesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -109,7 +104,28 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
    
         }
 
+        sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                controller.setCurrentLinePosition(position);
+                controller.showComments(position);
+            }
+        });
+
         controller.initializeView();
+    }
+
+    @Override
+    public void showCommentListDialog(Line line) {
+        View lineCommentsView = this.getLayoutInflater().inflate(R.layout.layout_line_comments, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(lineCommentsView);
+
+        ListView listView = (ListView) lineCommentsView.findViewById(R.id.lineCommentsList);
+        listView.setAdapter(new SingleLineCommentViewListAdapter(context, line ) );
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private boolean showCommentAddDialog(AdapterView<?> sourceCodeLayout, final int lineClicked) {
@@ -140,7 +156,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         };
 
         alertDialogBuilder
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
                 .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
 
@@ -179,7 +195,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         getMenuInflater().inflate(R.menu.source_explorer, menu);
         this.prevChangeNavigation = menu.findItem(R.id.gotoPrevChange);
         this.nextChangeNavigation = menu.findItem(R.id.gotoNextChange);
-        hideNavigationButtons();
+        controller.setVisibilityOnSourceCodeNavigation();
         return true;
     }
 
@@ -193,7 +209,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         int id = item.getItemId();
 
         if (id == R.id.sourceDiffToggleButton) {
-            isDiffView = !isDiffView;
             controller.toggleDiffView();
         } else if (id == R.id.gotoNextChange) {
             controller.navigateToNextChange();
@@ -223,10 +238,10 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     }
 
     @Override
-    public void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff) {
+    public void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments) {
         String extension = Files.getFileExtension(file_path);
         final SourceCodeDiffViewListAdapter sourceCodeDiffViewListAdapter =
-                new SourceCodeDiffViewListAdapter(this, extension,sourceCodeDiff);
+                new SourceCodeDiffViewListAdapter(this, extension,sourceCodeDiff,hasComments);
 
         sourceLinesListView.setAdapter(sourceCodeDiffViewListAdapter);
     }
@@ -239,7 +254,8 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         hideNavigationButtons();
     }
 
-    private void hideNavigationButtons() {
+    @Override
+    public void hideNavigationButtons() {
         if (prevChangeNavigation == null || nextChangeNavigation == null)
             return;
         prevChangeNavigation.setVisible(false);
@@ -255,7 +271,10 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         showNavigationButtons();
     }
 
-    private void showNavigationButtons() {
+    @Override
+    public void showNavigationButtons() {
+        if (prevChangeNavigation == null || nextChangeNavigation == null)
+            return;
         prevChangeNavigation.setVisible(true);
         nextChangeNavigation.setVisible(true);
         prevChangeNavigation.setEnabled(true);
@@ -272,6 +291,11 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         sourceLinesListView.smoothScrollToPosition(line);
         sourceLinesListView.setSelection(line);
         sourceLinesListView.setSelected(true);
+    }
+
+    @Override
+    public void setTitle(String fileName) {
+        super.setTitle(fileName);
     }
 }
 

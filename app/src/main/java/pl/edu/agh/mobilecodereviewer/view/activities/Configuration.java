@@ -28,6 +28,7 @@ import pl.edu.agh.mobilecodereviewer.app.MobileCodeReviewerApplication;
 import pl.edu.agh.mobilecodereviewer.exceptions.handlers.UncaughtExceptionHandlerHelper;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ConfigurationController;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
+import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SavedConfigurationsCustomSpinner;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SavedConfigurationsSpinnerAdapter;
@@ -111,6 +112,8 @@ public class Configuration extends RoboActivity implements ConfigurationView {
 
     private List<ConfigurationInfo> savedConfigurationInfos;
 
+    private boolean forceDontLoadLastSavedConfiguration = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +146,11 @@ public class Configuration extends RoboActivity implements ConfigurationView {
         });
 
         setAuthenticationVisibility();
-        controller.checkCrashReports(this);
+
+        String loadLastSavedConfigurationIntent = getIntent().getStringExtra(ExtraMessages.CONFIGURATION_DONT_LOAD_LAST_SAVED);
+        forceDontLoadLastSavedConfiguration = loadLastSavedConfigurationIntent != null;
+
+        controller.checkCrashReports(this, forceDontLoadLastSavedConfiguration);
     }
 
     private void hidePasswordText() {
@@ -269,18 +276,23 @@ public class Configuration extends RoboActivity implements ConfigurationView {
                 sendIntent.setType("message/rfc822");
                 startActivity(Intent.createChooser(sendIntent, UncaughtExceptionHandlerHelper.SEND_EMAIL_DIALOG_TITLE));
 
-                controller.updateSavedConfigurations(Configuration.this);
+                controller.updateSavedConfigurationsOrUseLastSavedIfExists(Configuration.this, forceDontLoadLastSavedConfiguration);
             }
         });
 
         cancelCrashReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.updateSavedConfigurations(Configuration.this);
+                controller.updateSavedConfigurationsOrUseLastSavedIfExists(Configuration.this, forceDontLoadLastSavedConfiguration);
             }
         });
 
         removeCrashReportTmpFile();
+    }
+
+    @Override
+    public void authenticateUsingSavedConfiguration(ConfigurationInfo configurationInfo) {
+        controller.authenticate((MobileCodeReviewerApplication) getApplication(), this, configurationInfo, false, configurationInfo.isAuthenticatedUser());
     }
 
     private void removeCrashReportTmpFile(){

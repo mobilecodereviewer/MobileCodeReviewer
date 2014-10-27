@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
@@ -67,6 +68,8 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         changeInfoModel.setProject(changeInfoDTO.getProject());
         changeInfoModel.setBranch(changeInfoDTO.getBranch());
         changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
+        changeInfoModel.setNumber(changeInfoDTO.getNumber());
+
         if (changeInfoDTO.getInsertions() != null)
             changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
         changeInfoModel.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
@@ -90,6 +93,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
             changeInfoModel.setBranch(changeInfoDTO.getBranch());
             changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
             changeInfoModel.setCurrentRevision(changeInfoDTO.getCurrentRevision());
+            changeInfoModel.setNumber(changeInfoDTO.getNumber());
 
             if ( changeInfoDTO.getInsertions() != null )
                 changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
@@ -147,6 +151,18 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         }
 
         return changeMessageInfos;
+    }
+
+    @Override
+    public List<PermittedLabel> getPermittedLabels(String changeId) {
+        Map<String, List<Integer>> permittedLabels = restApi.getChangeDetails(changeId).getPermittedLabels();
+
+        List<PermittedLabel> result = new ArrayList<PermittedLabel>();
+        for(String labelName : permittedLabels.keySet()){
+            result.add(new PermittedLabel(labelName, permittedLabels.get(labelName)));
+        }
+
+        return result;
     }
 
     @Override

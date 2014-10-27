@@ -54,6 +54,9 @@ public class ChangeInfoTab extends BaseActivity implements ChangeInfoTabView {
     @InjectView(R.id.changeInfoTabMergeableValue)
     private TextView changeMergeableView;
 
+    @InjectView(R.id.changeInfoTabChangeNumber)
+    private TextView changeNumberView;
+
     public ChangeInfoTab(){}
 
     public ChangeInfoTab(ChangeInfoTabController controller) { this.controller = controller; }
@@ -76,6 +79,7 @@ public class ChangeInfoTab extends BaseActivity implements ChangeInfoTabView {
 
     @Override
     public void showInfo(ChangeInfo changeInfo, MergeableInfo mergeableInfo, String topic) {
+        changeNumberView.setText(changeInfo.getNumber().toString());
         changeIdView.setText(changeInfo.getChangeId());
         changeOwnerView.setText(changeInfo.getOwnerName());
         changeProjectView.setText(changeInfo.getProject());

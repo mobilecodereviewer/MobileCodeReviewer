@@ -1,5 +1,9 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
+import com.google.common.io.Files;
+
+import org.apache.commons.io.FileUtils;
+
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -12,6 +16,7 @@ import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeHelper;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
@@ -26,18 +31,20 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  */
 public class SourceExplorerControllerImpl implements SourceExplorerController{
 
-    public static final String NO_PREVIOUS_CHANGE_FOUND = "No previous change found";
-    public static final String NO_NEXT_CHANGE_FOUND = "No next change found";
+    private static final String NO_PREVIOUS_CHANGE_FOUND = "No previous change found";
+    private static final String NO_NEXT_CHANGE_FOUND = "No next change found";
+    private static final String NO_COMMENTS_IN_LINE = "No comments in selected line";
+    private static final String INAPROPRIATE_LINE_FOR_COMMENT_INSERTION = "Comment cannot be inserted to skipped or removed line";
+    private static final String INAPPROPRIATE_LINE_FOR_GETTING_LIST_OF_COMMENT = "Comments are not displayed from deleted or skipped lines";
+
     /**
      * Object gives information about source code
      */
     @Inject
     SourceCodeDAO sourceCodeDAO;
 
-    public static final String INAPROPRIATE_LINE_FOR_COMMENT_INSERTION = "Comment cannot be inserted to skipped or removed line";
 
-    boolean isDiffView = false;
-    boolean isAddingCommentOptionsVisible = false;
+    boolean isDiffView = true;
     boolean showLineNumbers = false;
     int currentSelectedLine = -1;
 
@@ -80,19 +87,28 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void initializeView() {
-        updateSourceCode();
+        String fileNameWithExtension = Files.getNameWithoutExtension(file_id) ;
+        if ( Files.getFileExtension(file_id) != null && !Files.getFileExtension(file_id).equals(""))
+            fileNameWithExtension += "." + Files.getFileExtension(file_id);
+        view.setTitle(fileNameWithExtension);
+        updateAppropriateSourceCodeMode();
     }
 
     @Override
     public void toggleDiffView() {
+        showLineNumbers = false;
+        currentSelectedLine = -1;
         view.clearSourceCode();
         isDiffView = !isDiffView;
+        updateAppropriateSourceCodeMode();
+    }
+
+    private void updateAppropriateSourceCodeMode() {
         if (isDiffView) {
             updateSourceCodeDiff();
         } else {
             updateSourceCode();
         }
-        isAddingCommentOptionsVisible = false;
     }
 
     private SourceCode getSourceCode() {
@@ -120,33 +136,37 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     private void updateSourceCodeDiff() {
         SourceCodeDiff sourceCodeDiff = getSourceCodeDiff();
+        SourceCode sourceCode = getSourceCode();
 
-        view.showSourceCodeDiff(file_id,sourceCodeDiff );
+        view.showSourceCodeDiff(file_id,sourceCodeDiff, SourceCodeHelper.getHasLineComments(sourceCode) );
         view.setInterfaceForDiff();
+    }
+
+    private int calculateLineNumberFromListPosition(int lineNumber) {
+        if (isDiffView) {
+            DiffedLine line = sourceCodeDiff.getLine(lineNumber);
+            if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
+                return -1;
+            }
+
+            return line.getNewLineNumber()+1;
+        } else {
+            return lineNumber+1;
+        }
     }
 
     @Override
     public void insertComment(String content, int lineNumber) {
-        int linenum;
-        if (isDiffView) {
-            DiffedLine line = sourceCodeDiff.getLine(lineNumber);
-            if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
-                view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
-                return;
-            }
-
-            linenum = line.getNewLineNumber()+1;
-        } else {
-            linenum = lineNumber+1;
+        int linenum = calculateLineNumberFromListPosition(lineNumber);
+        if (linenum == -1) {
+            view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
+            return;
         }
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
 
         sourceCodeDAO.putFileComment(change_id, revision_id, comment);
-        sourceCode.getLine(linenum).getComments().add(comment);
-        if (isDiffView)
-            updateSourceCodeDiff();
-        else
-            updateSourceCode();
+        getSourceCode().getLine(linenum).getComments().add(comment);
+        updateAppropriateSourceCodeMode();
     }
 
     @Override
@@ -186,6 +206,30 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     public boolean isAddingCommentAvalaible() {
         return ConfigurationContainer.getInstance().getConfigurationInfo().isAuthenticatedUser()
                 && change_status != ChangeStatus.ABANDONED && change_status != ChangeStatus.MERGED;
+    }
+
+    @Override
+    public void setVisibilityOnSourceCodeNavigation() {
+        if (isDiffView) {
+            view.showNavigationButtons();
+        } else
+            view.hideNavigationButtons();
+    }
+
+    @Override
+    public void showComments(int position) {
+        int linenum = calculateLineNumberFromListPosition(position);
+        if (linenum == -1) {
+            view.showMessage(INAPPROPRIATE_LINE_FOR_GETTING_LIST_OF_COMMENT);
+            return;
+        }
+
+        if (getSourceCode().getLine(linenum).hasComments()) {
+            view.showCommentListDialog(getSourceCode().getLine(linenum));
+        } else {
+            view.showMessage(NO_COMMENTS_IN_LINE);
+            return;
+        }
     }
 }
 

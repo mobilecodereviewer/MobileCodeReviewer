@@ -25,4 +25,10 @@
         android:icon="@drawable/common_help_icon"
         android:orderInCategory="100"
         android:showAsAction="always" />
+
+    <item android:id="@+id/changeConfiguration"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration"
+        android:orderInCategory="105"
+        android:showAsAction="never"
+        />
 </menu>

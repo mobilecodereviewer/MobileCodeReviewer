@@ -6,11 +6,11 @@ import pl.edu.agh.mobilecodereviewer.view.api.ConfigurationView;
 
 public interface ConfigurationController {
 
-    void checkCrashReports(ConfigurationView view);
+    void checkCrashReports(ConfigurationView view, boolean forceDontLoadLastSavedConfiguration);
 
     void authenticate(MobileCodeReviewerApplication mobileCodeReviewerApplication, ConfigurationView view, ConfigurationInfo configurationInfo, boolean saveConfiguration, boolean authenticateUser);
 
-    void updateSavedConfigurations(ConfigurationView view);
+    void updateSavedConfigurationsOrUseLastSavedIfExists(ConfigurationView view, boolean forceDontLoadLastSaved);
 
     void removeAuthenticationConfiguration(ConfigurationView view, ConfigurationInfo configurationInfo);
 

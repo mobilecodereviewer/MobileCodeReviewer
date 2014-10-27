@@ -1,12 +1,17 @@
 package pl.edu.agh.mobilecodereviewer.view.api;
 
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 
 public interface ChangeDetailsView {
 
-    void showSetReviewPopup(List<LabelInfo> labelInfos);
+    void showSetReviewPopup(List<PermittedLabel> permittedLabels);
 
+    void setPutReviewVisibility(boolean putReviewVisibility);
+
+    void setTitle(String titleText);
 }

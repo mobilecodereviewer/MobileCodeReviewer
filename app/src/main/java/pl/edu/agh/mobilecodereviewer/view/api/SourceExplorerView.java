@@ -1,5 +1,8 @@
 package pl.edu.agh.mobilecodereviewer.view.api;
 
+import java.util.List;
+
+import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
@@ -12,6 +15,8 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
  */
 public interface SourceExplorerView {
 
+    void showCommentListDialog(Line line);
+
     void clearSourceCode();
 
     /**
@@ -21,13 +26,19 @@ public interface SourceExplorerView {
      */
     void showSourceCode(String file_path, SourceCode sourceCode);
 
-    void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff);
+    void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff, List<Boolean> hasComments);
 
     void setInterfaceForCode();
 
+    void hideNavigationButtons();
+
     void setInterfaceForDiff();
+
+    void showNavigationButtons();
 
     void showMessage(String message);
 
     void gotoLine(int line);
+
+    void setTitle(String fileName);
 }

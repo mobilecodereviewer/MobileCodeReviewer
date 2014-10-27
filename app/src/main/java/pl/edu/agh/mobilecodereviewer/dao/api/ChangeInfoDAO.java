@@ -9,6 +9,7 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 
 /**
  * Change Information Data Access Object is used for obtaining
@@ -86,4 +87,6 @@ public interface ChangeInfoDAO {
     void setReview(String changeId, String revisionId, String message, Map<String, Integer> votes);
 
     void initialize(RestApi restApi);
+
+    List<PermittedLabel> getPermittedLabels(String changeId);
 }

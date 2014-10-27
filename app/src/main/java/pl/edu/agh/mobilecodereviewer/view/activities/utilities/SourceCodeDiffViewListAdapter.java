@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 import android.app.Activity;
 import android.graphics.Color;
 import android.text.Html;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeDiffHelper;
@@ -23,11 +25,12 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
 
     private final Activity context;
     private final SourceCodeDiff sourceCodeDiff;
+    private final List<Boolean> hasComments;
     private boolean showLineNumbers;
     private String htmlContent[];
 
-    public SourceCodeDiffViewListAdapter(Activity context,
-                                         String extension,SourceCodeDiff sourceCodeDiff) {
+    public SourceCodeDiffViewListAdapter(Activity context, String extension,
+                                         SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments) {
         super(context, R.layout.layout_source_diff_line, SourceCodeDiffHelper.getContent(sourceCodeDiff));
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
@@ -35,10 +38,11 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
                 new HtmlPrettifier(extension, SourceCodeDiffHelper.getContent(sourceCodeDiff) );
         this.htmlContent = htmlPrettifier.buildHtmlContent();
         this.showLineNumbers = false;
+        this.hasComments = hasComments;
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int clickedOnListPosition, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.layout_source_diff_line, null, true);
 
@@ -49,8 +53,10 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         LinearLayout lineContainer = (LinearLayout) rowView.findViewById(R.id.diffLineMainLayout);
 
         if ( sourceCodeDiff != null) {
-            DiffedLine line = sourceCodeDiff.getLine(position);
-            writeLineToTextView(position,lineContainer, txtContent,txtLineNumberBeforeChange,txtLineNumberAfterChange, line ) ;
+            DiffedLine diffedLine = sourceCodeDiff.getLine(clickedOnListPosition);
+            colorAndHighlightLineIfHasComments(txtContent, lineContainer, diffedLine);
+
+            writeLineToTextView(clickedOnListPosition,lineContainer, txtContent, txtLineNumberBeforeChange, txtLineNumberAfterChange, diffedLine);
         }
 
         if (!showLineNumbers) {
@@ -61,9 +67,24 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         return rowView;
     }
 
-    private void writeLineToTextView(int position,LinearLayout lineContainer,
-                                     TextView content, TextView linenumBefore,
-                                     TextView linenumAfter, DiffedLine line) {
+
+    private void colorAndHighlightLineIfHasComments(TextView txtContent, LinearLayout lineContainer, DiffedLine diffedLine) {
+        int actualPosition = -1;
+        if ( diffedLine.getLineType() == DiffLineType.UNCHANGED || diffedLine.getLineType() == DiffLineType.ADDED)
+            actualPosition = diffedLine.getNewLineNumber();
+
+        if ( actualPosition > -1 && actualPosition < hasComments.size() &&
+                hasComments.get(actualPosition) ) {
+
+            float alpha = 0.7f;
+            lineContainer.setAlpha(alpha);
+            lineContainer.setBackgroundColor( Color.YELLOW );
+            txtContent.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        }
+    }
+
+    private void writeLineToTextView(int position,LinearLayout lineContainer, TextView content, TextView linenumBefore, TextView linenumAfter, DiffedLine line) {
+
         if (line == null) {
             linenumBefore.setText("");
             linenumAfter.setText("");

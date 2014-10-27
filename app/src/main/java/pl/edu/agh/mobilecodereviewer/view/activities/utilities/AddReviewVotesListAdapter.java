@@ -20,24 +20,26 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
 import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
+import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 
-public class AddReviewVotesListAdapter extends ArrayAdapter<LabelInfo> {
+public class AddReviewVotesListAdapter extends ArrayAdapter<PermittedLabel> {
 
     private final Activity context;
 
-    private final List<LabelInfo> labelInfos;
+    private final List<PermittedLabel> permittedLabels;
 
     private AccountInfo loggedUser;
 
-    public AddReviewVotesListAdapter(Activity context, List<LabelInfo> labelInfos, AccountInfo loggedUser) {
-        super(context, R.layout.layout_add_review_single_vote, labelInfos);
+    public AddReviewVotesListAdapter(Activity context, List<PermittedLabel> permittedLabels, AccountInfo loggedUser) {
+        super(context, R.layout.layout_add_review_single_vote, permittedLabels);
         this.context = context;
-        this.labelInfos = labelInfos;
+        this.permittedLabels = permittedLabels;
         this.loggedUser = loggedUser;
     }
 
@@ -47,40 +49,20 @@ public class AddReviewVotesListAdapter extends ArrayAdapter<LabelInfo> {
 
         View itemView = inflater.inflate(R.layout.layout_add_review_single_vote, null, true);
 
-        LabelInfo currentLabel = labelInfos.get(position);
-        List<ApprovalInfo> approvalInfos = currentLabel.getAll();
+        PermittedLabel currentLabel = permittedLabels.get(position);
 
         TextView voteText = (TextView) itemView.findViewById(R.id.singleVoteText);
         voteText.setText(currentLabel.getName());
 
-        for(ApprovalInfo approvalInfo : approvalInfos){
-            if(approvalInfo.getAccountId().equals(loggedUser.getAccountId())){
-                if(approvalInfo.getValue() != null) {
-                    return authorizedLabel(currentLabel, itemView);
-                } else {
-                    return unauthorizedLabel(currentLabel, itemView);
-                }
-            }
-        }
+        prepareVotesSpinner(currentLabel, itemView);
 
         return itemView;
     }
 
-    private View unauthorizedLabel(LabelInfo label, View itemView){
-
+    private View prepareVotesSpinner(PermittedLabel label, View itemView){
         Spinner spinner = (Spinner) itemView.findViewById(R.id.singleVoteSpinner);
-        spinner.setVisibility(View.GONE);
-        TextView unauthorizedText = (TextView) itemView.findViewById(R.id.voteUnauthorized);
-        unauthorizedText.setVisibility(View.VISIBLE);
 
-        return itemView;
-    }
-
-    private View authorizedLabel(LabelInfo label, View itemView){
-        Spinner spinner = (Spinner) itemView.findViewById(R.id.singleVoteSpinner);
-        spinner.setVisibility(View.VISIBLE);
-
-        List<Integer> sortedValues = new ArrayList<Integer>(label.getValues().keySet());
+        List<Integer> sortedValues = new ArrayList<Integer>(label.getValues());
         Collections.sort(sortedValues);
 
         ArrayAdapter<Integer> possibleVotesAdapter = new ArrayAdapter<Integer>(context,
@@ -88,9 +70,6 @@ public class AddReviewVotesListAdapter extends ArrayAdapter<LabelInfo> {
         possibleVotesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(possibleVotesAdapter);
         spinner.setSelection(sortedValues.indexOf(0));
-
-        TextView unauthorizedText = (TextView) itemView.findViewById(R.id.voteUnauthorized);
-        unauthorizedText.setVisibility(View.GONE);
 
         return itemView;
     }

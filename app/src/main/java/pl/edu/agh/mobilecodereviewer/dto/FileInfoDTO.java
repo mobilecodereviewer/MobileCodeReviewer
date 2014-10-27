@@ -22,7 +22,7 @@ public class FileInfoDTO {
     /**
      * Lines deleted in file
      */
-    @SerializedName("lines_deletd")
+    @SerializedName("lines_deleted")
     private int linesDeleted;
 
     /**

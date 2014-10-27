@@ -20,13 +20,15 @@ public class ConfigurationControllerImpl implements ConfigurationController {
     private String retrievedVersion;
 
     @Override
-    public void checkCrashReports(ConfigurationView view) {
+    public void checkCrashReports(ConfigurationView view, boolean forceDontLoadLastSavedConfiguration) {
         if(UncaughtExceptionHandlerHelper.checkIfPendingReportsExist()) {
             view.showUnsentCrashReportInformation();
         }else {
-            updateSavedConfigurations(view);
+            updateSavedConfigurationsOrUseLastSavedIfExists(view, forceDontLoadLastSavedConfiguration);
         }
     }
+
+
 
     @Override
     public void authenticate(MobileCodeReviewerApplication mobileCodeReviewerApplication, ConfigurationView view, ConfigurationInfo configurationInfo, boolean saveConfiguration, boolean authenticateUser) {
@@ -55,6 +57,8 @@ public class ConfigurationControllerImpl implements ConfigurationController {
             view.showIncorrectServerVersionInformation(retrievedVersion);
             return;
         }
+
+        PreferencesAccessor.saveLastUsedConfiguration(configurationInfo);
         view.onAuthenticationSuccess();
     }
 
@@ -90,9 +94,14 @@ public class ConfigurationControllerImpl implements ConfigurationController {
     }
 
     @Override
-    public void updateSavedConfigurations(ConfigurationView view) {
-        List<ConfigurationInfo> configurationInfoList = PreferencesAccessor.getConfigurations();
-        view.showSavedConfigurations(configurationInfoList != null ? configurationInfoList : new LinkedList<ConfigurationInfo>());
+    public void updateSavedConfigurationsOrUseLastSavedIfExists(ConfigurationView view, boolean forceDontLoadLastSaved) {
+        ConfigurationInfo configurationInfo = PreferencesAccessor.getLastUsedConfiguration();
+        if(configurationInfo != null && !forceDontLoadLastSaved){
+            view.authenticateUsingSavedConfiguration(configurationInfo);
+        } else {
+            List<ConfigurationInfo> configurationInfoList = PreferencesAccessor.getConfigurations();
+            view.showSavedConfigurations(configurationInfoList != null ? configurationInfoList : new LinkedList<ConfigurationInfo>());
+        }
     }
 
     @Override

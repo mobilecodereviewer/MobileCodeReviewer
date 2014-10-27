@@ -18,10 +18,4 @@
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"/>
 
-    <TextView
-        style="@style/common_list_item_value"
-        android:text="@string/pl.agh.edu.common.unauthorized"
-        android:id="@+id/voteUnauthorized"
-        android:layout_gravity="center"
-        android:layout_marginLeft="20dp"/>
 </LinearLayout>

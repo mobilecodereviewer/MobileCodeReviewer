@@ -57,6 +57,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message">Review message</string>
 
     <!--ChangeInfoTab start-->
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.number">Number</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.changeId">Change ID</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.owner">Owner</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.project">Project</string>
@@ -96,6 +97,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch">Discard Search</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.selectStatus">Select status</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.noChanges">No changes to display</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration">Change configuration</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>

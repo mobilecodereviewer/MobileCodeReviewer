@@ -6,7 +6,9 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 
 public interface ChangeDetailsController {
 
-    void updateSetReviewPopup(ChangeDetailsView view, String changeId);
+    void updateSetReviewPopup();
 
-    void setReview(String changeId, String revisionId, String message, Map<String, Integer> votes);
+    void setReview(String message, Map<String, Integer> votes);
+
+    void initializeData(ChangeDetailsView view,String changeId, String revisionId);
 }
