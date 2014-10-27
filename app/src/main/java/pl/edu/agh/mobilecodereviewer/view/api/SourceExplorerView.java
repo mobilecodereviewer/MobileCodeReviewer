@@ -1,5 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.view.api;
 
+import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 
@@ -11,6 +12,8 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
  * @since 0.1
  */
 public interface SourceExplorerView {
+
+    void showCommentListDialog(Line line);
 
     void clearSourceCode();
 

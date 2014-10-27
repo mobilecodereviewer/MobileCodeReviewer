@@ -35,4 +35,6 @@ public interface SourceExplorerController {
     boolean isAddingCommentAvalaible();
 
     void setVisibilityOnSourceCodeNavigation();
+
+    void showComments(int position);
 }

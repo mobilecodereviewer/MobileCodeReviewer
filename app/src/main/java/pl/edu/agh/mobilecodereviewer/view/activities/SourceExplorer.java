@@ -18,10 +18,12 @@ import com.google.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
+import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SingleLineCommentViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeViewListAdapter;
@@ -106,7 +108,27 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
    
         }
 
+        sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                controller.showComments(position);
+            }
+        });
+
         controller.initializeView();
+    }
+
+    @Override
+    public void showCommentListDialog(Line line) {
+        View lineCommentsView = this.getLayoutInflater().inflate(R.layout.layout_line_comments, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setView(lineCommentsView);
+
+        ListView listView = (ListView) lineCommentsView.findViewById(R.id.lineCommentsList);
+        listView.setAdapter(new SingleLineCommentViewListAdapter(context, line ) );
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private boolean showCommentAddDialog(AdapterView<?> sourceCodeLayout, final int lineClicked) {

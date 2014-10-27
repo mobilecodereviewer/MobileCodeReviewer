@@ -30,15 +30,18 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  */
 public class SourceExplorerControllerImpl implements SourceExplorerController{
 
-    public static final String NO_PREVIOUS_CHANGE_FOUND = "No previous change found";
-    public static final String NO_NEXT_CHANGE_FOUND = "No next change found";
+    private static final String NO_PREVIOUS_CHANGE_FOUND = "No previous change found";
+    private static final String NO_NEXT_CHANGE_FOUND = "No next change found";
+    private static final String NO_COMMENTS_IN_LINE = "No comments in selected line";
+    private static final String INAPROPRIATE_LINE_FOR_COMMENT_INSERTION = "Comment cannot be inserted to skipped or removed line";
+    private static final String INAPPROPRIATE_LINE_FOR_GETTING_LIST_OF_COMMENT = "Comments are not displayed from deleted or skipped lines";
+
     /**
      * Object gives information about source code
      */
     @Inject
     SourceCodeDAO sourceCodeDAO;
 
-    public static final String INAPROPRIATE_LINE_FOR_COMMENT_INSERTION = "Comment cannot be inserted to skipped or removed line";
 
     boolean isDiffView = true;
     boolean isAddingCommentOptionsVisible = false;
@@ -137,19 +140,25 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         view.setInterfaceForDiff();
     }
 
-    @Override
-    public void insertComment(String content, int lineNumber) {
-        int linenum;
+    private int calculateLineNumberFromListPosition(int lineNumber) {
         if (isDiffView) {
             DiffedLine line = sourceCodeDiff.getLine(lineNumber);
             if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
-                view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
-                return;
+                return -1;
             }
 
-            linenum = line.getNewLineNumber()+1;
+            return line.getNewLineNumber()+1;
         } else {
-            linenum = lineNumber+1;
+            return lineNumber+1;
+        }
+    }
+
+    @Override
+    public void insertComment(String content, int lineNumber) {
+        int linenum = calculateLineNumberFromListPosition(lineNumber);
+        if (linenum == -1) {
+            view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
+            return;
         }
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
 
@@ -203,6 +212,22 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
             view.showNavigationButtons();
         } else
             view.hideNavigationButtons();
+    }
+
+    @Override
+    public void showComments(int position) {
+        int linenum = calculateLineNumberFromListPosition(position);
+        if (linenum == -1) {
+            view.showMessage(INAPPROPRIATE_LINE_FOR_GETTING_LIST_OF_COMMENT);
+            return;
+        }
+
+        if (getSourceCode().getLine(linenum).hasComments()) {
+            view.showCommentListDialog(getSourceCode().getLine(linenum));
+        } else {
+            view.showMessage(NO_COMMENTS_IN_LINE);
+            return;
+        }
     }
 }
 
