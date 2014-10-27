@@ -269,6 +269,11 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         sourceLinesListView.setSelection(line);
         sourceLinesListView.setSelected(true);
     }
+
+    @Override
+    public void setTitle(String fileName) {
+        super.setTitle(fileName);
+    }
 }
 
 

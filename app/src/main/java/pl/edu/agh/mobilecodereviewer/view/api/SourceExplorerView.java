@@ -29,4 +29,6 @@ public interface SourceExplorerView {
     void showMessage(String message);
 
     void gotoLine(int line);
+
+    void setTitle(String fileName);
 }

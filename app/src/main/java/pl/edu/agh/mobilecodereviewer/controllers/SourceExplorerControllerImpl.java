@@ -1,5 +1,9 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
+import com.google.common.io.Files;
+
+import org.apache.commons.io.FileUtils;
+
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -80,6 +84,10 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void initializeView() {
+        String fileNameWithExtension = Files.getNameWithoutExtension(file_id) ;
+        if ( Files.getFileExtension(file_id) != null && !Files.getFileExtension(file_id).equals(""))
+            fileNameWithExtension += "." + Files.getFileExtension(file_id);
+        view.setTitle(fileNameWithExtension);
         updateSourceCode();
     }
 
