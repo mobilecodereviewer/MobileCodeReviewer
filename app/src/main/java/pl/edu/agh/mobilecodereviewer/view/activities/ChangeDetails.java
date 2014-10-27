@@ -158,6 +158,11 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         this.putReviewVisibility = putReviewVisibility;
     }
 
+    @Override
+    public void setTitle(String titleText) {
+        super.setTitle(titleText);
+    }
+
     /**
      * Preparing activity's options menu onclick actions.
      *

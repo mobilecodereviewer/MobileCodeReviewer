@@ -34,6 +34,19 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController {
         this.revisionId = revisionId;
 
         view.setPutReviewVisibility(isPutReviewAvalaible());
+        view.setTitle(getCommitMessageForChange(changeId));
+    }
+
+    private String getCommitMessageForChange(String changeId) {
+        return cutCommitMessageToFirstLine(changeInfoDAO.getCommitMessageForChange(changeId));
+    }
+
+    private String cutCommitMessageToFirstLine(String commitMessageForChange) {
+        int endOfFirstLine = commitMessageForChange.indexOf('\n');
+        if (endOfFirstLine != -1)
+            return commitMessageForChange.substring(0, endOfFirstLine);
+        else
+            return commitMessageForChange;
     }
 
     @Override
