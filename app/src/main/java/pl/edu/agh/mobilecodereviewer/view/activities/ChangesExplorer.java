@@ -86,7 +86,7 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
 
     @Override
     public void onBackPressed() {
-        //disable going back to configuration activity
+        finish();
     }
 
     /**
