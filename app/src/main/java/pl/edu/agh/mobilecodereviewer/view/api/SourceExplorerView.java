@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.view.api;
 
+import java.util.List;
+
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
@@ -23,7 +25,7 @@ public interface SourceExplorerView {
      */
     void showSourceCode(SourceCode sourceCode);
 
-    void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff);
+    void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff, List<Boolean> hasComments);
 
     void setInterfaceForCode();
 

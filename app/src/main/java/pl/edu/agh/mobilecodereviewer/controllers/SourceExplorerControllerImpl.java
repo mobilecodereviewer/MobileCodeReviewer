@@ -16,6 +16,7 @@ import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
+import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeHelper;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
@@ -44,7 +45,6 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
 
     boolean isDiffView = true;
-    boolean isAddingCommentOptionsVisible = false;
     boolean showLineNumbers = false;
     int currentSelectedLine = -1;
 
@@ -96,10 +96,11 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void toggleDiffView() {
+        showLineNumbers = false;
+        currentSelectedLine = -1;
         view.clearSourceCode();
         isDiffView = !isDiffView;
         updateAppropriateSourceCodeMode();
-        isAddingCommentOptionsVisible = false;
     }
 
     private void updateAppropriateSourceCodeMode() {
@@ -135,8 +136,9 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     private void updateSourceCodeDiff() {
         SourceCodeDiff sourceCodeDiff = getSourceCodeDiff();
+        SourceCode sourceCode = getSourceCode();
 
-        view.showSourceCodeDiff(sourceCodeDiff );
+        view.showSourceCodeDiff(sourceCodeDiff, SourceCodeHelper.getHasLineComments(sourceCode) );
         view.setInterfaceForDiff();
     }
 

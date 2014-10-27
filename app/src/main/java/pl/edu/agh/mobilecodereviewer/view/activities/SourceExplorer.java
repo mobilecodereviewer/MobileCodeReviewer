@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.inject.Inject;
 
+import java.util.List;
+
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.Line;
@@ -81,13 +83,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private void initializeView() {
         final SourceExplorerView sourceView = this;
 
-        sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                controller.setCurrentLinePosition(i);
-            }
-        });
-
         if (controller.isAddingCommentAvalaible()) {
             sourceLinesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -111,6 +106,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                controller.setCurrentLinePosition(position);
                 controller.showComments(position);
             }
         });
@@ -239,9 +235,9 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     }
 
     @Override
-    public void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff) {
+    public void showSourceCodeDiff(SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments) {
         final SourceCodeDiffViewListAdapter sourceCodeDiffViewListAdapter =
-                new SourceCodeDiffViewListAdapter(this, sourceCodeDiff);
+                new SourceCodeDiffViewListAdapter(this, sourceCodeDiff,hasComments);
 
         sourceLinesListView.setAdapter(sourceCodeDiffViewListAdapter);
     }
