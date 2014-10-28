@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangeDetails" >
 
+    <item android:id="@+id/refreshChangeDetails"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.refreshChangeDetails"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:showAsAction="always" />
+
     <group
         android:id="@+id/changeDetailsPrivilegedGroup">
 
@@ -12,9 +17,5 @@
             android:showAsAction="always" />
 
     </group>
-
-
-
-
 
 </menu>

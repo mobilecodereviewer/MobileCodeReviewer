@@ -15,10 +15,13 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangeMessagesViewListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshUpdater;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeMessagesTabView;
 import roboguice.inject.InjectView;
 
-public class ChangeMessagesTab extends BaseActivity implements ChangeMessagesTabView {
+public class ChangeMessagesTab extends RefreshableTabBaseActivity implements ChangeMessagesTabView, Refreshable {
 
     @Inject
     private ChangeMessagesTabController controller;
@@ -32,12 +35,14 @@ public class ChangeMessagesTab extends BaseActivity implements ChangeMessagesTab
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState,controller);
         setContentView(R.layout.activity_change_messages_tab);
 
         Intent intent = getIntent();
 
-        controller.updateMessages(this, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        registerController(controller);
+        controller.initializeData(this, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        refresh();
     }
 
     @Override
@@ -49,4 +54,5 @@ public class ChangeMessagesTab extends BaseActivity implements ChangeMessagesTab
             changeMessagesViewListAdapter = new ChangeMessagesViewListAdapter(this, Collections.EMPTY_LIST);
         changeMessagesListView.setAdapter(changeMessagesViewListAdapter);
     }
+
 }

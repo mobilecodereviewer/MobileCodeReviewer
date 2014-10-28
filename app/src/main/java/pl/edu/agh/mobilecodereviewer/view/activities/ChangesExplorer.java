@@ -121,6 +121,8 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
 
         if(id == R.id.action_about) {
             AboutDialogHelper.showDialog(this);
+        } else if (id == R.id.refreshChanges){
+            controller.refreshChanges();
         } else if (id == R.id.discardSearch) {
             hideSearchPanel();
             controller.updateChanges();

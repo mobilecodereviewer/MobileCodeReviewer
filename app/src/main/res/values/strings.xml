@@ -55,6 +55,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview">Add review</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.votes">Votes</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message">Review message</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.refreshChangeDetails">Refresh Change Details</string>
 
     <!--ChangeInfoTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.number">Number</string>
@@ -98,6 +99,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.selectStatus">Select status</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.noChanges">No changes to display</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration">Change configuration</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.refreshChanges">Refresh Changes</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>

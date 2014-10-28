@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import pl.edu.agh.mobilecodereviewer.view.activities.ChangeMessagesTab;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeMessagesTabView;
 
 /**
@@ -11,14 +13,6 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangeMessagesTabView;
  * @version 0.1
  * @since 0.3
  */
-public interface ChangeMessagesTabController {
-
-    /**
-     * Request for updating associated with changes.
-     *
-     * @param view View in which messages will be shown
-     * @param changeId id of change for which messages will be shown
-     */
-    void updateMessages(ChangeMessagesTabView view, String changeId);
-
+public interface ChangeMessagesTabController extends Refreshable{
+    void initializeData(ChangeMessagesTabView view, String changeId);
 }

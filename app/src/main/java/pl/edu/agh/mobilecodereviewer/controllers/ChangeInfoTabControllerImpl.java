@@ -19,11 +19,20 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangeInfoTabView;
  */
 public class ChangeInfoTabControllerImpl implements ChangeInfoTabController {
 
+    private String changeId;
+    private ChangeInfoTabView view;
+
     /**
      * DAO Used to access information about change.
      */
     @Inject
     private ChangeInfoDAO changeInfoDAO;
+
+
+    private ChangeInfo changeInfo;
+    private String changeTopic;
+    private MergeableInfo mergeableInfo;
+
 
     /**
      * Simple constructor. Used by DI framework.
@@ -40,18 +49,60 @@ public class ChangeInfoTabControllerImpl implements ChangeInfoTabController {
         this.changeInfoDAO = changeInfoDAO;
     }
 
+    @Override
+    public void initializeData(ChangeInfoTabView changeInfoTab, String change_id) {
+        this.changeId = change_id;
+        this.view = changeInfoTab;
+    }
+
     /**
      * Obtains information about change and informs view to show it.
      *
-     * @param view     View in which information will be shown
-     * @param changeId id of change for which information will be shown
      */
-    @Override
-    public void updateInfo(ChangeInfoTabView view, String changeId) {
-        MergeableInfo mergeableInfo = changeInfoDAO.getMergeableInfo(changeId);
-        String changeTopic = changeInfoDAO.getChangeTopic(changeId);
-        ChangeInfo changeInfo = changeInfoDAO.getChangeInfoById(changeId);
+    public void updateInfo() {
+        MergeableInfo mergeableInfo = getMergeableInfo(changeId);
+        String changeTopic = getChangeTopic(changeId);
+        ChangeInfo changeInfo = getChangeInfoById(changeId);
 
         view.showInfo(changeInfo, mergeableInfo, changeTopic);
     }
+
+    @Override
+    public void refreshData() {
+        updateData();
+    }
+
+    @Override
+    public void refreshGui() {
+        updateInfo();
+    }
+
+    private void updateData() {
+        changeInfo =  changeInfoDAO.getChangeInfoById(changeId);
+        changeTopic =  changeInfoDAO.getChangeTopic(changeId);
+        mergeableInfo =  changeInfoDAO.getMergeableInfo(changeId);
+    }
+
+
+    private ChangeInfo getChangeInfoById(String changeId) {
+        if ( changeInfo == null ) {
+            new UnsupportedOperationException("You should have invoked refreshData first!!");
+        }
+        return changeInfo;
+    }
+
+    private String getChangeTopic(String changeId) {
+        if ( changeTopic == null) {
+            new UnsupportedOperationException("You should have invoked refreshData first!!");
+        }
+        return changeTopic;
+    }
+
+    private MergeableInfo getMergeableInfo(String changeId) {
+        if ( mergeableInfo == null ) {
+            new UnsupportedOperationException("You should have invoked refreshData first!!");
+        }
+        return mergeableInfo;
+    }
+
 }

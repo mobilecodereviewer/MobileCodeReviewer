@@ -17,6 +17,7 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ModifiedFilesViewListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 import roboguice.inject.InjectView;
 
@@ -28,7 +29,7 @@ import roboguice.inject.InjectView;
  * @version 0.1
  * @since 0.1
  */
-public class ModifiedFilesTab extends BaseActivity implements ModifiedFilesTabView {
+public class ModifiedFilesTab extends RefreshableTabBaseActivity implements ModifiedFilesTabView {
 
     /**
      * Associated controller which make actions to activity events
@@ -65,12 +66,14 @@ public class ModifiedFilesTab extends BaseActivity implements ModifiedFilesTabVi
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState,controller);
         setContentView(R.layout.activity_modified_files_tab);
 
         Intent intent = getIntent();
 
-        controller.updateFiles(this, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        registerController(controller);
+        controller.initializeData(this,intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID) );
+        refresh();
     }
 
     /**

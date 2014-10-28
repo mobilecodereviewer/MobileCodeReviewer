@@ -10,13 +10,14 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
-import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeInfoTabView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 
-public class ChangeInfoTab extends BaseActivity implements ChangeInfoTabView {
+public class ChangeInfoTab extends RefreshableTabBaseActivity implements ChangeInfoTabView, Refreshable {
 
     @Inject
     private ChangeInfoTabController controller;
@@ -69,12 +70,14 @@ public class ChangeInfoTab extends BaseActivity implements ChangeInfoTabView {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState,controller);
         setContentView(R.layout.activity_change_info_tab);
 
         Intent intent = getIntent();
 
-        controller.updateInfo(this, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        registerController(controller);
+        controller.initializeData(this,intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID) );
+        refresh();
     }
 
     @Override
@@ -90,4 +93,5 @@ public class ChangeInfoTab extends BaseActivity implements ChangeInfoTabView {
         changeStatusView.setText(changeInfo.getStatus().toString() );
         changeMergeableView.setText(mergeableInfo.isMergeable() ? trueString : falseString);
     }
+
 }

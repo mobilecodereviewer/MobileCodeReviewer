@@ -2,8 +2,11 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.inject.Inject;
 
+import java.util.List;
+
 import pl.edu.agh.mobilecodereviewer.controllers.api.ReviewersTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.view.api.ReviewersTabView;
 
 /**
@@ -22,6 +25,9 @@ public class ReviewersTabControllerImpl implements ReviewersTabController{
      */
     @Inject
     private ChangeInfoDAO changeInfoDAO;
+    private ReviewersTabView view;
+    private String changeId;
+    private List<LabelInfo> labels;
 
     /**
      * Simple constructor. Used by DI framework.
@@ -37,14 +43,39 @@ public class ReviewersTabControllerImpl implements ReviewersTabController{
         this.changeInfoDAO = changeInfoDAO;
     }
 
+
+    @Override
+    public void initializeData(ReviewersTabView view, String changeId) {
+        this.view = view;
+        this.changeId = changeId;
+    }
+
     /**
      * Obtains list reviewers and informs view to show it.
      *
-     * @param view View in which modified files will be shown
-     * @param changeId id of change for which modified files will be shown
      */
+    public void updateReviewers() {
+        view.showReviewers(getLabels());
+    }
+
     @Override
-    public void updateReviewers(ReviewersTabView view, String changeId) {
-        view.showReviewers(changeInfoDAO.getLabels(changeId));
+    public void refreshData() {
+        updateData();
+    }
+
+    @Override
+    public void refreshGui() {
+        updateReviewers();
+    }
+
+    private void updateData() {
+        labels = changeInfoDAO.getLabels(changeId);
+    }
+
+    private List<LabelInfo> getLabels() {
+        if (labels == null) {
+            new UnsupportedOperationException("You should have invoked refreshData first!!");
+        }
+        return labels;
     }
 }

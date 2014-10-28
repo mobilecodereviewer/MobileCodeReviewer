@@ -20,6 +20,12 @@
         android:showAsAction="always" />
 
 
+    <item android:id="@+id/refreshChanges"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.refreshChanges"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:showAsAction="always" />
+
+
     <item android:id="@+id/action_about"
         android:title="@string/pl.agh.edu.mobilecodereviewer.about"
         android:icon="@drawable/common_help_icon"

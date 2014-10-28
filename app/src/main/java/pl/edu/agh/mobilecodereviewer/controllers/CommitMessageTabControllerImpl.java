@@ -22,6 +22,9 @@ public class CommitMessageTabControllerImpl implements CommitMessageTabControlle
      */
     @Inject
     private ChangeInfoDAO changeInfoDAO;
+    private CommitMessageTabView view;
+    private String changeId;
+    private String commitMessage;
 
     /**
      * Simple constructor. Used by DI framework.
@@ -37,14 +40,39 @@ public class CommitMessageTabControllerImpl implements CommitMessageTabControlle
         this.changeInfoDAO = changeInfoDAO;
     }
 
+    @Override
+    public void initializeData(CommitMessageTabView view, String changeId) {
+        this.view = view;
+        this.changeId = changeId;
+    }
+
     /**
      * Obtains commit message and informs view to show it.
      *
-     * @param view View in which commit message will be shown
-     * @param changeId id of change for which commit message will be shown
      */
+    public void updateMessage() {
+        view.showMessage(getCommitMessageForChange());
+    }
+
     @Override
-    public void updateMessage(CommitMessageTabView view, String changeId) {
-        view.showMessage(changeInfoDAO.getCommitMessageForChange(changeId));
+    public void refreshData() {
+        updateData();
+    }
+
+    @Override
+    public void refreshGui() {
+        updateMessage();
+    }
+
+    private void updateData() {
+        commitMessage = changeInfoDAO.getCommitMessageForChange(changeId);
+    }
+
+
+    private String getCommitMessageForChange() {
+        if (commitMessage == null) {
+            new UnsupportedOperationException("You should have invoked refreshData first!!");
+        }
+        return commitMessage;
     }
 }

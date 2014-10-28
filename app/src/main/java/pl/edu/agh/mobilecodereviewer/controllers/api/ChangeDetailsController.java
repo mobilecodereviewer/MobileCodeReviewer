@@ -2,9 +2,10 @@ package pl.edu.agh.mobilecodereviewer.controllers.api;
 
 import java.util.Map;
 
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 
-public interface ChangeDetailsController {
+public interface ChangeDetailsController extends Refreshable{
 
     void updateSetReviewPopup();
 

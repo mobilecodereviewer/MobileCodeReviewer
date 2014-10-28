@@ -10,10 +10,11 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.CommitMessageTabController;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.api.CommitMessageTabView;
 import roboguice.inject.InjectView;
 
-public class CommitMessageTab extends BaseActivity implements CommitMessageTabView{
+public class CommitMessageTab extends RefreshableTabBaseActivity implements CommitMessageTabView{
 
     @Inject
     private CommitMessageTabController controller;
@@ -33,12 +34,14 @@ public class CommitMessageTab extends BaseActivity implements CommitMessageTabVi
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState,controller);
         setContentView(R.layout.activity_commit_message_tab);
 
         Intent intent = getIntent();
 
-        controller.updateMessage(this, intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        registerController(controller);
+        controller.initializeData(this,intent.getStringExtra(ExtraMessages.CHANGE_EXPLORER_SELECTED_CHANGE_ID));
+        refresh();
     }
 
     @Override
