@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import pl.edu.agh.mobilecodereviewer.view.activities.CommitMessageTab;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.CommitMessageTabView;
 
 /**
@@ -11,14 +13,6 @@ import pl.edu.agh.mobilecodereviewer.view.api.CommitMessageTabView;
  * @version 0.1
  * @since 0.3
  */
-public interface CommitMessageTabController {
-
-    /**
-     * Request for updating commit message.
-     *
-     * @param view View in which commit message will be shown
-     * @param changeId id of change for which commit message will be shown
-     */
-    void updateMessage(CommitMessageTabView view, String changeId);
-
+public interface CommitMessageTabController extends Refreshable {
+    void initializeData(CommitMessageTabView view, String changeId);
 }

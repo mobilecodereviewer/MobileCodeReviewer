@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import pl.edu.agh.mobilecodereviewer.view.activities.ReviewersTab;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ReviewersTabView;
 
 /**
@@ -11,14 +13,6 @@ import pl.edu.agh.mobilecodereviewer.view.api.ReviewersTabView;
  * @version 0.1
  * @since 0.3
  */
-public interface ReviewersTabController {
-
-    /**
-     * Request for updating reviewers list.
-     *
-     * @param view View in which reviewers list will be shown
-     * @param changeId id of change for which reviewers list will be shown
-     */
-    void updateReviewers(ReviewersTabView view, String changeId);
-
+public interface ReviewersTabController extends Refreshable {
+    void initializeData(ReviewersTabView view, String changeId);
 }

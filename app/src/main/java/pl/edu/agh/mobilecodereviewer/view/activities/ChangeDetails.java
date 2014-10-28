@@ -27,6 +27,9 @@ import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.*;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshManagerTabBaseActivity;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshUpdater;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseTabActivity;
 import roboguice.inject.InjectResource;
@@ -40,7 +43,7 @@ import roboguice.inject.InjectResource;
  * @version 0.1
  * @since 0.1
  */
-public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
+public class ChangeDetails extends RefreshManagerTabBaseActivity implements ChangeDetailsView {
 
     @Inject
     private ChangeDetailsController controller;
@@ -84,6 +87,9 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
 
     private boolean putReviewVisibility;
 
+
+    private MenuItem putReviewMenuItem;
+
     /**
      * Invoked on start of the acivity.
      * Prepares tabs to be shown, passes intents to each tab and sets currently
@@ -93,7 +99,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState,controller);
 
         Intent intent = getIntent();
 
@@ -104,7 +110,9 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         addTabs(changeDetailsTabHost);
         changeDetailsTabHost.setCurrentTab(0);
 
+        registerController(controller);
         controller.initializeData(this, currentChangeId, currentRevisionId);
+        refreshGui();
     }
 
     /**
@@ -148,6 +156,7 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.change_details, menu);
+        putReviewMenuItem = menu.findItem(R.id.action_addReview);
 
         menu.setGroupVisible(R.id.changeDetailsPrivilegedGroup, putReviewVisibility);
         return true;
@@ -156,6 +165,8 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
     @Override
     public void setPutReviewVisibility(boolean putReviewVisibility) {
         this.putReviewVisibility = putReviewVisibility;
+        if (putReviewMenuItem != null)
+            putReviewMenuItem.setVisible( this.putReviewVisibility);
     }
 
     @Override
@@ -173,6 +184,8 @@ public class ChangeDetails extends BaseTabActivity implements ChangeDetailsView{
         int id = item.getItemId();
         if (id == R.id.action_addReview) {
             controller.updateSetReviewPopup();
+        } else if (id == R.id.refreshChangeDetails){
+            refresh();
         }
 
         return super.onOptionsItemSelected(item);

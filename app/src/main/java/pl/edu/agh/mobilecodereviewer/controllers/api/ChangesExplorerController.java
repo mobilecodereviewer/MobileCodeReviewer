@@ -23,4 +23,6 @@ public interface ChangesExplorerController {
     void chooseStatus();
 
     void changeStatus(ChangeStatus status);
+
+    void refreshChanges();
 }

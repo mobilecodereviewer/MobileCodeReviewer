@@ -26,6 +26,9 @@ public class ChangeMessagesTabControllerImpl implements ChangeMessagesTabControl
      */
     @Inject
     private ChangeInfoDAO changeInfoDAO;
+    private List<ChangeMessageInfo> changeMessages;
+    private ChangeMessagesTabView view;
+    private String changeId;
 
     /**
      * Simple constructor. Used by DI framework.
@@ -42,15 +45,40 @@ public class ChangeMessagesTabControllerImpl implements ChangeMessagesTabControl
         this.changeInfoDAO = changeInfoDAO;
     }
 
+    @Override
+    public void initializeData(ChangeMessagesTabView view, String changeId) {
+        this.view = view;
+        this.changeId = changeId;
+    }
+
     /**
      * Obtains  messages associated with change and informs view to show it.
      *
-     * @param view View in which messages will be shown
-     * @param changeId id of change for which messages will be shown
      */
-    @Override
-    public void updateMessages(ChangeMessagesTabView view, String changeId) {
-        List<ChangeMessageInfo> changeMessageInfos = changeInfoDAO.getChangeMessages(changeId);
+    public void updateMessages() {
+        List<ChangeMessageInfo> changeMessageInfos = getChangeMessages(changeId);
         view.showMessages(changeMessageInfos);
     }
+
+    @Override
+    public void refreshData() {
+        updateData();
+    }
+
+    @Override
+    public void refreshGui() {
+        updateMessages();
+    }
+
+    private void updateData() {
+        changeMessages = changeInfoDAO.getChangeMessages(changeId);
+    }
+
+    private List<ChangeMessageInfo> getChangeMessages(String changeId) {
+        if (changeMessages == null) {
+            new UnsupportedOperationException("You should have invoked refreshData first!!");
+        }
+        return changeMessages;
+    }
+
 }

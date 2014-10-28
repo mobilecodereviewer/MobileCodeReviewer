@@ -37,6 +37,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     private List<ChangeInfo> changeInfos;
 
     private ChangeStatus currentStatus;
+    private List<ChangeInfo> allChangesInfo;
 
     /**
      * Simple constructor. Used by DI framework.
@@ -57,11 +58,6 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     public void initializeData(ChangesExplorerView changesExplorerView) {
         this.view = changesExplorerView;
         this.currentStatus = ChangeStatus.NEW;
-    }
-
-    private List<ChangeInfo> getChangeInfos() {
-        changeInfos = changeInfoDAO.getAllChangesInfo();
-        return filterWithAppropriateStatus(changeInfos);
     }
 
     private List<ChangeInfo> filterWithAppropriateStatus(List<ChangeInfo> changeInfos) {
@@ -116,11 +112,32 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
         updateChanges();
     }
 
+    @Override
+    public void refreshChanges() {
+        updateData();
+        updateChanges();
+    }
+
     private boolean doesChangeInfoMatchQuery(ChangeInfo info, String query) {
         if (query == null) {
             return false;
         } else return info.toString().toLowerCase().contains(query.toLowerCase());
     }
 
+    private List<ChangeInfo> getChangeInfos() {
+        changeInfos = getAllChangesInfo();
+        return filterWithAppropriateStatus(changeInfos);
+    }
+
+    private void updateData() {
+        allChangesInfo = changeInfoDAO.getAllChangesInfo();
+    }
+
+    private List<ChangeInfo> getAllChangesInfo() {
+        if (allChangesInfo == null) {
+            allChangesInfo = changeInfoDAO.getAllChangesInfo();
+        }
+        return allChangesInfo;
+    }
 
 }

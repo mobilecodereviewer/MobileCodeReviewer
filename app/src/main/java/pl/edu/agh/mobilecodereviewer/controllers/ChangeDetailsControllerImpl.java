@@ -11,9 +11,10 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 
-public class ChangeDetailsControllerImpl implements ChangeDetailsController {
+public class ChangeDetailsControllerImpl implements ChangeDetailsController{
 
     @Inject
     private ChangeInfoDAO changeInfoDAO;
@@ -25,6 +26,8 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController {
     private ChangeDetailsView view;
 
     private ChangeInfo changeInfo;
+    private List<PermittedLabel> permittedLabels;
+    private String commitMessage;
 
 
     @Override
@@ -33,25 +36,28 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController {
         this.changeId = changeId;
         this.revisionId = revisionId;
 
+    }
+
+
+    @Override
+    public void refreshData() {
+        updateData();
+    }
+
+    @Override
+    public void refreshGui() {
+        updateGui();
+    }
+
+
+    private void updateGui() {
         view.setPutReviewVisibility(isPutReviewAvalaible());
         view.setTitle(getCommitMessageForChange(changeId));
     }
 
-    private String getCommitMessageForChange(String changeId) {
-        return cutCommitMessageToFirstLine(changeInfoDAO.getCommitMessageForChange(changeId));
-    }
-
-    private String cutCommitMessageToFirstLine(String commitMessageForChange) {
-        int endOfFirstLine = commitMessageForChange.indexOf('\n');
-        if (endOfFirstLine != -1)
-            return commitMessageForChange.substring(0, endOfFirstLine);
-        else
-            return commitMessageForChange;
-    }
-
     @Override
     public void updateSetReviewPopup() {
-        List<PermittedLabel> permittedLabels = changeInfoDAO.getPermittedLabels(changeId);
+        List<PermittedLabel> permittedLabels = getPermittedLabels();
         view.showSetReviewPopup(permittedLabels);
     }
 
@@ -66,10 +72,39 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController {
                 && getChangeInfo().getStatus() != ChangeStatus.MERGED;
     }
 
+    private String cutCommitMessageToFirstLine(String commitMessageForChange) {
+        int endOfFirstLine = commitMessageForChange.indexOf('\n');
+        if (endOfFirstLine != -1)
+            return commitMessageForChange.substring(0, endOfFirstLine);
+        else
+            return commitMessageForChange;
+    }
+
+    private void updateData() {
+        changeInfo = changeInfoDAO.getChangeInfoById(changeId);
+        permittedLabels =  changeInfoDAO.getPermittedLabels(changeId);
+        commitMessage = cutCommitMessageToFirstLine(changeInfoDAO.getCommitMessageForChange(changeId));
+    }
+
     private ChangeInfo getChangeInfo() {
         if (changeInfo == null) {
             changeInfo = changeInfoDAO.getChangeInfoById(changeId);
         }
         return changeInfo;
     }
+
+    private List<PermittedLabel> getPermittedLabels() {
+        if (permittedLabels == null ) {
+            permittedLabels =  changeInfoDAO.getPermittedLabels(changeId);
+        }
+        return permittedLabels;
+    }
+
+    private String getCommitMessageForChange(String changeId) {
+        if (commitMessage == null) {
+            commitMessage = cutCommitMessageToFirstLine(changeInfoDAO.getCommitMessageForChange(changeId));
+        }
+        return commitMessage;
+    }
+
 }
