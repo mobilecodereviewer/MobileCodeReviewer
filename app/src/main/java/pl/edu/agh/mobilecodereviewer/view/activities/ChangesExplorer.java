@@ -20,6 +20,7 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
+import pl.edu.agh.mobilecodereviewer.controllers.asynchronous.AsynchronousChangeExplorerControllerImpl;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
@@ -80,6 +81,7 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changes_explorer);
 
+        controller = new AsynchronousChangeExplorerControllerImpl(this, controller);
         controller.initializeData(this);
         controller.updateChanges();
     }
@@ -147,23 +149,38 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
      */
     @Override
     public void showChanges(final List<ChangeInfo> changes) {
-        findViewById(R.id.noChangesLayout).setVisibility(View.GONE);
-        findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.VISIBLE);
-        ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
-        changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                findViewById(R.id.noChangesLayout).setVisibility(View.GONE);
+                findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.VISIBLE);
+                ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(ChangesExplorer.this, changes);
+                changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+            }
+        });
     }
 
     @Override
-    public void showFoundChanges(String query, List<ChangeInfo> searchedInfos) {
-        ChangesExplorerSearchViewExpandableListAdapter expandableSearchListAdapter = new ChangesExplorerSearchViewExpandableListAdapter(this, searchedInfos, query);
-        changesExplorerExpandableListView.setAdapter( expandableSearchListAdapter );
+    public void showFoundChanges(final String query, final List<ChangeInfo> searchedInfos) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ChangesExplorerSearchViewExpandableListAdapter expandableSearchListAdapter = new ChangesExplorerSearchViewExpandableListAdapter(ChangesExplorer.this, searchedInfos, query);
+                changesExplorerExpandableListView.setAdapter( expandableSearchListAdapter );
+            }
+        });
     }
 
     @Override
     public void clearChangesList() {
-        List<ChangeInfo> changes = Collections.emptyList();
-        ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
-        changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                List<ChangeInfo> changes = Collections.emptyList();
+                ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(ChangesExplorer.this, changes);
+                changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+            }
+        });
     }
 
     /**
@@ -194,41 +211,62 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
 
     @Override
     public void hideSearchPanel() {
-        menu.findItem(R.id.search).collapseActionView();
-    }
-
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showListOfAvalaibleStatus(ChangeStatus currentStatus, final ChangeStatus[] changeStatuses) {
-        final String[] statuses = new String[ changeStatuses.length ];
-        int currStatus = -1;
-        for (int i=0;i< changeStatuses.length;i++) {
-            statuses[i] = changeStatuses[i].toString();
-            if (currentStatus == changeStatuses[i])
-                currStatus = i;
-        }
-        AlertDialog statusDialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose status:");
-        builder.setSingleChoiceItems(statuses, currStatus, new DialogInterface.OnClickListener() {
+        runOnUiThread(new Runnable() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int selectedStatus) {
-                controller.changeStatus( changeStatuses[selectedStatus] );
-                dialogInterface.dismiss();
+            public void run() {
+                menu.findItem(R.id.search).collapseActionView();
             }
         });
-        statusDialog = builder.create();
-        statusDialog.show();
+    }
+
+    @Override
+    public void showMessage(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void showListOfAvalaibleStatus(final ChangeStatus currentStatus, final ChangeStatus[] changeStatuses) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final String[] statuses = new String[ changeStatuses.length ];
+                int currStatus = -1;
+                for (int i=0;i< changeStatuses.length;i++) {
+                    statuses[i] = changeStatuses[i].toString();
+                    if (currentStatus == changeStatuses[i])
+                        currStatus = i;
+                }
+                AlertDialog statusDialog;
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChangesExplorer.this);
+                builder.setTitle("Choose status:");
+                builder.setSingleChoiceItems(statuses, currStatus, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int selectedStatus) {
+                        controller.changeStatus( changeStatuses[selectedStatus] );
+                        dialogInterface.dismiss();
+                    }
+                });
+                statusDialog = builder.create();
+                statusDialog.show();
+            }
+        });
     }
 
     @Override
     public void showNoChangesToDisplay() {
-        findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.GONE);
-        findViewById(R.id.noChangesLayout).setVisibility(View.VISIBLE);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.GONE);
+                findViewById(R.id.noChangesLayout).setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
 }
