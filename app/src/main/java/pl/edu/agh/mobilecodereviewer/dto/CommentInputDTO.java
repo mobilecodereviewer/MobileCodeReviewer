@@ -6,7 +6,7 @@ public class CommentInputDTO {
     private String message;
 
 
-    public CommentInputDTO(int line, String message, String path) {
+    public CommentInputDTO(int line, String message) {
         this.line = line;
         this.message = message;
     }

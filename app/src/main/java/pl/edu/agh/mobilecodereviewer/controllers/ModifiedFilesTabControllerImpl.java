@@ -1,15 +1,20 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import java.util.List;
+import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
+import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 
 /**
@@ -23,7 +28,6 @@ import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
  */
 @Singleton
 public class ModifiedFilesTabControllerImpl implements ModifiedFilesTabController {
-
     /**
      * DAO Used to access files modified within change.
      */
@@ -62,7 +66,7 @@ public class ModifiedFilesTabControllerImpl implements ModifiedFilesTabControlle
     public void updateFiles() {
         List<FileInfo> changeModifiedFiles = getModifiedFiles();
         ChangeStatus status = getChangeStatus();
-        view.showFiles(changeModifiedFiles, status);
+        view.showFiles(changeModifiedFiles, status, getHasFilesPendingComments());
     }
 
     @Override
@@ -92,5 +96,29 @@ public class ModifiedFilesTabControllerImpl implements ModifiedFilesTabControlle
             new UnsupportedOperationException("You should have invoked refreshData first!!");
         }
         return changeStatus;
+	}
+
+    @Override
+    public void checkIfFilesPendingCommentsChanged(){
+        List<Boolean> filesPendingComments = getHasFilesPendingComments();
+        view.refreshPendingComments(filesPendingComments);
+    }
+
+    private List<Boolean> getHasFilesPendingComments(){
+        String revisionId = modifiedList.get(0).getRevisionId();
+        final Map<String, List<Comment>> pendingCommentsForChange = changeInfoDAO.getPendingComments(changeId, revisionId);
+
+        return Lists.transform(modifiedList,
+                new Function<FileInfo, Boolean>() {
+                    @Override
+                    public Boolean apply(FileInfo from) {
+                        if(pendingCommentsForChange == null){
+                            return false;
+                        }
+                        List<Comment> fileComments = pendingCommentsForChange.get(from.getFileName());
+                        return fileComments != null && fileComments.size() != 0;
+                    }
+                }
+        );
     }
 }

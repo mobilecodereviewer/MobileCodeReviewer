@@ -26,11 +26,12 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
     private final Activity context;
     private final SourceCodeDiff sourceCodeDiff;
     private final List<Boolean> hasComments;
+    private final List<Boolean> hasPendingComments;
     private boolean showLineNumbers;
     private String htmlContent[];
 
     public SourceCodeDiffViewListAdapter(Activity context, String extension,
-                                         SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments) {
+                                         SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments, List<Boolean> hasPendingComments) {
         super(context, R.layout.layout_source_diff_line, SourceCodeDiffHelper.getContent(sourceCodeDiff));
         this.context = context;
         this.sourceCodeDiff = sourceCodeDiff;
@@ -39,6 +40,7 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
         this.htmlContent = htmlPrettifier.buildHtmlContent();
         this.showLineNumbers = false;
         this.hasComments = hasComments;
+        this.hasPendingComments = hasPendingComments;
     }
 
     @Override
@@ -80,6 +82,11 @@ public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  impleme
             lineContainer.setAlpha(alpha);
             lineContainer.setBackgroundColor( Color.YELLOW );
             txtContent.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+            if(hasPendingComments.get(actualPosition)){
+                lineContainer.setBackgroundColor(Color.CYAN);
+                txtContent.setPaintFlags(txtContent.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            }
         }
     }
 

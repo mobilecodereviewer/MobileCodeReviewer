@@ -30,6 +30,7 @@ import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
  */
 @Singleton
 public class SourceCodeDAOImpl implements SourceCodeDAO {
+
     /**
      * {@link pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi}
      */
@@ -124,7 +125,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
      * @param comments List of comments
      * @return Mapping between line number and list of comments
      */
-    protected Map<Integer,List<CommentInfoDTO>> mapCommentsIntoLines(List<CommentInfoDTO> comments) {
+    private Map<Integer,List<CommentInfoDTO>> mapCommentsIntoLines(List<CommentInfoDTO> comments) {
         Map<Integer,List<CommentInfoDTO>> mappedComments = new HashMap<>();
         for ( CommentInfoDTO comment : comments) {
             int line = comment.getLine();
@@ -148,7 +149,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
      * @param comments Map between line number and list of comments
      * @return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} model
      */
-    protected SourceCode createSourceCode(String path, List<String> lines, Map<Integer, List<CommentInfoDTO>> comments) {
+    protected SourceCode createSourceCode(String path, List<String> lines, Map<Integer, List<CommentInfoDTO>> comments, List<Comment> pendingComments) {
         List<Line> sourceLines = new LinkedList<Line>() ;
         int i = 1;
         for (String line : lines) {
@@ -161,9 +162,25 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
             sourceLines.add(sourceLine);
             i++;
         }
+
+
+        if(pendingComments != null) {
+            for (Comment pendingComment : pendingComments) {
+                Line sourceLine = sourceLines.get(pendingComment.getLine() - 1);
+                List<Comment> lineComments = sourceLine.getComments();
+
+                if (lineComments == null) {
+                    lineComments = new LinkedList<>();
+                }
+
+                lineComments.add(0, pendingComment);
+                sourceLine.setPendingComments(true);
+                sourceLine.setComments(lineComments);
+            }
+
+        }
         return new SourceCode(sourceLines);
     }
-
 
     /**
      *  Get {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} from parameters
@@ -173,14 +190,14 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
      *  @return {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}
      */
     @Override
-    public SourceCode getSourceCode(String change_id,String revision_id,String file_id) {
+    public SourceCode getSourceCode(String change_id,String revision_id,String file_id, List<Comment> pendingComments) {
         List<String> lines = splitSourceIntoLines(
                 convertSourceCode( downloadSourceCode(change_id,revision_id,file_id) )
         );
         Map<Integer, List<CommentInfoDTO>> commentsInLines = mapCommentsIntoLines(
                 getComments(change_id, revision_id, file_id)
         );
-        return createSourceCode(file_id,lines,commentsInLines);
+        return createSourceCode(file_id,lines,commentsInLines, pendingComments);
     }
 
     @Override
@@ -189,14 +206,6 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
         return new SourceCodeDiff(sourceCodeDiff);
     }
 
-
-    @Override
-    public void putFileComment(String change_id, String revision_id,Comment comment) {
-        int line = comment.getLine();
-        String message = comment.getContent();
-        String path = comment.getPath();
-        restApi.putFileComment(change_id,revision_id,line,message,path);
-    }
 }
 
 

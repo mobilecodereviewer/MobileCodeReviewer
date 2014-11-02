@@ -39,6 +39,12 @@ public class PreferencesAccessor {
         prefsEditor.commit();
     }
 
+    public static void deleteLastUsedConfiguration(){
+        SharedPreferences.Editor prefsEditor = PreferencesAccessor.preferences.edit();
+        prefsEditor.remove(PREFERENCE_LAST_USED_CONFIGURATION);
+        prefsEditor.commit();
+    }
+
     public static List<ConfigurationInfo> getConfigurations(){
         String json = PreferencesAccessor.preferences.getString(PREFERENCE_SAVED_CONFIGURATIONS, null);
 

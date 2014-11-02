@@ -5,13 +5,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 
@@ -20,6 +24,9 @@ import pl.edu.agh.mobilecodereviewer.model.Line;
  * and popup with comments for a given line
  */
 public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
+
+    private SourceExplorerController controller;
+
     /**
      * Android context of execution
      */
@@ -35,10 +42,11 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
      * @param context android context of execution
      * @param line Line which will be adapter
      */
-    public SingleLineCommentViewListAdapter(Context context,Line line) {
+    public SingleLineCommentViewListAdapter(Context context,Line line, SourceExplorerController controller) {
         super(context, R.layout.layout_single_line_comment, line.getComments());
         this.line = line;
         this.context = context;
+        this.controller = controller;
     }
 
     /**
@@ -53,18 +61,98 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(R.layout.layout_single_line_comment, parent, false);
 
-        TextView commentContent = (TextView) rowView.findViewById(R.id.commentContent);
-        TextView authorName = (TextView) rowView.findViewById(R.id.commentAuthorName);
-        TextView updated = (TextView) rowView.findViewById(R.id.commentDate);
+        final View rowView;
 
-        Comment comment = line.getComments().get(position);
+        final Comment comment = line.getComments().get(position);
 
-        commentContent.setText( comment.getContent() );
-        authorName.setText(comment.getAuthor());
-        updated.setText(comment.getUpdated());
+        if(!comment.isPending()) {
+            rowView = inflater.inflate(R.layout.layout_single_line_comment, parent, false);
+
+            TextView commentContent = (TextView) rowView.findViewById(R.id.commentContent);
+            TextView authorName = (TextView) rowView.findViewById(R.id.commentAuthorName);
+            TextView updated = (TextView) rowView.findViewById(R.id.commentDate);
+
+            commentContent.setText(comment.getContent());
+            authorName.setText(comment.getAuthor());
+            updated.setText(comment.getUpdated());
+        } else {
+            rowView = inflater.inflate(R.layout.layout_single_line_pending_comment, parent, false);
+
+            final TextView commentContent = (TextView) rowView.findViewById(R.id.fileCommentComment);
+            commentContent.setText(comment.getContent());
+
+            Button editCommentButton = (Button) rowView.findViewById(R.id.editFileCommentButton);
+            final EditText editFileComment = (EditText) rowView.findViewById(R.id.editFileComment);
+            editFileComment.clearFocus();
+
+            Button cancelCommentButton = (Button) rowView.findViewById(R.id.cancelFileCommentButton);
+            Button discardCommentButton = (Button) rowView.findViewById(R.id.discardFileCommentButton);
+            Button saveCommentButton = (Button) rowView.findViewById(R.id.saveFileCommentButton);
+
+            editCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View buttonView) {
+                    changeMode(rowView, false);
+                    editFileComment.setText(comment.getContent());
+                }
+            });
+
+            cancelCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    changeMode(rowView, true);
+                }
+            });
+
+            discardCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    controller.deleteFileComment( comment );
+                }
+            });
+
+            saveCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String newContent = editFileComment.getText().toString();
+
+                    if(!comment.getContent().equals(newContent)) {
+                        commentContent.setText(newContent);
+                        controller.updateFileComment(comment, newContent);
+                    }
+
+                    changeMode(rowView, true);
+                }
+            });
+
+        }
 
         return rowView;
+    }
+
+    private void changeMode(View view, boolean viewMode){
+        TextView content = (TextView) view.findViewById(R.id.fileCommentComment);
+        Button editCommentButton = (Button) view.findViewById(R.id.editFileCommentButton);
+        EditText editFileComment = (EditText) view.findViewById(R.id.editFileComment);
+        Button cancelCommentButton = (Button) view.findViewById(R.id.cancelFileCommentButton);
+        Button discardCommentButton = (Button) view.findViewById(R.id.discardFileCommentButton);
+        Button saveCommentButton = (Button) view.findViewById(R.id.saveFileCommentButton);
+
+        if(viewMode){
+            content.setVisibility(View.VISIBLE);
+            editCommentButton.setVisibility(View.VISIBLE);
+            editFileComment.setVisibility(View.INVISIBLE);
+            cancelCommentButton.setVisibility(View.INVISIBLE);
+            discardCommentButton.setVisibility(View.INVISIBLE);
+            saveCommentButton.setVisibility(View.INVISIBLE);
+        } else {
+            content.setVisibility(View.INVISIBLE);
+            editCommentButton.setVisibility(View.INVISIBLE);
+            editFileComment.setVisibility(View.VISIBLE);
+            cancelCommentButton.setVisibility(View.VISIBLE);
+            discardCommentButton.setVisibility(View.VISIBLE);
+            saveCommentButton.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -17,6 +17,8 @@ public interface SourceExplorerView {
 
     void showCommentListDialog(Line line);
 
+    void dismissCommentListDialog();
+
     void clearSourceCode();
 
     /**
@@ -26,7 +28,7 @@ public interface SourceExplorerView {
      */
     void showSourceCode(String file_path, SourceCode sourceCode);
 
-    void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff, List<Boolean> hasComments);
+    void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff, List<Boolean> hasComments, List<Boolean> hasPendingComments);
 
     void setInterfaceForCode();
 

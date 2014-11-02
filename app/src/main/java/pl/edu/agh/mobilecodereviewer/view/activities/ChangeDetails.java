@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
@@ -23,9 +24,11 @@ import javax.inject.Inject;
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.*;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewFilesExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshManagerTabBaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
@@ -87,8 +90,9 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
 
     private boolean putReviewVisibility;
 
-
     private MenuItem putReviewMenuItem;
+
+    private View addReviewView;
 
     /**
      * Invoked on start of the acivity.
@@ -192,9 +196,11 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
     }
 
     @Override
-    public void showSetReviewPopup(final List<PermittedLabel> permittedLabels) {
+    public void showSetReviewPopup(final List<PermittedLabel> permittedLabels, Map<String, List<Comment>> pendingComments) {
         LayoutInflater li = LayoutInflater.from(ChangeDetails.this);
         View addReviewView = li.inflate(R.layout.layout_add_review, null);
+
+        this.addReviewView = addReviewView;
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ChangeDetails.this);
         alertDialogBuilder.setView(addReviewView);
@@ -204,6 +210,8 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
         AccountInfo loggedUser = ConfigurationContainer.getInstance().getLoggedUser();
         final ListView votesList = (ListView) addReviewView.findViewById(R.id.votesList);
         votesList.setAdapter(new AddReviewVotesListAdapter(this, permittedLabels, loggedUser));
+
+        preparePendingFilesCommentsList(pendingComments);
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -241,6 +249,14 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
         AlertDialog alertDialog = alertDialogBuilder.create();
 
         alertDialog.show();
+    }
+
+    @Override
+    public void preparePendingFilesCommentsList(Map<String, List<Comment>> pendingComments){
+        if(addReviewView != null && pendingComments != null) {
+            final ExpandableListView filesList = (ExpandableListView) addReviewView.findViewById(R.id.addReviewFilesList);
+            filesList.setAdapter(new AddReviewFilesExpandableListAdapter(this, controller, pendingComments));
+        }
     }
 
 }

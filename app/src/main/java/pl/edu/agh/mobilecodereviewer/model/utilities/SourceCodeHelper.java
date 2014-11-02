@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 
@@ -44,6 +45,24 @@ public final class SourceCodeHelper {
                     @Override
                     public Boolean apply(Line from) {
                         return from.hasComments();
+                    }
+                }
+        );
+    }
+
+    public static List<Boolean> getHasLinePendingComments(SourceCode sourceCode) {
+        return Lists.transform(sourceCode.getLines(),
+                new Function<Line, Boolean>() {
+
+                    @Override
+                    public Boolean apply(Line from) {
+                        for(Comment comment : from.getComments()){
+                            if(comment.isPending()){
+                                return true;
+                            }
+                        }
+
+                        return false;
                     }
                 }
         );

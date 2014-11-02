@@ -31,6 +31,8 @@ import roboguice.inject.InjectView;
  */
 public class ModifiedFilesTab extends RefreshableTabBaseActivity implements ModifiedFilesTabView {
 
+    private ModifiedFilesViewListAdapter filesViewListAdapter;
+
     /**
      * Associated controller which make actions to activity events
      */
@@ -76,6 +78,12 @@ public class ModifiedFilesTab extends RefreshableTabBaseActivity implements Modi
         refresh();
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        controller.checkIfFilesPendingCommentsChanged();
+    }
+
     /**
      * According to given list of modified files , displays it
      * on the list of modified files on frame
@@ -84,7 +92,7 @@ public class ModifiedFilesTab extends RefreshableTabBaseActivity implements Modi
      * @param status
      */
     @Override
-    public void showFiles(final List<FileInfo> filesList, final ChangeStatus status) {
+    public void showFiles(final List<FileInfo> filesList, final ChangeStatus status, List<Boolean> hasPendingComments) {
         modifiedFilesTabListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -92,7 +100,17 @@ public class ModifiedFilesTab extends RefreshableTabBaseActivity implements Modi
                 showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName(),status);
             }
         });
-        modifiedFilesTabListView.setAdapter(new ModifiedFilesViewListAdapter(this, filesList));
+
+        filesViewListAdapter = new ModifiedFilesViewListAdapter(this, filesList, hasPendingComments);
+        modifiedFilesTabListView.setAdapter(filesViewListAdapter);
+    }
+
+    @Override
+    public void refreshPendingComments(List<Boolean> hasPendingComments) {
+        if(filesViewListAdapter != null){
+            filesViewListAdapter.updateHasPendingComments(hasPendingComments);
+            filesViewListAdapter.notifyDataSetChanged();
+        }
     }
 
     /**

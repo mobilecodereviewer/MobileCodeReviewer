@@ -54,6 +54,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
      * List of information if given line has comment
      */
     private final List<Boolean> hasComments;
+    private final List<Boolean> hasPendingComments;
     private final SourceCode sourceCode;
     private final String extension;
 
@@ -71,6 +72,7 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
         this.context = context;
 
         this.hasComments = SourceCodeHelper.getHasLineComments(sourceCode);
+        this.hasPendingComments = SourceCodeHelper.getHasLinePendingComments(sourceCode);
         this.sourceCode = sourceCode;
         this.showLineNumbers = false;
         this.extension = extension;
@@ -97,11 +99,17 @@ public class SourceCodeViewListAdapter extends ArrayAdapter<String> implements S
 
         TextView txtContent = (TextView) rowView.findViewById(R.id.codeText);
         TextView txtNumber = (TextView) rowView.findViewById(R.id.lineNumberText);
+
         if ( hasComments.get(position) ) {
             float alpha = 0.7f;
             lineContainer.setAlpha(alpha);
             lineContainer.setBackgroundColor( Color.YELLOW );
             txtContent.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        }
+
+        if(hasPendingComments.get(position)) {
+            lineContainer.setBackgroundColor(Color.CYAN);
+            txtContent.setPaintFlags(txtContent.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
         }
 
         txtNumber.setText( Integer.toString(position+1) );

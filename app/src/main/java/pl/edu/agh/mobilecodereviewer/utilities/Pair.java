@@ -14,6 +14,7 @@ public class Pair<X,Y> {
     /**
      * Second element of tuple
      */
+
     public Y second;
 
     /**
@@ -31,4 +32,25 @@ public class Pair<X,Y> {
         this.first = first;
         this.second = second;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Pair pair = (Pair) o;
+
+        if (!first.equals(pair.first)) return false;
+        if (!second.equals(pair.second)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = first.hashCode();
+        result = 31 * result + second.hashCode();
+        return result;
+    }
+
 }

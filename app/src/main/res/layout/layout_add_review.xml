@@ -36,4 +36,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/votesList" />
 
+    <TextView
+        android:paddingTop="20px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Patch comments"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <View style="@style/common_horizontal_separator" />
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addReviewFilesList" />
+
 </LinearLayout>

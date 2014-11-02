@@ -2,6 +2,7 @@ package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,19 +18,23 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 
-/**
- * Created by d00d171 on 2014-10-06.
- */
 public class ModifiedFilesViewListAdapter extends ArrayAdapter<FileInfo> {
 
     private final Activity context;
 
     private final List<FileInfo> content;
 
-    public ModifiedFilesViewListAdapter(Activity context, List<FileInfo> fileInfoList) {
+    private List<Boolean> hasPendingComments;
+
+    public ModifiedFilesViewListAdapter(Activity context, List<FileInfo> fileInfoList, List<Boolean> hasPendingComments) {
         super(context, R.layout.layout_modified_file_item, fileInfoList);
         this.context = context;
         this.content = fileInfoList;
+        this.hasPendingComments = hasPendingComments;
+    }
+
+    public void updateHasPendingComments(List<Boolean> hasPendingComments){
+        this.hasPendingComments = hasPendingComments;
     }
 
     @Override
@@ -37,6 +42,10 @@ public class ModifiedFilesViewListAdapter extends ArrayAdapter<FileInfo> {
         LayoutInflater inflater = context.getLayoutInflater();
 
         View itemView = inflater.inflate(R.layout.layout_modified_file_item, null, true);
+
+        if(hasPendingComments.get(position)){
+            itemView.setBackgroundColor(Color.CYAN);
+        }
 
         TextView fileName = (TextView) itemView.findViewById(R.id.fileName);
         ImageView added = (ImageView) itemView.findViewById(R.id.added);

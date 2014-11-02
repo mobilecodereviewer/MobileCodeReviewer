@@ -23,10 +23,17 @@ public class DateUtils {
             Log.e("DATE FORMATTING", "BAD INPUT DATE");
             return gerritFormatDate;
         }
-        sdf.applyPattern(PRINTABLE_DATE_FORMAT);
-        newDateString = sdf.format(d);
 
-        return newDateString;
+        return getDateInPrintableFormat(d);
+    }
+
+    public static String getPrettyDate(Date d){
+        return getDateInPrintableFormat(d);
+    }
+
+    private static String getDateInPrintableFormat(Date d){
+        SimpleDateFormat sdf = new SimpleDateFormat(PRINTABLE_DATE_FORMAT);
+        return sdf.format(d);
     }
 
 }

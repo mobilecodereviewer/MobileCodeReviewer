@@ -20,6 +20,7 @@ public interface ModifiedFilesTabView {
      * @param filesList List of modified files
      * @param status
      */
-    void showFiles(List<FileInfo> filesList, ChangeStatus status);
+    void showFiles(List<FileInfo> filesList, ChangeStatus status, List<Boolean> hasPendingComments);
 
+    void refreshPendingComments(List<Boolean> hasPendingComments);
 }

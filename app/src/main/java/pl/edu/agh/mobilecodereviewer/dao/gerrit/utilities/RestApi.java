@@ -279,15 +279,7 @@ public class RestApi {
         return gerritService.getDiffInfo(change_id, revision_id, file_id);
     }
 
-    public void putFileComment(String change_id, String revision_id,
-                               int line, String message, String path) throws RetrofitError {
-        ReviewInputDTO reviewInputDTO = ReviewInputDTO.createFromSingleComment(path,
-                new CommentInputDTO(line, message, path));
-        gerritService.putReview(change_id, revision_id, reviewInputDTO);
-    }
-
-    public void putReview(String change_id,String revision_id,String message,Map<String, Integer> votes) {
-        ReviewInputDTO reviewInputDTO = ReviewInputDTO.createVoteReview(message, votes);
+    public void putReview(String change_id,String revision_id, ReviewInputDTO reviewInputDTO) {
         gerritService.putReview(change_id, revision_id, reviewInputDTO);
     }
 

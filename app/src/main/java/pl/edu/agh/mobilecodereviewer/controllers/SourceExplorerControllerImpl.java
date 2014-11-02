@@ -2,13 +2,14 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.common.io.Files;
 
-import org.apache.commons.io.FileUtils;
-
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
+import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.api.SourceCodeDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
@@ -43,6 +44,8 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Inject
     SourceCodeDAO sourceCodeDAO;
 
+    @Inject
+    ChangeInfoDAO changeInfoDAO;
 
     boolean isDiffView = true;
     boolean showLineNumbers = false;
@@ -113,7 +116,9 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     private SourceCode getSourceCode() {
         if (sourceCode == null) { // Lazy initialization
-            sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id);
+            Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(change_id, revision_id);
+            List<Comment> pendingCommentsForFile = pendingComments != null ? pendingComments.get(file_id) : null;
+            sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile);
         }
         return sourceCode;
     }
@@ -138,7 +143,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         SourceCodeDiff sourceCodeDiff = getSourceCodeDiff();
         SourceCode sourceCode = getSourceCode();
 
-        view.showSourceCodeDiff(file_id,sourceCodeDiff, SourceCodeHelper.getHasLineComments(sourceCode) );
+        view.showSourceCodeDiff(file_id,sourceCodeDiff, SourceCodeHelper.getHasLineComments(sourceCode), SourceCodeHelper.getHasLinePendingComments(sourceCode) );
         view.setInterfaceForDiff();
     }
 
@@ -163,11 +168,13 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
             return;
         }
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
-
-        sourceCodeDAO.putFileComment(change_id, revision_id, comment);
-        getSourceCode().getLine(linenum).getComments().add(comment);
+        comment.setPending(true);
+        changeInfoDAO.putFileComment(change_id, revision_id, comment);
+        getSourceCode().getLine(linenum).getComments().add(0, comment);
         updateAppropriateSourceCodeMode();
     }
+
+
 
     @Override
     public void setCurrentLinePosition(int currLine) {
@@ -230,6 +237,25 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
             view.showMessage(NO_COMMENTS_IN_LINE);
             return;
         }
+    }
+
+    @Override
+    public void deleteFileComment(Comment comment) {
+        changeInfoDAO.deleteFileComment(change_id, revision_id, file_id, comment);
+        getSourceCode().getLine(comment.getLine()).getComments().remove(comment);
+        updateAppropriateSourceCodeMode();
+
+        view.dismissCommentListDialog();
+
+        if(getSourceCode().getLine(comment.getLine()).getComments().size() != 0) {
+            view.showCommentListDialog(getSourceCode().getLine(comment.getLine()));
+        }
+    }
+
+    @Override
+    public void updateFileComment(Comment comment, String content) {
+        changeInfoDAO.updateFileComment(change_id, revision_id, file_id, comment, content);
+        updateAppropriateSourceCodeMode();
     }
 }
 

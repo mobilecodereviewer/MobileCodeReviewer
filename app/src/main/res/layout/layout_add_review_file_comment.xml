@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/common_small_maring"
+    android:animateLayoutChanges="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Line no:"
+        android:id="@+id/fileCommentLine"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="comment which is vrey vnsadf idsfioja dsf asdf asdferersd log"
+        android:id="@+id/fileCommentComment"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/fileCommentLine"
+        android:textSize="@dimen/common_small_font_size"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/common_small_font_size"
+        android:text="comment which is vrey vnsadf idsfioja dsf asdf asdferersd log"
+        android:id="@+id/editFileComment"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/fileCommentLine"
+        android:layout_marginLeft="20dp"
+        android:visibility="invisible"/>
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:id="@+id/editFileCommentButton"
+        android:layout_below="@+id/fileCommentComment"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="7dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/cancelFileCommentButton"
+        android:layout_below="@+id/editFileComment"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discard"
+        android:id="@+id/discardFileCommentButton"
+        android:layout_below="@+id/editFileComment"
+        android:layout_toLeftOf="@+id/cancelFileCommentButton"
+        android:layout_marginRight="5dp"
+        android:visibility="invisible"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/saveFileCommentButton"
+        android:layout_below="@+id/editFileComment"
+        android:layout_toLeftOf="@+id/discardFileCommentButton"
+        android:layout_marginRight="5dp"
+        android:visibility="invisible"/>
+
+
+</RelativeLayout>

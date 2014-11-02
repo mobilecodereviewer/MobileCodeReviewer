@@ -1,6 +1,8 @@
 package pl.edu.agh.mobilecodereviewer.exceptions.handlers;
 import android.content.Context;
 
+import pl.edu.agh.mobilecodereviewer.utilities.PreferencesAccessor;
+
 public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private Context context;
@@ -13,6 +15,8 @@ public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler
     }
 
     public void uncaughtException(Thread thread, Throwable exception) {
+
+        PreferencesAccessor.deleteLastUsedConfiguration();
 
         if(!UncaughtExceptionHandlerHelper.checkIfPendingReportsExist()) {
             UncaughtExceptionHandlerHelper.prepareCrashLogFile(context, exception);

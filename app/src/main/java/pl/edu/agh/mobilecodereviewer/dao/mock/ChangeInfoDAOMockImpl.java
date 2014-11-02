@@ -10,6 +10,7 @@ import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
@@ -117,6 +118,26 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
 
     @Override
     public List<PermittedLabel> getPermittedLabels(String changeId) {
+        return null;
+    }
+
+    @Override
+    public void putFileComment(String change_id, String revision_id, Comment comment) {
+
+    }
+
+    @Override
+    public Map<String, List<Comment>> deleteFileComment(String changeId, String revisionId, String path, Comment comment) {
+        return null;
+    }
+
+    @Override
+    public Map<String, List<Comment>> updateFileComment(String changeId, String revisionId, String path, Comment comment, String content) {
+        return null;
+    }
+
+    @Override
+    public Map<String, List<Comment>> getPendingComments(String changeId, String revisonId) {
         return null;
     }
 }

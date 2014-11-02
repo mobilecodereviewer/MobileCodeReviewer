@@ -81,7 +81,8 @@
             android:name="pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer"
             android:label="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.title"
             android:parentActivityName=".view.activities.ModifiedFilesTab"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFiles" />

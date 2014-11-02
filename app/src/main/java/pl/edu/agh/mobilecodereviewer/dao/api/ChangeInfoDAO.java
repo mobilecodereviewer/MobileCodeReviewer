@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
+import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
@@ -89,4 +91,12 @@ public interface ChangeInfoDAO {
     void initialize(RestApi restApi);
 
     List<PermittedLabel> getPermittedLabels(String changeId);
+
+    void putFileComment(String changeId, String revisionId, Comment comment);
+
+    Map<String, List<Comment>> deleteFileComment(String changeId, String revisionId, String path, Comment comment);
+
+    Map<String, List<Comment>> updateFileComment(String changeId, String revisionId, String path, Comment comment, String content);
+
+    Map<String, List<Comment>> getPendingComments(String changeId, String revisonId);
 }

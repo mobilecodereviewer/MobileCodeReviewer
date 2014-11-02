@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -54,6 +55,8 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private MenuItem nextChangeNavigation;
 
     private final Context context = this;
+
+    private AlertDialog commentListDialog;
     /**
      * Associated controller which make actions to activity events
      */
@@ -104,6 +107,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
    
         }
 
+
         sourceLinesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -122,10 +126,21 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         alertDialogBuilder.setView(lineCommentsView);
 
         ListView listView = (ListView) lineCommentsView.findViewById(R.id.lineCommentsList);
-        listView.setAdapter(new SingleLineCommentViewListAdapter(context, line ) );
+        listView.setAdapter(new SingleLineCommentViewListAdapter(context, line, controller) );
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        commentListDialog = alertDialogBuilder.create();
+
+        commentListDialog.show();
+
+        commentListDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+    }
+
+    @Override
+    public void dismissCommentListDialog(){
+        if(commentListDialog != null){
+            commentListDialog.dismiss();
+        }
     }
 
     private boolean showCommentAddDialog(AdapterView<?> sourceCodeLayout, final int lineClicked) {
@@ -238,10 +253,10 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     }
 
     @Override
-    public void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments) {
+    public void showSourceCodeDiff(String file_path,SourceCodeDiff sourceCodeDiff,List<Boolean> hasComments, List<Boolean> hasPendingComments) {
         String extension = Files.getFileExtension(file_path);
         final SourceCodeDiffViewListAdapter sourceCodeDiffViewListAdapter =
-                new SourceCodeDiffViewListAdapter(this, extension,sourceCodeDiff,hasComments);
+                new SourceCodeDiffViewListAdapter(this, extension,sourceCodeDiff,hasComments, hasPendingComments);
 
         sourceLinesListView.setAdapter(sourceCodeDiffViewListAdapter);
     }

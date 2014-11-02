@@ -14,5 +14,9 @@ import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
  * @since 0.1
  */
 public interface ModifiedFilesTabController extends Refreshable {
+
     void initializeData(ModifiedFilesTabView view, String changeId);
+
+    void checkIfFilesPendingCommentsChanged();
+
 }

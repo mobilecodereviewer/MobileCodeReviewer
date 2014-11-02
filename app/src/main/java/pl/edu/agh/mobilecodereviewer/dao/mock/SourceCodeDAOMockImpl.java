@@ -60,18 +60,13 @@ public class SourceCodeDAOMockImpl implements SourceCodeDAO{
      * @return Source Code( {@link pl.edu.agh.mobilecodereviewer.model.SourceCode} ) assigned to given file
      */
     @Override
-    public SourceCode getSourceCode(String change_id,String revision_id,String file_id) {
-        return SourceCode.valueOf( lines );
+    public SourceCode getSourceCode(String change_id, String revision_id, String file_id, List<Comment> pendingComments) {
+        return null;
     }
 
     @Override
     public SourceCodeDiff getSourceCodeDiff(String change_id, String revision_id, String file_id) {
         return new SourceCodeDiff(diffInfoDTO);
-    }
-
-    @Override
-    public void putFileComment(String change_id, String revision_id, Comment comment) {
-        // TODO something to show on the screen....
     }
 
     @Override

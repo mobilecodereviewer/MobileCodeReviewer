@@ -32,10 +32,8 @@ public class ReviewInputDTO {
         return labels;
     }
 
-    public static ReviewInputDTO createFromSingleComment(String path, CommentInputDTO commentInputDTO) {
-        Map<String, List<CommentInputDTO>> comments = new HashMap<>();
-        comments.put(path, Collections.singletonList(commentInputDTO));
-        return new ReviewInputDTO(comments);
+    public void setComments(Map<String, List<CommentInputDTO>> comments){
+        this.comments = comments;
     }
 
     public static ReviewInputDTO createVoteReview(String message, Map<String, Integer> votes) {

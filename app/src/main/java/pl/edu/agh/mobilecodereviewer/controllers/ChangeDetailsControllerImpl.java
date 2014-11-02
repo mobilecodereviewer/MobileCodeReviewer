@@ -7,8 +7,10 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
@@ -38,10 +40,19 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController{
 
     }
 
-
     @Override
     public void refreshData() {
         updateData();
+    }
+
+    @Override
+    public void deleteFileComment(String path, Comment comment) {
+        view.preparePendingFilesCommentsList(changeInfoDAO.deleteFileComment(changeId, revisionId, path, comment));
+    }
+
+    @Override
+    public void updateFileComment(String path, Comment comment, String content) {
+        view.preparePendingFilesCommentsList(changeInfoDAO.updateFileComment(changeId, revisionId, path, comment, content));
     }
 
     @Override
@@ -57,8 +68,9 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController{
 
     @Override
     public void updateSetReviewPopup() {
-        List<PermittedLabel> permittedLabels = getPermittedLabels();
-        view.showSetReviewPopup(permittedLabels);
+        List<PermittedLabel> permittedLabels = changeInfoDAO.getPermittedLabels(changeId);
+        Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(changeId, revisionId);
+        view.showSetReviewPopup(permittedLabels, pendingComments);
     }
 
     @Override
@@ -91,13 +103,6 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController{
             changeInfo = changeInfoDAO.getChangeInfoById(changeId);
         }
         return changeInfo;
-    }
-
-    private List<PermittedLabel> getPermittedLabels() {
-        if (permittedLabels == null ) {
-            permittedLabels =  changeInfoDAO.getPermittedLabels(changeId);
-        }
-        return permittedLabels;
     }
 
     private String getCommitMessageForChange(String changeId) {

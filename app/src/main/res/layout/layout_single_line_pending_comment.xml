@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="#D1FFED">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        style="@style/common_small_margins"
+        android:id="@+id/pendingCommentHeader">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PENDING"
+            android:id="@+id/commentAuthorName"
+            android:layout_weight="0.5"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical|left"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_small_font_size"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="comment which is vrey vnsadf idsfioja dsf asdf asdferersd log"
+        android:id="@+id/fileCommentComment"
+        android:textSize="@dimen/common_small_font_size"
+        android:layout_below="@+id/pendingCommentHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textSize="@dimen/common_small_font_size"
+        android:text="comment which is vrey vnsadf idsfioja dsf asdf asdferersd log"
+        android:id="@+id/editFileComment"
+        android:visibility="invisible"
+        android:layout_below="@+id/pendingCommentHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="-8dp"
+        android:layout_marginLeft="-7dp" />
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:id="@+id/editFileCommentButton"
+        android:layout_below="@+id/fileCommentComment"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="7dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/cancelFileCommentButton"
+        android:layout_below="@+id/editFileComment"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discard"
+        android:id="@+id/discardFileCommentButton"
+        android:layout_below="@+id/editFileComment"
+        android:layout_toLeftOf="@+id/cancelFileCommentButton"
+        android:layout_marginRight="5dp"
+        android:visibility="invisible"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/saveFileCommentButton"
+        android:layout_below="@+id/editFileComment"
+        android:layout_toLeftOf="@+id/discardFileCommentButton"
+        android:layout_marginRight="5dp"
+        android:visibility="invisible"/>
+
+
+</RelativeLayout>

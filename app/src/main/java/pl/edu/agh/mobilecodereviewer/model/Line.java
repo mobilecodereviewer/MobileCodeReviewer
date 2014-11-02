@@ -28,6 +28,8 @@ public class Line {
      */
     private List<Comment> comments;
 
+    private boolean pendingComments;
+
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
      */
@@ -111,6 +113,14 @@ public class Line {
      */
     public boolean hasComments() {
         return comments.size() > 0;
+    }
+
+    public boolean isPendingComments() {
+        return pendingComments;
+    }
+
+    public void setPendingComments(boolean pendingComments) {
+        this.pendingComments = pendingComments;
     }
 
     /**

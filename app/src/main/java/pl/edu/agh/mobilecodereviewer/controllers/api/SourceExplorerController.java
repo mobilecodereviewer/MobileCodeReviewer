@@ -37,4 +37,8 @@ public interface SourceExplorerController {
     void setVisibilityOnSourceCodeNavigation();
 
     void showComments(int position);
+
+    void deleteFileComment(Comment comment);
+
+    void updateFileComment(Comment comment, String content);
 }

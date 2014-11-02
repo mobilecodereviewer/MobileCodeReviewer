@@ -23,6 +23,8 @@ public class Comment {
 
     private String updated;
 
+    private boolean isPending;
+
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
      */
@@ -35,6 +37,11 @@ public class Comment {
         this.line = line;
         this.author = author;
         this.updated = updated;
+    }
+
+    public Comment(int line, String content) {
+        this.line = line;
+        this.content = content;
     }
 
     /**
@@ -60,6 +67,16 @@ public class Comment {
     public String getUpdated() {
         return updated;
     }
+
+    public boolean isPending() {
+        return isPending;
+    }
+
+    public void setPending(boolean isPending) {
+        this.isPending = isPending;
+    }
+
+    public void setContent(String content){this.content = content;}
 
     @Override
     public boolean equals(Object o) {
@@ -91,5 +108,17 @@ public class Comment {
      */
     public static Comment valueOf(int line,String path,String content, String author, String updated) {
         return new Comment( line,path,String.valueOf(content),  author, updated );
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "content='" + content + '\'' +
+                ", path='" + path + '\'' +
+                ", line=" + line +
+                ", author='" + author + '\'' +
+                ", updated='" + updated + '\'' +
+                ", isPending=" + isPending +
+                '}';
     }
 }
