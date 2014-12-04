@@ -12,8 +12,11 @@
     <string name="pl.agh.edu.mobilecodereviewer.common.true">True</string>
     <string name="pl.agh.edu.mobilecodereviewer.common.false">True</string>
     <string name="pl.agh.edu.common.unauthorized">Unauthorized</string>
-    <string name="pl.agh.edu.common.ok">Ok</string>
+    <string name="pl.agh.edu.common.ok">OK</string>
     <string name="pl.agh.edu.common.cancel">Cancel</string>
+    <string name="pl.agh.edu.common.discard">Discard</string>
+    <string name="pl.agh.edu.common.edit">Edit</string>
+    <string name="pl.agh.edu.common.save">Save</string>
     <!-- commons end -->
 
     <!--Configuration start-->

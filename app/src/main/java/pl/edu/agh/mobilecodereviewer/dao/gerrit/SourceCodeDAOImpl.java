@@ -111,7 +111,7 @@ public class SourceCodeDAOImpl implements SourceCodeDAO {
      * @param file_id Identifier of the file
      * @return List of {@link pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO}
      */
-    public List<CommentInfoDTO> getComments(final String change_id,final String revision_id,
+    private List<CommentInfoDTO> getComments(final String change_id,final String revision_id,
                                                final String file_id) {
         Map<String, List<CommentInfoDTO>> comments = restApi.getComments(change_id, revision_id);
         if ( comments.containsKey(file_id) )

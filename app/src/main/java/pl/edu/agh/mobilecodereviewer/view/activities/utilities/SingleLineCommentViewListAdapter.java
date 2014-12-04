@@ -5,14 +5,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
@@ -66,7 +62,7 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
 
         final Comment comment = line.getComments().get(position);
 
-        if(!comment.isPending()) {
+        if(!comment.isDraft()) {
             rowView = inflater.inflate(R.layout.layout_single_line_comment, parent, false);
 
             TextView commentContent = (TextView) rowView.findViewById(R.id.commentContent);

@@ -2,10 +2,7 @@ package pl.edu.agh.mobilecodereviewer.dao.gerrit;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +10,12 @@ import java.util.Map;
 import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
+import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
+import pl.edu.agh.mobilecodereviewer.model.utilities.CommentHelper;
 import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
@@ -45,8 +44,6 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
      * Api from information will be given
      */
     private RestApi restApi;
-
-    private Map<Pair<String, String>, Map<String, List<Comment>>> pendingComments = new HashMap<Pair<String, String>, Map<String, List<Comment>>>();
 
     @Override
     public void initialize(RestApi restApi){
@@ -181,7 +178,6 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         List<LabelInfo> labelInfos = new ArrayList<LabelInfo>();
 
         for(String labelName : labelInfoDTOs.keySet()){
-            LabelInfoDTO labelInfoDTO = labelInfoDTOs.get(labelName);
             labelInfos.add(LabelInfoHelper.createLabelInfoFromDTO(labelName, labelInfoDTOs.get(labelName)));
         }
 
@@ -191,109 +187,71 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
     @Override
     public void setReview(String changeId, String revisionId, String message, Map<String, Integer> votes) {
 
-        ReviewInputDTO review = ReviewInputDTO.createVoteReview(message, votes);;
+        ReviewInputDTO review = ReviewInputDTO.createVoteReview(message, votes);
 
-        Pair<String, String> reviewIdentifier =  getReviewIdentifier(changeId, revisionId);
-
-        if(pendingComments.containsKey(reviewIdentifier)) {
-            review.setComments(translatePendingCommentsToDTOs(reviewIdentifier));
+        Map<String, List<CommentInfoDTO>> pendingComments = restApi.getDraftComments(changeId, revisionId);
+        if(pendingComments != null && pendingComments.size() != 0) {
+            review.setComments(translateDraftCommentsToCommentInputDTOs(pendingComments));
         }
 
         restApi.putReview(changeId, revisionId, review);
 
     }
 
-    private Map<String, List<CommentInputDTO>> translatePendingCommentsToDTOs(Pair<String, String> reviewIdentifier) {
-        Map<String, List<Comment>> filesCommentsModels = pendingComments.get(reviewIdentifier);
-        Map<String, List<CommentInputDTO>> filesCommentsDTOs = new HashMap<>();
+    private Map<String, List<CommentInputDTO>> translateDraftCommentsToCommentInputDTOs(Map<String, List<CommentInfoDTO>> draftComments) {
+        Map<String, List<CommentInputDTO>> filesCommentInputsDTOs = new HashMap<>();
 
-        for(String path : filesCommentsModels.keySet()) {
+        for(String path : draftComments.keySet()){
+            List<CommentInfoDTO> commentInfoDTOs = draftComments.get(path);
 
-            List<Comment> commentsModels = filesCommentsModels.get(path);
-            List<CommentInputDTO> commentsDTOs = new LinkedList<CommentInputDTO>();
-
-            for(Comment comment : commentsModels){
-                commentsDTOs.add(new CommentInputDTO(comment.getLine(), comment.getContent()));
+            List<CommentInputDTO> commentInputDTOs = new LinkedList<>();
+            for(CommentInfoDTO commentInfoDTO : commentInfoDTOs){
+                commentInputDTOs.add(new CommentInputDTO(commentInfoDTO.getLine(), commentInfoDTO.getMessage()));
             }
 
-            filesCommentsDTOs.put(path, commentsDTOs);
+            filesCommentInputsDTOs.put(path, commentInputDTOs);
         }
 
-        pendingComments.remove(reviewIdentifier);
-
-        return filesCommentsDTOs;
+        return filesCommentInputsDTOs;
     }
 
     @Override
-    public void putFileComment(String changeId, String revisionId,Comment comment) {
-        String path = comment.getPath();
-        comment.setPending(true);
-
-        Pair<String, String> reviewIdentifier = getReviewIdentifier(changeId, revisionId);
-
-        if(pendingComments.containsKey(reviewIdentifier)) {
-            List<Comment> comments = pendingComments.get(reviewIdentifier).get(path);
-            if(comments != null){
-                comments.add(comment);
-            } else {
-                List<Comment> commentsList = new LinkedList<>();
-                commentsList.add(comment);
-                pendingComments.get(reviewIdentifier).put(path, commentsList);
-            }
-        } else {
-            Map<String, List<Comment>> comments = new HashMap<>();
-            List<Comment> commentsList = new LinkedList<>();
-            commentsList.add(comment);
-            comments.put(path, commentsList);
-            pendingComments.put(reviewIdentifier, comments);
-        }
-
+    public String putDraftComment(String changeId, String revisionId, Comment comment) {
+        CommentInfoDTO commentInfoDTO = restApi.createDraftComment(changeId, revisionId, new CommentInputDTO(comment.getLine(), comment.getContent(), comment.getPath()));
+        return commentInfoDTO.getId();
     }
 
     @Override
     public Map<String, List<Comment>> deleteFileComment(String changeId, String revisionId, String path, Comment comment) {
-        Pair<String, String> reviewIdentifier = getReviewIdentifier(changeId, revisionId);
-
-        if(pendingComments.containsKey(reviewIdentifier)){
-
-            List<Comment> comments = pendingComments.get(reviewIdentifier).get(path);
-            comments.remove(comment);
-
-            if(comments.isEmpty()){
-                pendingComments.get(reviewIdentifier).remove(path);
-            }
-        }
-
-        return pendingComments.get(reviewIdentifier);
+        restApi.deleteDraftComment(changeId, revisionId, comment.getDraftId());
+        return getPendingComments(changeId, revisionId);
     }
 
     @Override
     public Map<String, List<Comment>> updateFileComment(String changeId, String revisionId, String path, Comment comment, String content) {
-        Pair<String, String> reviewIdentifier = getReviewIdentifier(changeId, revisionId);
-
-        if(pendingComments.containsKey(reviewIdentifier)){
-
-            List<Comment> fileComments = pendingComments.get(reviewIdentifier).get(path);
-
-            for(Comment checkedComment : fileComments){
-                if(checkedComment.equals(comment)){
-                    comment.setContent(content);
-                    break;
-                }
-            }
-
-        }
-
-        return pendingComments.get(reviewIdentifier);
+        restApi.updateDraftComment(changeId, revisionId, comment.getDraftId(), new CommentInputDTO(comment.getLine(), content));
+        return getPendingComments(changeId, revisionId);
     }
 
     @Override
     public Map<String, List<Comment>> getPendingComments(String changeId, String revisionId) {
-        return pendingComments.get(getReviewIdentifier(changeId, revisionId));
+        return translateCommentInfoDTOsToComments(restApi.getDraftComments(changeId, revisionId));
     }
 
-    private Pair<String, String> getReviewIdentifier(String changeId, String revisionId){
-        return new Pair<String, String>(changeId, revisionId);
-    }
+    private Map<String, List<Comment>> translateCommentInfoDTOsToComments(Map<String, List<CommentInfoDTO>> draftComments){
+        Map<String, List<Comment>> filesCommentsDTOs = new HashMap<>();
 
+        for(String path : draftComments.keySet()){
+            List<CommentInfoDTO> commentInfoDTOs = draftComments.get(path);
+
+            List<Comment> commentInputDTOs = new LinkedList<>();
+            for(CommentInfoDTO commentInfoDTO : commentInfoDTOs){
+                commentInputDTOs.add(CommentHelper.commentFromDTO(commentInfoDTO, path, true));
+            }
+
+            filesCommentsDTOs.put(path, commentInputDTOs);
+        }
+
+        return filesCommentsDTOs;
+    }
 }

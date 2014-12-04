@@ -1,7 +1,5 @@
 package pl.edu.agh.mobilecodereviewer.model;
 
-import java.util.Date;
-
 /**
  * Model represents information about comment
  *
@@ -13,6 +11,8 @@ public class Comment {
     /**
      * Content of the comment
      */
+    private String draftId;
+
     private String content;
 
     private String path;
@@ -23,7 +23,7 @@ public class Comment {
 
     private String updated;
 
-    private boolean isPending;
+    private boolean isDraft;
 
     /**
      * No-argument constructor ,doesnt initialize any fields etc.
@@ -68,15 +68,39 @@ public class Comment {
         return updated;
     }
 
-    public boolean isPending() {
-        return isPending;
+    public boolean isDraft() {
+        return isDraft;
     }
 
-    public void setPending(boolean isPending) {
-        this.isPending = isPending;
+    public void setDraft(boolean isPending) {
+        this.isDraft = isPending;
     }
 
     public void setContent(String content){this.content = content;}
+
+    public String getDraftId() {
+        return draftId;
+    }
+
+    public void setDraftId(String draftId) {
+        this.draftId = draftId;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -113,12 +137,14 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment{" +
-                "content='" + content + '\'' +
+                "draftId='" + draftId + '\'' +
+                ", content='" + content + '\'' +
                 ", path='" + path + '\'' +
                 ", line=" + line +
                 ", author='" + author + '\'' +
                 ", updated='" + updated + '\'' +
-                ", isPending=" + isPending +
+                ", isDraft=" + isDraft +
                 '}';
     }
+
 }

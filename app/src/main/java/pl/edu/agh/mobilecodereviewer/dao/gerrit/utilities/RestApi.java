@@ -283,6 +283,22 @@ public class RestApi {
         gerritService.putReview(change_id, revision_id, reviewInputDTO);
     }
 
+    public Map<String, List<CommentInfoDTO>> getDraftComments(String changeId, String revisionId){
+        return gerritService.getDraftComments(changeId, revisionId);
+    }
+
+    public CommentInfoDTO createDraftComment(String changeId, String revisionId, CommentInputDTO commentInputDTO){
+        return gerritService.createDraftComment(changeId, revisionId, commentInputDTO);
+    }
+
+    public CommentInfoDTO updateDraftComment(String changeId, String revisionId, String draftId, CommentInputDTO commentInputDTO){
+        return gerritService.updateDraftComment(changeId, revisionId, draftId, commentInputDTO);
+    }
+
+    public void deleteDraftComment(String changeId, String revisionId, String draftId){
+        gerritService.deleteDraftComment(changeId, revisionId, draftId);
+    }
+
     private class GerritErrorHandler implements ErrorHandler{
 
         @Override
@@ -394,7 +410,7 @@ public class RestApi {
                 urlConnection.addRequestProperty(header.getName(), header.getValue());
             }
 
-            if (!request.getMethod().toLowerCase().equals("get")) {
+            if (!request.getMethod().toLowerCase().equals("get") && !request.getMethod().toLowerCase().equals("delete")) {
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.setRequestProperty("charset", "UTF-8");
                 urlConnection.setDoOutput(true);

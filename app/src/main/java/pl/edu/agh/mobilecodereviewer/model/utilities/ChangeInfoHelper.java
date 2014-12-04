@@ -9,7 +9,7 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 public final class ChangeInfoHelper {
 
     public static enum ChildrenHeaders {
-        SUBJECT, STATUS, OWNER, PROJECT, BRANCH, UPDATED, SIZE;
+        SUBJECT, STATUS, OWNER, PROJECT, BRANCH, UPDATED, SIZE
     }
 
     public static Map<String, Map<ChildrenHeaders, String>> getChildren(List<ChangeInfo> changeInfoList){

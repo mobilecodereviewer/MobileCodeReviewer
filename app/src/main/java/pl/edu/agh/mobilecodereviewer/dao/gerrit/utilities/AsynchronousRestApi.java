@@ -10,11 +10,14 @@ import java.util.concurrent.ExecutionException;
 import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
+import pl.edu.agh.mobilecodereviewer.dto.CommitInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.NullMergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
+import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 
 /**
@@ -210,6 +213,47 @@ public class AsynchronousRestApi extends RestApi{
             @Override
             protected Void doInBackground(Object... params) {
                 restApi.putReview(change_id, revision_id, reviewInputDTO);
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public Map<String, List<CommentInfoDTO>> getDraftComments(final String changeId, final String revisionId){
+       return  runAsyncTask(new AsyncTask<Object, Void, Map<String, List<CommentInfoDTO>>>(){
+            @Override
+            protected Map<String, List<CommentInfoDTO>> doInBackground(Object... objects) {
+                return restApi.getDraftComments(changeId, revisionId);
+            }
+        });
+    }
+
+    @Override
+    public CommentInfoDTO createDraftComment(final String changeId, final String revisionId, final CommentInputDTO commentInputDTO){
+        return runAsyncTask(new AsyncTask<Object, Void, CommentInfoDTO>(){
+            @Override
+            protected CommentInfoDTO doInBackground(Object... objects) {
+                return restApi.createDraftComment(changeId, revisionId, commentInputDTO);
+            }
+        });
+    }
+
+    @Override
+    public CommentInfoDTO updateDraftComment(final String changeId, final String revisionId, final String draftId, final CommentInputDTO commentInputDTO){
+        return runAsyncTask(new AsyncTask<Object, Object, CommentInfoDTO>() {
+            @Override
+            protected CommentInfoDTO doInBackground(Object... objects) {
+                return restApi.updateDraftComment(changeId, revisionId, draftId, commentInputDTO);
+            }
+        });
+    }
+
+    @Override
+    public void deleteDraftComment(final String changeId, final String revisionId, final String draftId){
+        runAsyncTask(new AsyncTask<Object, Void, Void>() {
+            @Override
+            protected Void doInBackground(Object... objects) {
+                restApi.deleteDraftComment(changeId, revisionId, draftId);
                 return null;
             }
         });

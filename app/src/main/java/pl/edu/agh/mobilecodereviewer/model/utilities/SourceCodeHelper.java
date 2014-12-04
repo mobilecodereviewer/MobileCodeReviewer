@@ -57,7 +57,7 @@ public final class SourceCodeHelper {
                     @Override
                     public Boolean apply(Line from) {
                         for(Comment comment : from.getComments()){
-                            if(comment.isPending()){
+                            if(comment.isDraft()){
                                 return true;
                             }
                         }

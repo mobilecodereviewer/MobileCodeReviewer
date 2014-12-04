@@ -122,8 +122,8 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
     }
 
     @Override
-    public void putFileComment(String change_id, String revision_id, Comment comment) {
-
+    public String putDraftComment(String change_id, String revision_id, Comment comment) {
+        return null;
     }
 
     @Override

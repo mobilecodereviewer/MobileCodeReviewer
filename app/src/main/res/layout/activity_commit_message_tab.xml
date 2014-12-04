@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="VALUE"
         android:id="@+id/commitMessageTabValue"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"

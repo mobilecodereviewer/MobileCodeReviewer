@@ -167,9 +167,12 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
             view.showMessage(INAPROPRIATE_LINE_FOR_COMMENT_INSERTION);
             return;
         }
+
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
-        comment.setPending(true);
-        changeInfoDAO.putFileComment(change_id, revision_id, comment);
+        String commentId = changeInfoDAO.putDraftComment(change_id, revision_id, comment);
+        comment.setDraft(true);
+        comment.setDraftId(commentId);
+
         getSourceCode().getLine(linenum).getComments().add(0, comment);
         updateAppropriateSourceCodeMode();
     }

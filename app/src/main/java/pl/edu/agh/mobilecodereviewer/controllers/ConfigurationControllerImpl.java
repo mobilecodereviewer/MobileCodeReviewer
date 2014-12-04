@@ -15,7 +15,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ConfigurationView;
 
 public class ConfigurationControllerImpl implements ConfigurationController {
 
-    public static enum ConfigurationError {INCORRECT_URL, INCORRECT_LOGIN_INFORMATION, GERRIT_VERSION_TO_LOW};
+    public static enum ConfigurationError {INCORRECT_URL, INCORRECT_LOGIN_INFORMATION, GERRIT_VERSION_TO_LOW}
 
     private String retrievedVersion;
 

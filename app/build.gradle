@@ -1,7 +1,7 @@
 project.ext['src.java.dir'] = ['src/test/java']
 project.ext['module.iml.file'] = "app.iml"
 apply from: 'gradle-android-add-dir.gradle'
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
