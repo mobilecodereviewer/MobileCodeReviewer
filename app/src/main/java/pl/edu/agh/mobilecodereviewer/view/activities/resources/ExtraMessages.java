@@ -17,5 +17,7 @@ public class ExtraMessages {
 
     public static final String MODIFIED_FILES_CHANGE_STATUS = "MODIFIED_FILES_CHANGE_STATUS";
 
+    public static final String MODIFIED_FILES_SELECTED_FILE_INDEX = "MODIFIED_FILES_SELECTED_FILE_INDEX";
+
     public static final String CONFIGURATION_DONT_LOAD_LAST_SAVED = "CONFIGURATION_DONT_LOAD_LAST_SAVED";
 }

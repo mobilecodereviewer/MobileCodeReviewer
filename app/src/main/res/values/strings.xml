@@ -112,6 +112,9 @@
     <!--SourceExplorer start-->
     <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextChange">Next Change</string>
     <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoPrevChange">Previous Change</string>
+    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextFile">Next File</string>
+    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoPrevFile">Previous File</string>
+    <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.toggleLineNumberVisiblity">Toggle line numbers visibility</string>
     <!--SourceExplorer end-->
 
 

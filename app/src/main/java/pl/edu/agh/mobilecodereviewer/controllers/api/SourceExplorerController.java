@@ -1,6 +1,10 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import java.util.List;
+
+import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
+import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
@@ -20,7 +24,9 @@ public interface SourceExplorerController {
 
     void toggleDiffView();
 
-    void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id, String changeStatus);
+    void preInitialize(List<FileInfo> filesList, ChangeStatus status);
+
+    void initializeData(SourceExplorerView view, int fileIndex);
 
     void insertComment(String content, int lineNumber);
 
@@ -41,4 +47,7 @@ public interface SourceExplorerController {
     void deleteFileComment(Comment comment);
 
     void updateFileComment(Comment comment, String content);
+
+    boolean fileExists(int index);
+
 }

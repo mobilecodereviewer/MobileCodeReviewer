@@ -2,11 +2,13 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.common.io.Files;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
@@ -15,6 +17,7 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
+import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeHelper;
@@ -30,6 +33,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  * @version 0.1
  * @since 0.2
  */
+@Singleton
 public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     private static final String NO_PREVIOUS_CHANGE_FOUND = "No previous change found";
@@ -59,6 +63,8 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     private SourceCode sourceCode;
     private SourceCodeDiff sourceCodeDiff;
+
+    private List<FileInfo> fileInfos;
     /**
      * Simple constructor. Used by DI framework.
      */
@@ -78,14 +84,24 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         this.sourceCodeDAO = sourceCodeDAO;
     }
 
+    /**
+     * Invoked by ModifiedFilesTab before navigating to source explorer.
+     * @param fileInfos
+     * @param status
+     */
+    @Override
+    public void preInitialize(List<FileInfo> fileInfos, ChangeStatus status) {
+        this.fileInfos = fileInfos;
+        this.change_status = status;
+    }
 
     @Override
-    public void initializeData(SourceExplorerView view, String change_id, String revision_id, String file_id, String changeStatus) {
+    public void initializeData(SourceExplorerView view, int fileIndex) {
         this.view = view;
-        this.change_id = change_id;
-        this.revision_id = revision_id;
-        this.file_id = file_id;
-        this.change_status = ChangeStatus.createStatusFromString( changeStatus);
+        FileInfo info = fileInfos.get(fileIndex);
+        this.change_id = info.getChangeId();
+        this.revision_id = info.getRevisionId();
+        this.file_id = info.getFileName();
     }
 
     @Override
@@ -115,18 +131,14 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     }
 
     private SourceCode getSourceCode() {
-        if (sourceCode == null) { // Lazy initialization
-            Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(change_id, revision_id);
-            List<Comment> pendingCommentsForFile = pendingComments != null ? pendingComments.get(file_id) : null;
-            sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile);
-        }
+        Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(change_id, revision_id);
+        List<Comment> pendingCommentsForFile = pendingComments != null ? pendingComments.get(file_id) : null;
+        sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile);
         return sourceCode;
     }
 
     private SourceCodeDiff getSourceCodeDiff() {
-        if (sourceCodeDiff == null) { // Lazy initialization
-            sourceCodeDiff =  sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
-        }
+        sourceCodeDiff =  sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
         return sourceCodeDiff;
     }
 
@@ -259,6 +271,11 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     public void updateFileComment(Comment comment, String content) {
         changeInfoDAO.updateFileComment(change_id, revision_id, file_id, comment, content);
         updateAppropriateSourceCodeMode();
+    }
+
+    @Override
+    public boolean fileExists(int index) {
+        return fileInfos != null && fileInfos.size() - 1  >= index && index >= 0;
     }
 }
 

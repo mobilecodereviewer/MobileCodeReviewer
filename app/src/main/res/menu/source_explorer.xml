@@ -22,7 +22,16 @@
     <item android:id="@+id/showHideLinesNumber"
         android:icon="@android:drawable/ic_menu_mylocation"
         android:showAsAction="always"
-        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextChange" />
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.toggleLineNumberVisiblity" />
 
+    <item android:id="@+id/goToPrevFile"
+        android:icon="@android:drawable/ic_media_rew"
+        android:showAsAction="ifRoom"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoPrevFile"/>
+
+    <item android:id="@+id/gotoNextFile"
+        android:icon="@android:drawable/ic_media_ff"
+        android:showAsAction="ifRoom"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.SourceExplorer.gotoNextFile"/>
 
 </menu>

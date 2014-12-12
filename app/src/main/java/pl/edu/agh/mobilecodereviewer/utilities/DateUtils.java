@@ -13,8 +13,6 @@ public class DateUtils {
     private final static String PRINTABLE_DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
     public static String getPrettyDate(String gerritFormatDate){
-        String newDateString;
-
         SimpleDateFormat sdf = new SimpleDateFormat(GERRIT_DATE_FORMAT);
         Date d;
         try {

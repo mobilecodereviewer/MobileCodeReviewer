@@ -12,6 +12,7 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
@@ -38,6 +39,9 @@ public class ModifiedFilesTab extends RefreshableTabBaseActivity implements Modi
      */
     @Inject
     private ModifiedFilesTabController controller;
+
+    @Inject
+    private SourceExplorerController sourceExplorerController;
 
     /**
      * List of modified files view
@@ -96,8 +100,7 @@ public class ModifiedFilesTab extends RefreshableTabBaseActivity implements Modi
         modifiedFilesTabListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                FileInfo selectedFile = filesList.get(i);
-                showFileDetails(selectedFile.getChangeId(), selectedFile.getRevisionId(), selectedFile.getFileName(),status);
+                showFileDetails(i, filesList, status);
             }
         });
 
@@ -116,14 +119,10 @@ public class ModifiedFilesTab extends RefreshableTabBaseActivity implements Modi
     /**
      * Show content of the file {@link pl.edu.agh.mobilecodereviewer.view.activities.SourceExplorer}
      */
-    private void showFileDetails(String changeId, String revisionId, String fileName, ChangeStatus status) {
+    private void showFileDetails(int selectedFileIndex, List<FileInfo> filesInfos, ChangeStatus status) {
+        sourceExplorerController.preInitialize(filesInfos, status);
         Intent intent = new Intent(getApplicationContext(), SourceExplorer.class);
-
-        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID, changeId);
-        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID, revisionId);
-        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME, fileName);
-        intent.putExtra(ExtraMessages.MODIFIED_FILES_CHANGE_STATUS, status.toString() );
-
+        intent.putExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_INDEX, selectedFileIndex);
         startActivity(intent);
     }
 }

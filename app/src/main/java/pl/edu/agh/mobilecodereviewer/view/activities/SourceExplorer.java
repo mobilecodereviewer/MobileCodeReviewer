@@ -21,7 +21,9 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
+import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
@@ -49,6 +51,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     private String revision_id;
     private String file_id;
     private String changeStatus;
+    private int visibleFileIndex;
 
     private Menu menu;
     private MenuItem prevChangeNavigation;
@@ -78,10 +81,16 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_source_explorer);
+        int toShowIndex = getIntent().getIntExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_INDEX, 0);
+        initialize(toShowIndex);
+    }
 
-        initializeSourceProperties();
-        controller.initializeData(this, change_id, revision_id, file_id, changeStatus);
-        initializeView();
+    private void initialize(int fileIndex){
+        if(controller.fileExists(fileIndex)){
+            visibleFileIndex = fileIndex;
+            controller.initializeData(this, fileIndex);
+            initializeView();
+        }
     }
 
     private void initializeView() {
@@ -188,18 +197,6 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     }
 
     /**
-     * Initialize properties of the source code to show, got from the
-     * previous activity
-     */
-    protected void initializeSourceProperties() {
-        change_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_CHANGE_ID);
-        revision_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_REVISION_ID);
-        file_id = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_SELECTED_FILE_FILE_NAME);
-        changeStatus = getIntent().getStringExtra(ExtraMessages.MODIFIED_FILES_CHANGE_STATUS);
-    }
-
-
-    /**
      * Preparing activity's options menu.
      *
      * @inheritDoc
@@ -232,6 +229,10 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         } else if (id == R.id.showHideLinesNumber) {
             SourceCodeListAdapter sourceCodeListAdapter = (SourceCodeListAdapter) sourceLinesListView.getAdapter();
             controller.toogleVisibilityOfLineNumbers(sourceCodeListAdapter);
+        } else if (id == R.id.gotoNextFile) {
+            initialize(visibleFileIndex + 1);
+        } else if (id == R.id.goToPrevFile) {
+            initialize(visibleFileIndex -1);
         }
 
         return super.onOptionsItemSelected(item);

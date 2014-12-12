@@ -59,11 +59,13 @@ public class ModifiedFilesTabControllerImpl implements ModifiedFilesTabControlle
         this.changeId = changeId;
     }
 
+
+
     /**
      * Obtains list of modified files and informs view to show it.
      *
      */
-    public void updateFiles() {
+    private void updateFiles() {
         List<FileInfo> changeModifiedFiles = getModifiedFiles();
         ChangeStatus status = getChangeStatus();
         view.showFiles(changeModifiedFiles, status, getHasFilesPendingComments());
