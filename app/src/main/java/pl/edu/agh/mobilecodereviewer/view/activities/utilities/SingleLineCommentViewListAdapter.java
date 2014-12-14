@@ -105,6 +105,7 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
                 @Override
                 public void onClick(View view) {
                     controller.deleteFileComment( comment );
+                    controller.clearCache();
                 }
             });
 
@@ -116,6 +117,7 @@ public class SingleLineCommentViewListAdapter extends ArrayAdapter<Comment> {
                     if(!comment.getContent().equals(newContent)) {
                         commentContent.setText(newContent);
                         controller.updateFileComment(comment, newContent);
+                        controller.clearCache();
                     }
 
                     changeMode(rowView, true);

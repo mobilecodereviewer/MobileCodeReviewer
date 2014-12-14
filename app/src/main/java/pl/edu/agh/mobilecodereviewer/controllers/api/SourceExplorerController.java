@@ -49,4 +49,6 @@ public interface SourceExplorerController {
 
     boolean fileExists(int index);
 
+    void clearCache();
+
 }

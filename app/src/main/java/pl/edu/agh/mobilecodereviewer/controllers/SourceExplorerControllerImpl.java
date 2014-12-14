@@ -60,7 +60,14 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     private String file_id;
     private ChangeStatus change_status;
 
+    private String lastDownloadedChangeId;
+    private String lastDownloadedRevisionId;
+    private String lastDownloadedFileId;
     private SourceCode sourceCode;
+
+    private String lastDownloadedDiffChangeId;
+    private String lastDownloadedDiffRevisionId;
+    private String lastDownloadedDiffFileId;
     private SourceCodeDiff sourceCodeDiff;
 
     private List<FileInfo> fileInfos;
@@ -130,14 +137,28 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     }
 
     private SourceCode getSourceCode() {
-        Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(change_id, revision_id);
-        List<Comment> pendingCommentsForFile = pendingComments != null ? pendingComments.get(file_id) : null;
-        sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile);
+        if(!change_id.equals(lastDownloadedChangeId) || !revision_id.equals(lastDownloadedRevisionId) || !file_id.equals(lastDownloadedFileId)) {
+            
+            Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(change_id, revision_id);
+            List<Comment> pendingCommentsForFile = pendingComments != null ? pendingComments.get(file_id) : null;
+
+            sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile);
+
+            lastDownloadedFileId = file_id;
+            lastDownloadedChangeId = change_id;
+            lastDownloadedRevisionId = revision_id;
+        }
         return sourceCode;
     }
 
     private SourceCodeDiff getSourceCodeDiff() {
-        sourceCodeDiff =  sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+        if(!change_id.equals(lastDownloadedDiffChangeId) || !revision_id.equals(lastDownloadedDiffRevisionId) || !file_id.equals(lastDownloadedDiffFileId)) {
+            sourceCodeDiff = sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+
+            lastDownloadedDiffFileId = file_id;
+            lastDownloadedDiffChangeId = change_id;
+            lastDownloadedDiffRevisionId = revision_id;
+        }
         return sourceCodeDiff;
     }
 
@@ -185,7 +206,6 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         comment.setDraftId(commentId);
 
         getSourceCode().getLine(linenum).getComments().add(0, comment);
-        updateAppropriateSourceCodeMode();
     }
 
 
@@ -256,7 +276,6 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     public void deleteFileComment(Comment comment) {
         changeInfoDAO.deleteFileComment(change_id, revision_id, file_id, comment);
         getSourceCode().getLine(comment.getLine()).getComments().remove(comment);
-        updateAppropriateSourceCodeMode();
 
         view.dismissCommentListDialog();
 
@@ -268,12 +287,24 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     @Override
     public void updateFileComment(Comment comment, String content) {
         changeInfoDAO.updateFileComment(change_id, revision_id, file_id, comment, content);
-        updateAppropriateSourceCodeMode();
+        int updatedIndex = getSourceCode().getLine(comment.getLine()).getComments().indexOf(comment);
+        getSourceCode().getLine(comment.getLine()).getComments().get(updatedIndex).setContent(content);
     }
 
     @Override
     public boolean fileExists(int index) {
         return fileInfos != null && fileInfos.size() - 1  >= index && index >= 0;
+    }
+
+    @Override
+    public void clearCache() {
+        lastDownloadedChangeId = null;
+        lastDownloadedRevisionId = null;
+        lastDownloadedFileId = null;
+
+        lastDownloadedDiffChangeId = null;
+        lastDownloadedDiffRevisionId = null;
+        lastDownloadedDiffFileId = null;
     }
 }
 

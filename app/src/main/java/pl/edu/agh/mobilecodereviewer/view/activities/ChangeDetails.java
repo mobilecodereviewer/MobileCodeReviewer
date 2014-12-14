@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
@@ -47,6 +48,9 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
 
     @Inject
     private ChangeDetailsController controller;
+
+    @Inject
+    private SourceExplorerController sourceExplorerController;
 
     /**
      * Tag of modified files tab.
@@ -228,6 +232,7 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
                         }
 
                         controller.setReview(message, votes);
+                        sourceExplorerController.clearCache();
 
                         break;
 
