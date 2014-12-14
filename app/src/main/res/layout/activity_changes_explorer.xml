@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/common_activity_margins"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer">
 
     <LinearLayout
@@ -51,6 +50,7 @@
     />
 
     <ExpandableListView
+        style="@style/common_activity_margins"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,6 +59,7 @@
 
 
     <RelativeLayout
+        style="@style/common_activity_margins"
         android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

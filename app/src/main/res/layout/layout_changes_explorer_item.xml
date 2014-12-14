@@ -8,6 +8,7 @@
     android:descendantFocusability="blocksDescendants">
 
     <TextView
+        android:paddingLeft="@dimen/common_small_maring"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/common_big_line_height"
         android:id="@+id/changesExplorerListItem"
