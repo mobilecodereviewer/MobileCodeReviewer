@@ -1,7 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh;
 
 import android.app.Activity;
-import android.app.TabActivity;
 import android.os.Bundle;
 
 import java.util.LinkedList;

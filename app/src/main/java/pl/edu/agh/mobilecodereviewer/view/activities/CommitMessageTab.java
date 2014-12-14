@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.CommitMessageTabController;
-import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.api.CommitMessageTabView;

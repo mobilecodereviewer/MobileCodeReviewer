@@ -6,13 +6,11 @@ import com.google.inject.Singleton;
 import java.util.LinkedList;
 import java.util.List;
 
-import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
-import roboguice.inject.InjectResource;
 
 /**
  * Implementation of the ChangesExplorerController interface.
@@ -121,7 +119,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     private boolean doesChangeInfoMatchQuery(ChangeInfo info, String query) {
         if (query == null) {
             return false;
-        } else return info.toString().toLowerCase().contains(query.toLowerCase());
+        } else return info.getSubject().toLowerCase().contains(query.toLowerCase());
     }
 
     private List<ChangeInfo> getChangeInfos() {

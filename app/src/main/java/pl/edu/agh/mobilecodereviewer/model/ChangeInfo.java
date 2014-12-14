@@ -1,5 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.model;
 
+import java.util.List;
+
 /**
  * Model represents brief information about change.
  *
@@ -41,6 +43,8 @@ public class ChangeInfo {
     private String currentRevision;
 
     private Integer number;
+
+    private List<LabelInfo> labels;
 
     public void setStatus(ChangeStatus status) {
         this.status = status;
@@ -206,6 +210,14 @@ public class ChangeInfo {
         this.currentRevision = currentRevision;
     }
 
+    public List<LabelInfo> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<LabelInfo> labels) {
+        this.labels = labels;
+    }
+
     /**
      * Return textual representation of {@link pl.edu.agh.mobilecodereviewer.model.ChangeInfo}
      *
@@ -227,6 +239,7 @@ public class ChangeInfo {
                 ", size=" + size +
                 ", currentRevision='" + currentRevision + '\'' +
                 ", number=" + number +
+                ", labels=" + labels +
                 '}';
     }
 

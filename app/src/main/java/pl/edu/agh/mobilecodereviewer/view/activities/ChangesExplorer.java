@@ -9,13 +9,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.inject.Inject;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
@@ -25,8 +29,11 @@ import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewExpandableListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 import roboguice.inject.InjectView;
 
@@ -52,7 +59,17 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
     @InjectView(R.id.changesExplorerExpandableListView)
     private ExpandableListView changesExplorerExpandableListView;
 
+    @InjectView(R.id.changesExplorerListView)
+    private ListView changesExplorerListView;
+
+    @InjectView(R.id.headerLayout)
+    private LinearLayout headerLayout;
+
     private Menu menu;
+
+    private List<String> visibileLabels = new LinkedList<String>();
+
+    private boolean simpleListView = true;
 
     /**
      * No arg constructor,main for use by di and android framework
@@ -80,6 +97,7 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changes_explorer);
 
+        prepareSimpleList();
         controller.initializeData(this);
         controller.updateChanges();
     }
@@ -132,10 +150,37 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
             Intent intent = new Intent(getApplicationContext(), Configuration.class);
             intent.putExtra(ExtraMessages.CONFIGURATION_DONT_LOAD_LAST_SAVED, "Y");
             startActivity(intent);
+        } else if (id == R.id.switchView) {
+            simpleListView = !simpleListView;
+            showList();
         }
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void prepareSimpleList(){
+        changesExplorerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ChangeInfo item = (ChangeInfo) adapterView.getItemAtPosition(i);
+                showChangeDetails(item.getChangeId(), item.getCurrentRevision());
+            }
+        });
+    }
+
+    private void showList(){
+        if(findViewById(R.id.noChangesLayout).getVisibility() == View.GONE) {
+            if (!simpleListView) {
+                headerLayout.setVisibility(View.GONE);
+                changesExplorerExpandableListView.setVisibility(View.VISIBLE);
+                changesExplorerListView.setVisibility(View.GONE);
+            } else {
+                headerLayout.setVisibility(View.VISIBLE);
+                changesExplorerExpandableListView.setVisibility(View.GONE);
+                changesExplorerListView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -148,22 +193,37 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
     @Override
     public void showChanges(final List<ChangeInfo> changes) {
         findViewById(R.id.noChangesLayout).setVisibility(View.GONE);
-        findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.VISIBLE);
-        ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
-        changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+        showList();
+        updateVisibleLabels(changes);
+        changesExplorerExpandableListView.setAdapter(new ChangesExplorerViewExpandableListAdapter(this, changes, visibileLabels));
+        changesExplorerListView.setAdapter(new ChangesExplorerViewListAdapter(this, changes, visibileLabels));
     }
 
     @Override
     public void showFoundChanges(String query, List<ChangeInfo> searchedInfos) {
-        ChangesExplorerSearchViewExpandableListAdapter expandableSearchListAdapter = new ChangesExplorerSearchViewExpandableListAdapter(this, searchedInfos, query);
-        changesExplorerExpandableListView.setAdapter( expandableSearchListAdapter );
+        updateVisibleLabels(searchedInfos);
+        changesExplorerExpandableListView.setAdapter(new ChangesExplorerSearchViewExpandableListAdapter(this, searchedInfos, query, visibileLabels) );
+        changesExplorerListView.setAdapter(new ChangesExplorerSearchViewListAdapter(this, searchedInfos, query, visibileLabels));
     }
 
     @Override
     public void clearChangesList() {
         List<ChangeInfo> changes = Collections.emptyList();
-        ChangesExplorerViewExpandableListAdapter expandableListAdapter = new ChangesExplorerViewExpandableListAdapter(this, changes);
-        changesExplorerExpandableListView.setAdapter(expandableListAdapter);
+        updateVisibleLabels(changes);
+        changesExplorerExpandableListView.setAdapter(new ChangesExplorerViewExpandableListAdapter(this, changes, visibileLabels));
+        changesExplorerListView.setAdapter(new ChangesExplorerViewListAdapter(this, changes, visibileLabels));
+    }
+
+    private void updateVisibleLabels(List<ChangeInfo> changeInfos){
+        visibileLabels.clear();
+        visibileLabels = ChangesExplorerHelper.getLabelsAbbreviationsList(changeInfos);
+
+        LinearLayout labelsAbbreviations = (LinearLayout) headerLayout.findViewById(R.id.labelsAbbreviations);
+        labelsAbbreviations.removeAllViews();
+
+        for(String labelAbbr : visibileLabels){
+            labelsAbbreviations.addView(ChangesExplorerHelper.makeLabelTextView(this, labelAbbr, null, null));
+        }
     }
 
     /**
@@ -227,6 +287,7 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
 
     @Override
     public void showNoChangesToDisplay() {
+        findViewById(R.id.changesExplorerListView).setVisibility(View.GONE);
         findViewById(R.id.changesExplorerExpandableListView).setVisibility(View.GONE);
         findViewById(R.id.noChangesLayout).setVisibility(View.VISIBLE);
     }

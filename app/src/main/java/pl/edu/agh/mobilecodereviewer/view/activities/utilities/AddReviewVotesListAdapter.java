@@ -1,31 +1,19 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.common.collect.Lists;
-
-import org.objectweb.asm.Label;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
-import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
-import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 
 public class AddReviewVotesListAdapter extends ArrayAdapter<PermittedLabel> {

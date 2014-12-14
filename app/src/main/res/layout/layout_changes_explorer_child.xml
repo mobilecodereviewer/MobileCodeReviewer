@@ -74,4 +74,18 @@
         style="@style/common_list_item_value"
         android:id="@+id/changeExplorerChildSizeValue" />
 
+    <View style="@style/common_horizontal_separator" />
+
+    <TextView
+        style="@style/common_list_item_label"
+        android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.labels" />
+
+    <LinearLayout
+        android:id="@+id/changeExplorerChildLabelsValue"
+        style="@style/common_list_item_value"
+        android:orientation="horizontal"
+        >
+    </LinearLayout>
+
+
 </LinearLayout>

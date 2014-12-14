@@ -15,6 +15,7 @@ import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
+import pl.edu.agh.mobilecodereviewer.model.utilities.ChangeInfoHelper;
 import pl.edu.agh.mobilecodereviewer.model.utilities.CommentHelper;
 import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
@@ -65,49 +66,17 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
 
     @Override
     public ChangeInfo getChangeInfoById(String id) {
-
         ChangeInfoDTO changeInfoDTO = restApi.getChangeDetails(id);
-
-        ChangeInfo changeInfoModel = ChangeInfo.valueOf(changeInfoDTO.getId(), changeInfoDTO.getChangeId(), changeInfoDTO.getSubject());
-
-        changeInfoModel.setStatus(changeInfoDTO.getStatus());
-        changeInfoModel.setOwnerName(changeInfoDTO.getOwner().getName());
-        changeInfoModel.setProject(changeInfoDTO.getProject());
-        changeInfoModel.setBranch(changeInfoDTO.getBranch());
-        changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
-        changeInfoModel.setNumber(changeInfoDTO.getNumber());
-
-        if (changeInfoDTO.getInsertions() != null)
-            changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
-        changeInfoModel.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
-
-        return changeInfoModel;
+        return ChangeInfoHelper.modelFromDTO(changeInfoDTO, false);
     }
 
     @Override
     public List<ChangeInfo> getAllChangesInfo() {
-
         List<ChangeInfoDTO> changeInfoDtos = restApi.getChanges();
-
         List<ChangeInfo> changeInfoModels = new ArrayList<ChangeInfo>();
 
         for(ChangeInfoDTO changeInfoDTO : changeInfoDtos){
-            ChangeInfo changeInfoModel = ChangeInfo.valueOf(changeInfoDTO.getId(), changeInfoDTO.getChangeId(), changeInfoDTO.getSubject());
-
-            changeInfoModel.setStatus(changeInfoDTO.getStatus().toString());
-            changeInfoModel.setOwnerName(changeInfoDTO.getOwner().getName());
-            changeInfoModel.setProject(changeInfoDTO.getProject());
-            changeInfoModel.setBranch(changeInfoDTO.getBranch());
-            changeInfoModel.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
-            changeInfoModel.setCurrentRevision(changeInfoDTO.getCurrentRevision());
-            changeInfoModel.setNumber(changeInfoDTO.getNumber());
-
-            if ( changeInfoDTO.getInsertions() != null )
-                changeInfoModel.setSize(changeInfoDTO.getInsertions() - changeInfoDTO.getDeletions());
-            else
-                changeInfoModel.setSize(0);
-            changeInfoModel.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
-
+            ChangeInfo changeInfoModel = ChangeInfoHelper.modelFromDTO(changeInfoDTO, true);
             changeInfoModels.add(changeInfoModel);
         }
 
@@ -175,13 +144,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
     @Override
     public List<LabelInfo> getLabels(String id) {
         Map<String, LabelInfoDTO> labelInfoDTOs = restApi.getChangeDetails(id).getLabels();
-        List<LabelInfo> labelInfos = new ArrayList<LabelInfo>();
-
-        for(String labelName : labelInfoDTOs.keySet()){
-            labelInfos.add(LabelInfoHelper.createLabelInfoFromDTO(labelName, labelInfoDTOs.get(labelName)));
-        }
-
-        return labelInfos;
+        return LabelInfoHelper.labelsFromMap(labelInfoDTOs, false);
     }
 
     @Override

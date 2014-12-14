@@ -11,13 +11,11 @@ import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
-import pl.edu.agh.mobilecodereviewer.dto.CommitInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.NullMergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
-import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 
 /**

@@ -1,9 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
-import pl.edu.agh.mobilecodereviewer.model.ApprovalInfo;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 
 public class ModifiedFilesViewListAdapter extends ArrayAdapter<FileInfo> {

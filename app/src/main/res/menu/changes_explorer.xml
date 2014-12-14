@@ -31,9 +31,16 @@
         android:orderInCategory="10"
         android:showAsAction="ifRoom" />
 
-    <item android:id="@+id/changeConfiguration"
-        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration"
+    <item android:id="@+id/switchView"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.switchView"
         android:orderInCategory="11"
         android:showAsAction="never"
         />
+
+    <item android:id="@+id/changeConfiguration"
+        android:title="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration"
+        android:orderInCategory="12"
+        android:showAsAction="never"
+        />
+
 </menu>

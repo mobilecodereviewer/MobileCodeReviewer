@@ -2,7 +2,6 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.common.io.Files;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -250,7 +249,6 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
             view.showCommentListDialog(getSourceCode().getLine(linenum));
         } else {
             view.showMessage(NO_COMMENTS_IN_LINE);
-            return;
         }
     }
 

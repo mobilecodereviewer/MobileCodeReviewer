@@ -15,7 +15,6 @@ import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
-import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ModifiedFilesViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;

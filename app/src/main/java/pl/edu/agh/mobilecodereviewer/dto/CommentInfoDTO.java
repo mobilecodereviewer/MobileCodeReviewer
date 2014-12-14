@@ -1,7 +1,5 @@
 package pl.edu.agh.mobilecodereviewer.dto;
 
-import java.util.Date;
-
 /**
  * Class represent data returned from gerrit instance
  * about information of comment

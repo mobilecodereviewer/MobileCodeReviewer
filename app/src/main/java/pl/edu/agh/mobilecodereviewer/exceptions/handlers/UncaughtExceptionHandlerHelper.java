@@ -49,8 +49,8 @@ public class UncaughtExceptionHandlerHelper {
         File src = new File(getCrashLogTmpFilePath());
         File dst = new File(getCrashLogFilePath());
 
-        InputStream in = null;
-        OutputStream out = null;
+        InputStream in;
+        OutputStream out;
         try {
             in = new FileInputStream(src);
             out = new FileOutputStream(dst);

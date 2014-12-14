@@ -18,8 +18,6 @@ import pl.edu.agh.mobilecodereviewer.model.DiffLineType;
 import pl.edu.agh.mobilecodereviewer.model.DiffedLine;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeDiffHelper;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.PrettifyHighlighter;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.SyntaxHighlighter;
 
 public class SourceCodeDiffViewListAdapter extends ArrayAdapter<String>  implements SourceCodeListAdapter {
 

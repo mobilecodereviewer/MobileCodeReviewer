@@ -112,9 +112,8 @@ public class Comment {
         if (line != comment.line) return false;
         if (content != null ? !content.equals(comment.content) : comment.content != null)
             return false;
-        if (path != null ? !path.equals(comment.path) : comment.path != null) return false;
+        return !(path != null ? !path.equals(comment.path) : comment.path != null);
 
-        return true;
     }
 
     @Override

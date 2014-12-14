@@ -1,6 +1,5 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
-import pl.edu.agh.mobilecodereviewer.view.activities.ChangeMessagesTab;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeMessagesTabView;
 

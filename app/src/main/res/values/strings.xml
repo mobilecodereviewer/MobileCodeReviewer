@@ -96,6 +96,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.branch">Branch</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.updated">Updated</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.size">Size</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.labels">Labels</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search">Search</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.search_hint">Search...</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.discardSearch">Discard Search</string>
@@ -103,6 +104,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.noChanges">No changes to display</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeConfiguration">Change configuration</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.refreshChanges">Refresh Changes</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.switchView">Switch view</string>
     <!--ChangesExplorer end-->
 
     <string name="title_activity_source_explorer">Source explorer</string>

@@ -10,11 +10,9 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
-import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.FileInfo;
-import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 
 /**

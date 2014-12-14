@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
-import pl.edu.agh.mobilecodereviewer.model.utilities.ChangeInfoHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer;
 
 public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableListAdapter{
@@ -22,12 +22,12 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
 
     private final List<ChangeInfo> groups;
 
-    private final Map<String, Map<ChangeInfoHelper.ChildrenHeaders, String>> children;
+    private List<String> visibleLabels;
 
-    public ChangesExplorerViewExpandableListAdapter(Activity context, List<ChangeInfo> changeInfos){
+    public ChangesExplorerViewExpandableListAdapter(Activity context, List<ChangeInfo> changeInfos, List<String> visibleLabels){
         this.context = context;
         groups = changeInfos;
-        children = ChangeInfoHelper.getChildren(changeInfos);
+        this.visibleLabels = visibleLabels;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return children.get(groups.get(groupPosition).getChangeId());
+        return groups.get(groupPosition).getChangeId();
     }
 
     @Override
@@ -105,14 +105,15 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
         TextView updated = (TextView) convertView.findViewById(R.id.changeExplorerChildUpdatedValue);
         TextView size = (TextView) convertView.findViewById(R.id.changeExplorerChildSizeValue);
 
-        Map<ChangeInfoHelper.ChildrenHeaders, String> childValues = children.get(groups.get(groupPosition).getChangeId());
-        String changeSubject = childValues.get(ChangeInfoHelper.ChildrenHeaders.SUBJECT);
-        String changeStatus = childValues.get(ChangeInfoHelper.ChildrenHeaders.STATUS);
-        String changeOwner = childValues.get(ChangeInfoHelper.ChildrenHeaders.OWNER);
-        String changeProject = childValues.get(ChangeInfoHelper.ChildrenHeaders.PROJECT);
-        String changeBranch = childValues.get(ChangeInfoHelper.ChildrenHeaders.BRANCH);
-        String changeUpdated = childValues.get(ChangeInfoHelper.ChildrenHeaders.UPDATED);
-        String changeSize = childValues.get(ChangeInfoHelper.ChildrenHeaders.SIZE);
+        ChangeInfo currentChangeInfo = groups.get(groupPosition);
+
+        String changeSubject = currentChangeInfo.getSubject();
+        String changeStatus = currentChangeInfo.getStatus().toString();
+        String changeOwner = currentChangeInfo.getOwnerName();
+        String changeProject = currentChangeInfo.getProject();
+        String changeBranch = currentChangeInfo.getBranch();
+        String changeUpdated = currentChangeInfo.getUpdated();
+        String changeSize = currentChangeInfo.getSize().toString();
 
         setTextViewContent(subject, changeSubject);
         setTextViewContent(status, changeStatus);
@@ -121,6 +122,18 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
         setTextViewContent(branch, changeBranch);
         setTextViewContent(updated, changeUpdated);
         setTextViewContent(size, changeSize);
+
+        LinearLayout labelsAbbrsView = (LinearLayout) convertView.findViewById(R.id.changeExplorerChildLabelsValue);
+        labelsAbbrsView.removeAllViews();
+        Map<String, View> labelsViews = ChangesExplorerHelper.extractLabelsViewsMap(context, currentChangeInfo.getLabels());
+        for(String labelAbbr : visibleLabels){
+            labelsAbbrsView.addView(ChangesExplorerHelper.makeLabelTextView(context, labelAbbr, null, null));
+            if(labelsViews.containsKey(labelAbbr)){
+                labelsAbbrsView.addView(labelsViews.get(labelAbbr));
+            } else {
+                labelsAbbrsView.addView(ChangesExplorerHelper.makeLabelTextView(context, "", R.color.grey, null));
+            }
+        }
 
         return convertView;
     }

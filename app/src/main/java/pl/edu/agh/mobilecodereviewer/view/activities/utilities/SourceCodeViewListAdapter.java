@@ -1,9 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.view.activities.utilities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.text.Html;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,28 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.common.base.Joiner;
-
-import java.util.Arrays;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.utilities.SourceCodeHelper;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.PrettifyHighlighter;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.syntax.SyntaxHighlighter;
-import prettify.PrettifyParser;
-import prettify.theme.ThemeDefault;
-import roboguice.util.Strings;
-import syntaxhighlight.ParseResult;
-import syntaxhighlight.Parser;
 
 /**
  * SourceCodeViewListAdapter adapts class {@link pl.edu.agh.mobilecodereviewer.model.SourceCode}

@@ -21,9 +21,7 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
-import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
 import pl.edu.agh.mobilecodereviewer.controllers.api.SourceExplorerController;
-import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.Line;
 import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;

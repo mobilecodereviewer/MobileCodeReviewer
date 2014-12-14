@@ -5,8 +5,53 @@
     style="@style/common_activity_margins"
     tools:context="pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer">
 
-    <ExpandableListView
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/common_small_maring"
+        android:background="@color/grey">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/common_big_line_height"
+            android:textSize="@dimen/common_medium_font_size"
+            android:gravity="center_vertical"
+            android:layout_weight="2"
+            android:text="@string/pl.agh.edu.mobilecodereviewer.ChangesExplorer.changeInfo.subject"
+            android:layout_gravity="right"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_weight="7"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/common_big_line_height"
+            android:scrollbars="none"
+            android:layout_gravity="right">
+
+            <LinearLayout
+                android:layout_gravity="right"
+                android:id="@+id/labelsAbbreviations"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_below="@+id/headerLayout"
+        android:descendantFocusability="blocksDescendants"
         android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/changesExplorerListView"
+    />
+
+    <ExpandableListView
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/changesExplorerExpandableListView"

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.utilities.RestApi;
-import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeMessageInfo;
 import pl.edu.agh.mobilecodereviewer.model.Comment;

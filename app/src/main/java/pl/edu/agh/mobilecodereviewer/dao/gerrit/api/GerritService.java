@@ -48,7 +48,7 @@ public interface GerritService {
     // @TODO TO query jest popieprzone ale bez tego nie dziala - moze w przyslyszhc wersjach nie bedzie
     // @TODO potrzeby zeby ono bylo, a dodatkowo ten potworek zwraca liste otwartych i liste zamknietych
     // @TODO w dwoch listach...
-    @GET("/changes/?q=is:open+&q=is:closed&o=CURRENT_REVISION")
+    @GET("/changes/?q=is:open+&q=is:closed&o=CURRENT_REVISION&o=DETAILED_LABELS")
     List<List<ChangeInfoDTO>> getChanges();
 
     /**

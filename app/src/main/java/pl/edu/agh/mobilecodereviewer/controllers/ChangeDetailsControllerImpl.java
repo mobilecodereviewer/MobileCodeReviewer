@@ -7,13 +7,11 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
-import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 
 public class ChangeDetailsControllerImpl implements ChangeDetailsController{

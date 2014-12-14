@@ -1,8 +1,5 @@
 package pl.edu.agh.mobilecodereviewer.utilities;
 
-import com.google.inject.Inject;
-
-import pl.edu.agh.mobilecodereviewer.dao.api.AccountDAO;
 import pl.edu.agh.mobilecodereviewer.model.AccountInfo;
 
 public class ConfigurationContainer {

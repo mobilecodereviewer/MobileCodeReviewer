@@ -1,8 +1,5 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
-import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
-import pl.edu.agh.mobilecodereviewer.model.FileInfo;
-import pl.edu.agh.mobilecodereviewer.view.activities.ModifiedFilesTab;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.api.ModifiedFilesTabView;
 

@@ -1,39 +1,37 @@
 package pl.edu.agh.mobilecodereviewer.model.utilities;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import pl.edu.agh.mobilecodereviewer.dto.ChangeInfoDTO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
 
 public final class ChangeInfoHelper {
 
-    public static enum ChildrenHeaders {
-        SUBJECT, STATUS, OWNER, PROJECT, BRANCH, UPDATED, SIZE
-    }
+    public static ChangeInfo modelFromDTO(ChangeInfoDTO changeInfoDTO, boolean extractLabels){
+        ChangeInfo changeInfo = ChangeInfo.valueOf(changeInfoDTO.getId(), changeInfoDTO.getChangeId(), changeInfoDTO.getSubject());
 
-    public static Map<String, Map<ChildrenHeaders, String>> getChildren(List<ChangeInfo> changeInfoList){
-        Map<String, Map<ChildrenHeaders, String>> childsMap = new HashMap<String, Map<ChildrenHeaders, String>>();
+        changeInfo.setStatus(changeInfoDTO.getStatus());
+        changeInfo.setOwnerName(changeInfoDTO.getOwner().getName());
+        changeInfo.setProject(changeInfoDTO.getProject());
+        changeInfo.setBranch(changeInfoDTO.getBranch());
+        changeInfo.setUpdated(DateUtils.getPrettyDate(changeInfoDTO.getUpdated()));
+        changeInfo.setCurrentRevision(changeInfoDTO.getCurrentRevision());
+        changeInfo.setNumber(changeInfoDTO.getNumber());
+        changeInfo.setCreated(DateUtils.getPrettyDate(changeInfoDTO.getCreated()));
 
-        for(ChangeInfo changeInfo : changeInfoList){
-            childsMap.put(changeInfo.getChangeId(), getChildContent(changeInfo));
+        if ( changeInfoDTO.getInsertions() != null && changeInfoDTO.getDeletions() != null)
+            changeInfo.setSize(changeInfoDTO.getInsertions() + changeInfoDTO.getDeletions());
+        else if(changeInfoDTO.getInsertions() != null)
+            changeInfo.setSize(changeInfoDTO.getInsertions());
+        else if(changeInfoDTO.getDeletions() != null)
+            changeInfo.setSize(changeInfoDTO.getDeletions());
+        else
+            changeInfo.setSize(0);
+
+        if(extractLabels){
+            changeInfo.setLabels(LabelInfoHelper.labelsFromMap(changeInfoDTO.getLabels(), true));
         }
 
-        return childsMap;
+        return changeInfo;
     }
 
-    private static Map<ChildrenHeaders, String> getChildContent(ChangeInfo changeInfo){
-        Map<ChildrenHeaders, String> childContent = new HashMap<ChildrenHeaders, String>();
-
-        childContent.put(ChildrenHeaders.SUBJECT, changeInfo.getSubject());
-        childContent.put(ChildrenHeaders.STATUS, changeInfo.getStatus().toString());
-        childContent.put(ChildrenHeaders.OWNER, changeInfo.getOwnerName());
-        childContent.put(ChildrenHeaders.PROJECT, changeInfo.getProject());
-        childContent.put(ChildrenHeaders.BRANCH, changeInfo.getBranch());
-        childContent.put(ChildrenHeaders.UPDATED, changeInfo.getUpdated());
-        if (changeInfo.getSize() != null)
-            childContent.put(ChildrenHeaders.SIZE, changeInfo.getSize().toString());
-
-        return childContent;
-    }
 }

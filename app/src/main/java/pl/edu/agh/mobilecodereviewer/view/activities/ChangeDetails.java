@@ -31,10 +31,7 @@ import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewFilesExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AddReviewVotesListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshManagerTabBaseActivity;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
-import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshUpdater;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
-import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseTabActivity;
 import roboguice.inject.InjectResource;
 
 /**
@@ -223,7 +220,7 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
 
                         Map<String, Integer> votes = new HashMap<String, Integer>();
                         for(int i = 0; i<permittedLabels.size(); i++){
-                            View voteItem = (View) votesList.getChildAt(i);
+                            View voteItem = votesList.getChildAt(i);
                             Spinner voteSpinner = (Spinner) voteItem.findViewById(R.id.singleVoteSpinner);
                             if(voteSpinner.getSelectedItem() != null && voteSpinner.getAdapter().getCount() != 0) {
                                 votes.put(permittedLabels.get(i).getName(), (Integer) voteSpinner.getSelectedItem());
