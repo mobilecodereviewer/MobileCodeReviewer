@@ -3,6 +3,7 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 import com.google.common.io.Files;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,15 +61,8 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     private String file_id;
     private ChangeStatus change_status;
 
-    private String lastDownloadedChangeId;
-    private String lastDownloadedRevisionId;
-    private String lastDownloadedFileId;
-    private SourceCode sourceCode;
-
-    private String lastDownloadedDiffChangeId;
-    private String lastDownloadedDiffRevisionId;
-    private String lastDownloadedDiffFileId;
-    private SourceCodeDiff sourceCodeDiff;
+    private Map<String, SourceCode> sourceCodeMap = new HashMap<>();
+    private Map<String, SourceCodeDiff> sourceCodeDiffMap = new HashMap<>();
 
     private List<FileInfo> fileInfos;
     /**
@@ -137,29 +131,26 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
     }
 
     private SourceCode getSourceCode() {
-        if(!change_id.equals(lastDownloadedChangeId) || !revision_id.equals(lastDownloadedRevisionId) || !file_id.equals(lastDownloadedFileId)) {
-            
+        String uid = getUID(revision_id, change_id, file_id);
+
+        if(!sourceCodeMap.containsKey(uid)) {
             Map<String, List<Comment>> pendingComments = changeInfoDAO.getPendingComments(change_id, revision_id);
             List<Comment> pendingCommentsForFile = pendingComments != null ? pendingComments.get(file_id) : null;
 
-            sourceCode = sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile);
-
-            lastDownloadedFileId = file_id;
-            lastDownloadedChangeId = change_id;
-            lastDownloadedRevisionId = revision_id;
+            sourceCodeMap.put(uid, sourceCodeDAO.getSourceCode(change_id, revision_id, file_id, pendingCommentsForFile));
         }
-        return sourceCode;
+
+        return sourceCodeMap.get(uid);
     }
 
     private SourceCodeDiff getSourceCodeDiff() {
-        if(!change_id.equals(lastDownloadedDiffChangeId) || !revision_id.equals(lastDownloadedDiffRevisionId) || !file_id.equals(lastDownloadedDiffFileId)) {
-            sourceCodeDiff = sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id);
+        String uid = getUID(revision_id, change_id, file_id);
 
-            lastDownloadedDiffFileId = file_id;
-            lastDownloadedDiffChangeId = change_id;
-            lastDownloadedDiffRevisionId = revision_id;
+        if(!sourceCodeDiffMap.containsKey(uid)) {
+            sourceCodeDiffMap.put(uid, sourceCodeDAO.getSourceCodeDiff(change_id, revision_id, file_id));
         }
-        return sourceCodeDiff;
+
+        return sourceCodeDiffMap.get(uid);
     }
 
     private void updateSourceCode() {
@@ -181,7 +172,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     private int calculateLineNumberFromListPosition(int lineNumber) {
         if (isDiffView) {
-            DiffedLine line = sourceCodeDiff.getLine(lineNumber);
+            DiffedLine line = sourceCodeDiffMap.get(getUID(revision_id, change_id, file_id)).getLine(lineNumber);
             if (line.getLineType() == DiffLineType.SKIPPED || line.getLineType() == DiffLineType.REMOVED) {
                 return -1;
             }
@@ -217,7 +208,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void navigateToNextChange() {
-        int nextChangedLine = sourceCodeDiff.findNextChangedLine(currentSelectedLine+1);
+        int nextChangedLine = sourceCodeDiffMap.get(getUID(revision_id, change_id, file_id)).findNextChangedLine(currentSelectedLine + 1);
         if (nextChangedLine > -1) {
             view.gotoLine(nextChangedLine);
             currentSelectedLine = nextChangedLine;
@@ -226,7 +217,7 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void navigateToPrevChange() {
-        int prevChangedLine = sourceCodeDiff.findPrevChangedLine(currentSelectedLine-1);
+        int prevChangedLine = sourceCodeDiffMap.get(getUID(revision_id, change_id, file_id)).findPrevChangedLine(currentSelectedLine - 1);
         if (prevChangedLine > -1) {
             view.gotoLine(prevChangedLine);
             currentSelectedLine = prevChangedLine;
@@ -298,13 +289,12 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
 
     @Override
     public void clearCache() {
-        lastDownloadedChangeId = null;
-        lastDownloadedRevisionId = null;
-        lastDownloadedFileId = null;
+        sourceCodeMap.clear();
+        sourceCodeDiffMap.clear();
+    }
 
-        lastDownloadedDiffChangeId = null;
-        lastDownloadedDiffRevisionId = null;
-        lastDownloadedDiffFileId = null;
+    private String getUID(String revision_id, String change_id, String file_id){
+        return revision_id + "/" + change_id + "/" + file_id;
     }
 }
 

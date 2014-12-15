@@ -261,4 +261,9 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        sourceExplorerController.clearCache();
+    }
+
 }
