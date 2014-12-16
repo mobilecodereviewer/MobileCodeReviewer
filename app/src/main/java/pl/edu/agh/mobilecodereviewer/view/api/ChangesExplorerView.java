@@ -2,6 +2,7 @@ package pl.edu.agh.mobilecodereviewer.view.api;
 
 import java.util.List;
 
+import pl.edu.agh.mobilecodereviewer.controllers.utilities.ChangesFilter;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 
@@ -29,7 +30,7 @@ public interface ChangesExplorerView {
 
     void showMessage(String message);
 
-    void showListOfAvalaibleStatus(ChangeStatus currentStatus, ChangeStatus[] changeStatuses);
+    void showListOfAvalaibleFilters(ChangesFilter currentStatus, List<ChangesFilter> changeStatuses);
 
     void showNoChangesToDisplay();
 }

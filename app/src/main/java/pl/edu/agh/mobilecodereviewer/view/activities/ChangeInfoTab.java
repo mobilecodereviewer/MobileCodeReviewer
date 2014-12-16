@@ -10,6 +10,7 @@ import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
+import pl.edu.agh.mobilecodereviewer.model.utilities.ChangeInfoHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.Refreshable;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.refresh.RefreshableTabBaseActivity;
@@ -88,7 +89,7 @@ public class ChangeInfoTab extends RefreshableTabBaseActivity implements ChangeI
         changeProjectView.setText(changeInfo.getProject());
         changeTopicView.setText(topic);
         changeUploadedView.setText(changeInfo.getCreated());
-        changeUpdatedView.setText(changeInfo.getUpdated());
+        changeUpdatedView.setText(ChangeInfoHelper.gerritDateToString(changeInfo.getUpdated()) );
         changeSubmitTypeView.setText(mergeableInfo.getSubmitType());
         changeStatusView.setText(changeInfo.getStatus().toString() );
         changeMergeableView.setText(mergeableInfo.isMergeable() ? trueString : falseString);

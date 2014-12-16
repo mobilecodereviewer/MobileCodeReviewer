@@ -3,13 +3,20 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
+import pl.edu.agh.mobilecodereviewer.controllers.utilities.ChangesFilter;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
+import pl.edu.agh.mobilecodereviewer.utilities.PreferencesAccessor;
+import pl.edu.agh.mobilecodereviewer.utilities.queries.GerritQuery;
+import pl.edu.agh.mobilecodereviewer.utilities.queries.GerritQueryParseException;
+import pl.edu.agh.mobilecodereviewer.utilities.queries.GerritQueryParser;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 
 /**
@@ -24,6 +31,8 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 @Singleton
 public class ChangesExplorerControllerImpl implements ChangesExplorerController {
 
+    public static final String CANNOT_REMOVE_BUILTIN_FILTER = "Cannot remove built-in status change filters";
+    public static final String PARSING_EXCEPTION = "Problem with parsing ";
     /**
      * DAO Used to access information about changes.
      */
@@ -34,7 +43,13 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
 
     private List<ChangeInfo> changeInfos;
 
-    private ChangeStatus currentStatus;
+    private List<ChangesFilter> builtInChangeFilters;
+
+    private List<ChangesFilter> customChangeFilters;
+
+    private ChangesFilter currentChangeFilter;
+
+
     private List<ChangeInfo> allChangesInfo;
 
     /**
@@ -55,17 +70,21 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     @Override
     public void initializeData(ChangesExplorerView changesExplorerView) {
         this.view = changesExplorerView;
-        this.currentStatus = ChangeStatus.NEW;
+        this.currentChangeFilter = ChangesFilter.createChangeFilterFromChangeStatus(ChangeStatus.NEW);
+        this.customChangeFilters = new ArrayList<ChangesFilter>();
+        builtInChangeFilters = getBuiltInStatusSearchFilters();
+        customChangeFilters = PreferencesAccessor.getChangesFilters() ;
     }
 
-    private List<ChangeInfo> filterWithAppropriateStatus(List<ChangeInfo> changeInfos) {
-        List<ChangeInfo> changes = new LinkedList<ChangeInfo>();
-        for (ChangeInfo change : changeInfos) {
-            if (currentStatus.matchStatus(change.getStatus())) {
-                changes.add(change);
-            }
+    private List<ChangeInfo> filterChanges(List<ChangeInfo> changeInfos) {
+        GerritQuery query = null;
+        try {
+            query = GerritQueryParser.parse(currentChangeFilter.getQuery());
+            return query.execute(changeInfos);
+        } catch (GerritQueryParseException parseException) {
+            view.showMessage(PARSING_EXCEPTION + currentChangeFilter.getName() + ":\n" + parseException.getMessage());
         }
-        return changes;
+        return Collections.emptyList();
     }
 
 
@@ -99,15 +118,49 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
     }
 
     @Override
-    public void chooseStatus() {
-        ChangeStatus[] values = ChangeStatus.values();
-        view.showListOfAvalaibleStatus(currentStatus,values);
+    public void chooseChangeFilter() {
+        List<ChangesFilter> allFilters = joinFilters(builtInChangeFilters, customChangeFilters);
+        view.showListOfAvalaibleFilters(currentChangeFilter, allFilters);
+    }
+
+    public List<ChangesFilter> getBuiltInStatusSearchFilters() {
+        ChangeStatus[] allChangeStatuses = ChangeStatus.values();
+        List<ChangesFilter> changesFilters = new LinkedList<ChangesFilter>();
+        for (ChangeStatus changeStatus : allChangeStatuses) {
+            changesFilters.add(ChangesFilter.createChangeFilterFromChangeStatus(changeStatus));
+        }
+        return changesFilters;
+    }
+
+    private List<ChangesFilter> joinFilters(List<ChangesFilter> changesFilters, List<ChangesFilter> customChangeFilters) {
+        List<ChangesFilter> joinList = new LinkedList<ChangesFilter>();
+        joinList.addAll(changesFilters);
+        joinList.addAll(customChangeFilters);
+        return joinList;
     }
 
     @Override
-    public void changeStatus(ChangeStatus status) {
-        currentStatus = status;
+    public void setChangeFilter(ChangesFilter changesFilter) {
+        currentChangeFilter = changesFilter;
         updateChanges();
+    }
+
+    @Override
+    public void addChangeFilter(ChangesFilter changesFilter) {
+        PreferencesAccessor.saveChangeFilter(changesFilter);
+        customChangeFilters.add(changesFilter);
+    }
+
+    @Override
+    public boolean removeChangeFilter(ChangesFilter filterToRemove) {
+        if (builtInChangeFilters.contains(filterToRemove)) {
+            view.showMessage(CANNOT_REMOVE_BUILTIN_FILTER);
+            return false;
+        } else {
+            PreferencesAccessor.removeChangeFilter(filterToRemove);
+            customChangeFilters.remove(filterToRemove);
+            return true;
+        }
     }
 
     @Override
@@ -124,7 +177,7 @@ public class ChangesExplorerControllerImpl implements ChangesExplorerController 
 
     private List<ChangeInfo> getChangeInfos() {
         changeInfos = getAllChangesInfo();
-        return filterWithAppropriateStatus(changeInfos);
+        return filterChanges(changeInfos);
     }
 
     private void updateData() {

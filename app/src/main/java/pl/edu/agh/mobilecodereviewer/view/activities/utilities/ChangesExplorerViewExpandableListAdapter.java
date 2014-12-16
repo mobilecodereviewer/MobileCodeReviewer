@@ -14,6 +14,7 @@ import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.model.utilities.ChangeInfoHelper;
 import pl.edu.agh.mobilecodereviewer.view.activities.ChangesExplorer;
 
 public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableListAdapter{
@@ -112,7 +113,7 @@ public class ChangesExplorerViewExpandableListAdapter extends BaseExpandableList
         String changeOwner = currentChangeInfo.getOwnerName();
         String changeProject = currentChangeInfo.getProject();
         String changeBranch = currentChangeInfo.getBranch();
-        String changeUpdated = currentChangeInfo.getUpdated();
+        String changeUpdated = ChangeInfoHelper.gerritDateToString(currentChangeInfo.getUpdated() );
         String changeSize = currentChangeInfo.getSize().toString();
 
         setTextViewContent(subject, changeSubject);

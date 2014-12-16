@@ -1,5 +1,6 @@
 package pl.edu.agh.mobilecodereviewer.controllers.api;
 
+import pl.edu.agh.mobilecodereviewer.controllers.utilities.ChangesFilter;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangesExplorerView;
 
@@ -19,9 +20,13 @@ public interface ChangesExplorerController {
 
     void search(String query);
 
-    void chooseStatus();
+    void chooseChangeFilter();
 
-    void changeStatus(ChangeStatus status);
+    void setChangeFilter(ChangesFilter changesFilter);
 
     void refreshChanges();
+
+    void addChangeFilter(ChangesFilter changesFilter);
+
+    boolean removeChangeFilter(ChangesFilter filterToRemove);
 }

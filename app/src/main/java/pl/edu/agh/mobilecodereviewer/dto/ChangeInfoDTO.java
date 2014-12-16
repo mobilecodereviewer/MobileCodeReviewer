@@ -60,6 +60,14 @@ public class ChangeInfoDTO {
     @SerializedName("current_revision")
     private String currentRevision;
 
+    private Boolean starred = false;
+
+    private Boolean has_draft_comments = false;
+
+    private Boolean mergeable = false;
+
+    private Boolean reviewed = false;
+
     /**
      * Map between revision id and {@link pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO}
      */
@@ -239,5 +247,37 @@ public class ChangeInfoDTO {
 
     public void setLabels(Map<String, LabelInfoDTO> labels) {
         this.labels = labels;
+    }
+
+    public Boolean getStarred() {
+        return starred;
+    }
+
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
+    }
+
+    public Boolean getHas_draft_comments() {
+        return has_draft_comments;
+    }
+
+    public void setHas_draft_comments(Boolean has_draft_comments) {
+        this.has_draft_comments = has_draft_comments;
+    }
+
+    public Boolean getMergeable() {
+        return mergeable;
+    }
+
+    public void setMergeable(Boolean mergeable) {
+        this.mergeable = mergeable;
+    }
+
+    public Boolean getReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(Boolean reviewed) {
+        this.reviewed = reviewed;
     }
 }
