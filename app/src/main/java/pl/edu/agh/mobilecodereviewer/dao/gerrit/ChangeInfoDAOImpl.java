@@ -67,6 +67,7 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
     @Override
     public ChangeInfo getChangeInfoById(String id) {
         ChangeInfoDTO changeInfoDTO = restApi.getChangeDetails(id);
+
         return ChangeInfoHelper.modelFromDTO(changeInfoDTO, false);
     }
 

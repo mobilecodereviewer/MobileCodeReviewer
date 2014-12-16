@@ -19,12 +19,12 @@ public class ConfigurationInfo implements Serializable{
     public ConfigurationInfo(String name, String url, String login, String password, boolean authenticatedUser){
         this.name = name;
         this.login = login;
-        this.url = addHttpPrefix(url);
+        this.url = addHttpPrefixIfNeeded(url);
         this.password = password;
         this.authenticatedUser = authenticatedUser;
     }
 
-    private String addHttpPrefix(String url) {
+    private String addHttpPrefixIfNeeded(String url) {
         if ( !url.toLowerCase().startsWith("http://") ) {
             return "http://" + url;
         } else

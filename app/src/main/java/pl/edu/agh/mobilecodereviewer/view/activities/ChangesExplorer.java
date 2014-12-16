@@ -1,18 +1,20 @@
 package pl.edu.agh.mobilecodereviewer.view.activities;
 
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.CompoundButton;
+
+import android.widget.ExpandableListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -24,12 +26,14 @@ import java.util.List;
 
 import pl.edu.agh.mobilecodereviewer.R;
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangesExplorerController;
+import pl.edu.agh.mobilecodereviewer.controllers.utilities.ChangesFilter;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
-import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.AboutDialogHelper;
+
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerHelper;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangeExplorerFilterChooser;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewExpandableListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerSearchViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.ChangesExplorerViewExpandableListAdapter;
@@ -145,7 +149,7 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
             hideSearchPanel();
             controller.updateChanges();
         } else if (id == R.id.selectStatus) {
-            controller.chooseStatus();
+            controller.chooseChangeFilter();
         } else if (id == R.id.changeConfiguration){
             Intent intent = new Intent(getApplicationContext(), Configuration.class);
             intent.putExtra(ExtraMessages.CONFIGURATION_DONT_LOAD_LAST_SAVED, "Y");
@@ -263,26 +267,8 @@ public class ChangesExplorer extends BaseActivity implements ChangesExplorerView
     }
 
     @Override
-    public void showListOfAvalaibleStatus(ChangeStatus currentStatus, final ChangeStatus[] changeStatuses) {
-        final String[] statuses = new String[ changeStatuses.length ];
-        int currStatus = -1;
-        for (int i=0;i< changeStatuses.length;i++) {
-            statuses[i] = changeStatuses[i].toString();
-            if (currentStatus == changeStatuses[i])
-                currStatus = i;
-        }
-        AlertDialog statusDialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose status:");
-        builder.setSingleChoiceItems(statuses, currStatus, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int selectedStatus) {
-                controller.changeStatus( changeStatuses[selectedStatus] );
-                dialogInterface.dismiss();
-            }
-        });
-        statusDialog = builder.create();
-        statusDialog.show();
+    public void showListOfAvalaibleFilters(ChangesFilter currentFilter, final List<ChangesFilter> statusChangeFilters) {
+        new ChangeExplorerFilterChooser(this,controller,currentFilter, statusChangeFilters).showFilterChooser();
     }
 
     @Override
