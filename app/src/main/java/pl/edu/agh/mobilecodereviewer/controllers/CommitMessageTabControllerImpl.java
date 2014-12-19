@@ -1,6 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.CommitMessageTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
@@ -15,6 +16,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.CommitMessageTabView;
  * @version 0.1
  * @since 0.3
  */
+@Singleton
 public class CommitMessageTabControllerImpl implements CommitMessageTabController{
 
     /**

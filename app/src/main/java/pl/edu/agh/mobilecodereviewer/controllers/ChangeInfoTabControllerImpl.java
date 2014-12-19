@@ -2,6 +2,8 @@ package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.inject.Inject;
 
+import javax.inject.Singleton;
+
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
@@ -17,6 +19,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangeInfoTabView;
  * @version 0.1
  * @since 0.3
  */
+@Singleton
 public class ChangeInfoTabControllerImpl implements ChangeInfoTabController {
 
     private String changeId;
@@ -69,12 +72,14 @@ public class ChangeInfoTabControllerImpl implements ChangeInfoTabController {
 
     @Override
     public void refreshData() {
-        updateData();
+        if(changeId != null)
+            updateData();
     }
 
     @Override
     public void refreshGui() {
-        updateInfo();
+        if(view != null)
+            updateInfo();
     }
 
     private void updateData() {

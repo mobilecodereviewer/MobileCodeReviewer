@@ -15,6 +15,7 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
 
 /**
  * Simple Stub for ChangeInfoDAO with hardcoded values
@@ -138,6 +139,11 @@ public class ChangeInfoDAOMockImpl implements ChangeInfoDAO {
 
     @Override
     public Map<String, List<Comment>> getPendingComments(String changeId, String revisonId) {
+        return null;
+    }
+
+    @Override
+    public SubmissionResult submitChange(String changeId) {
         return null;
     }
 }

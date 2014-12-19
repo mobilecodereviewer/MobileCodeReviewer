@@ -11,12 +11,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import pl.edu.agh.mobilecodereviewer.dto.SubmitInputDTO;
+import pl.edu.agh.mobilecodereviewer.exceptions.HTTPErrorException;
+import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationInfo;
 import pl.edu.agh.mobilecodereviewer.dao.gerrit.api.GerritService;
@@ -284,7 +290,13 @@ public class RestApi {
     }
 
     public Map<String, List<CommentInfoDTO>> getDraftComments(String changeId, String revisionId){
-        return gerritService.getDraftComments(changeId, revisionId);
+
+        try {
+            return gerritService.getDraftComments(changeId, revisionId);
+        } catch (HTTPErrorException e) {
+            return new HashMap<>();
+        }
+
     }
 
     public CommentInfoDTO createDraftComment(String changeId, String revisionId, CommentInputDTO commentInputDTO){
@@ -299,6 +311,15 @@ public class RestApi {
         gerritService.deleteDraftComment(changeId, revisionId, draftId);
     }
 
+    public SubmissionResult submitChange(String changeId, SubmitInputDTO submitInputDTO) {
+        try {
+            gerritService.submitChange(changeId, submitInputDTO);
+            return new SubmissionResult(true, "");
+        } catch (HTTPErrorException e) {
+            return new SubmissionResult(false, e.getMessage());
+        }
+    }
+
     private class GerritErrorHandler implements ErrorHandler{
 
         @Override
@@ -310,6 +331,22 @@ public class RestApi {
 
             if(retrofitError.isNetworkError()){
                 return new NetworkException();
+            }
+
+            if(retrofitError.getResponse().getStatus() != HttpURLConnection.HTTP_OK){
+                Response response = retrofitError.getResponse();
+
+                String responseBody = null;
+
+                try {
+                    if(response.getBody().in() != null){
+                        responseBody = IOUtils.toString(response.getBody().in(), Charset.defaultCharset());
+                    }
+                } catch (IOException e) {
+                    responseBody = "";
+                }
+
+                return new HTTPErrorException(response.getStatus(), responseBody);
             }
 
             return retrofitError;
@@ -330,6 +367,7 @@ public class RestApi {
             int responseCode = connection.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
                 connection = tryDigestAuthentication(connection, username, password);
+
                 if(connection == null){
                     throw new HttpDigestAuth.AuthenticationException();
                 }
@@ -377,7 +415,7 @@ public class RestApi {
 
         private Response createResponseFromConnection(final HttpURLConnection urlConnection) throws IOException {
             String received_url = urlConnection.getURL().toString();
-            int received_status = urlConnection.getResponseCode();
+            final int received_status = urlConnection.getResponseCode();
             String received_reason = urlConnection.getResponseMessage();
             List<Header> received_headers = new LinkedList<Header>();
             for (Map.Entry<String, List<String>> header : urlConnection.getHeaderFields().entrySet()) {
@@ -385,6 +423,7 @@ public class RestApi {
                     received_headers.add(new Header(header.getKey(), headerValue));
                 }
             }
+
             TypedInput received_body = new TypedInput() {
                 @Override
                 public String mimeType() {
@@ -398,9 +437,13 @@ public class RestApi {
 
                 @Override
                 public InputStream in() throws IOException {
+                    if(received_status != HttpURLConnection.HTTP_OK){
+                        return urlConnection.getErrorStream();
+                    }
                     return urlConnection.getInputStream();
                 }
             };
+
             return new Response(received_url, received_status, received_reason, received_headers, received_body);
         }
 

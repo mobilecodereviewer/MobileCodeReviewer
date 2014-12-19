@@ -15,4 +15,8 @@ public interface ChangeDetailsView {
     void setTitle(String titleText);
 
     void preparePendingFilesCommentsList(Map<String, List<Comment>> pendingComments);
+
+    void onSubmitError(String message);
+
+    void onSubmitSuccess();
 }

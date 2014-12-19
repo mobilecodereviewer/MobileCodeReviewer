@@ -59,6 +59,7 @@
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.votes">Votes</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.addReview.message">Review message</string>
     <string name="pl.agh.edu.mobilecodereviewer.ChangesExplorer.refreshChangeDetails">Refresh Change Details</string>
+    <string name="pl.agh.edu.mobilecodereviewer.ChangeDetails.menu.submit">Submit</string>
 
     <!--ChangeInfoTab start-->
     <string name="pl.agh.edu.mobilecodereviewer.ChangeInfoTab.number">Number</string>

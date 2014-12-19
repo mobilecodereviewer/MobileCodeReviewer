@@ -17,4 +17,10 @@ public interface ChangeDetailsController extends Refreshable{
     void deleteFileComment(String path, Comment comment);
 
     void updateFileComment(String path, Comment comment, String content);
+
+    void submitChange();
+
+    void refreshChangeMessagesTab();
+
+    void refreshChangeInfoTab();
 }

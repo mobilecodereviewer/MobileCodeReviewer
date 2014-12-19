@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
+import pl.edu.agh.mobilecodereviewer.dto.SubmitInputDTO;
+import pl.edu.agh.mobilecodereviewer.exceptions.HTTPErrorException;
 import pl.edu.agh.mobilecodereviewer.exceptions.NetworkException;
 import pl.edu.agh.mobilecodereviewer.exceptions.UnauthorizedRequestException;
 import pl.edu.agh.mobilecodereviewer.dto.AccountInfoDTO;
@@ -13,6 +15,7 @@ import pl.edu.agh.mobilecodereviewer.dto.DiffInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -123,7 +126,7 @@ public interface GerritService {
 
     @GET("/changes/{change_id}/revisions/{revision_id}/drafts")
     Map<String, List<CommentInfoDTO>> getDraftComments( @Path("change_id") String change_id,
-                                                        @Path("revision_id") String revision_id);
+                                                        @Path("revision_id") String revision_id) throws HTTPErrorException;
 
     @PUT("/changes/{change_id}/revisions/{revision_id}/drafts/")
     CommentInfoDTO createDraftComment(@Path("change_id") String change_id,
@@ -141,7 +144,9 @@ public interface GerritService {
                             @Path("revision_id") String revision_id,
                             @Path("draft_id") String draft_id);
 
-
+    @POST("/changes/{change_id}/submit")
+    ChangeInfoDTO submitChange(@Path("change_id") String change_id,
+                          @Body SubmitInputDTO submitInputDTO) throws HTTPErrorException;
 
 
 }

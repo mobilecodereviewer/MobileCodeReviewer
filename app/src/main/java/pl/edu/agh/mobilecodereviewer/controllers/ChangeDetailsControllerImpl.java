@@ -6,11 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeDetailsController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeInfoTabController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ChangeMessagesTabController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.CommitMessageTabController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ModifiedFilesTabController;
+import pl.edu.agh.mobilecodereviewer.controllers.api.ReviewersTabController;
 import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.model.ChangeInfo;
 import pl.edu.agh.mobilecodereviewer.model.ChangeStatus;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
 import pl.edu.agh.mobilecodereviewer.utilities.ConfigurationContainer;
 import pl.edu.agh.mobilecodereviewer.view.api.ChangeDetailsView;
 
@@ -18,6 +24,12 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController{
 
     @Inject
     private ChangeInfoDAO changeInfoDAO;
+
+    @Inject
+    private ChangeInfoTabController changeInfoTabController;
+
+    @Inject
+    private ChangeMessagesTabController changeMessagesTabController;
 
     private String changeId;
 
@@ -40,7 +52,8 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController{
 
     @Override
     public void refreshData() {
-        updateData();
+        if(changeId != null && revisionId != null)
+            updateData();
     }
 
     @Override
@@ -54,8 +67,31 @@ public class ChangeDetailsControllerImpl implements ChangeDetailsController{
     }
 
     @Override
+    public void submitChange() {
+        SubmissionResult result = changeInfoDAO.submitChange(changeId);
+        if(result.isSuccess()){
+            view.onSubmitSuccess();
+        } else {
+            view.onSubmitError(result.getMessage());
+        }
+    }
+
+    @Override
+    public void refreshChangeMessagesTab() {
+        changeMessagesTabController.refreshData();
+        changeMessagesTabController.refreshGui();
+    }
+
+    @Override
+    public void refreshChangeInfoTab() {
+        changeInfoTabController.refreshData();
+        changeInfoTabController.refreshGui();
+    }
+
+    @Override
     public void refreshGui() {
-        updateGui();
+        if(view != null)
+            updateGui();
     }
 
 

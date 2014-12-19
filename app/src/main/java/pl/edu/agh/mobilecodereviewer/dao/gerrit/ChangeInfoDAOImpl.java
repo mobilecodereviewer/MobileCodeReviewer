@@ -13,8 +13,11 @@ import pl.edu.agh.mobilecodereviewer.dao.api.ChangeInfoDAO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.CommentInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
+import pl.edu.agh.mobilecodereviewer.dto.SubmitInputDTO;
+import pl.edu.agh.mobilecodereviewer.exceptions.HTTPErrorException;
 import pl.edu.agh.mobilecodereviewer.model.Comment;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
 import pl.edu.agh.mobilecodereviewer.model.utilities.ChangeInfoHelper;
 import pl.edu.agh.mobilecodereviewer.model.utilities.CommentHelper;
 import pl.edu.agh.mobilecodereviewer.utilities.DateUtils;
@@ -32,6 +35,7 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.model.utilities.LabelInfoHelper;
+import retrofit.client.Response;
 
 /**
  * Data access object for information about Changes. It is
@@ -124,7 +128,8 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         List<ChangeMessageInfo> changeMessageInfos = new ArrayList<ChangeMessageInfo>();
 
         for(ChangeMessageInfoDTO changeMessageInfoDTO : changeMessageInfoDTOs){
-            changeMessageInfos.add(new ChangeMessageInfo(changeMessageInfoDTO.getAuthor().getName(), DateUtils.getPrettyDate(changeMessageInfoDTO.getDate()), changeMessageInfoDTO.getMessage()));
+            String authorName = changeMessageInfoDTO.getAuthor() != null ? changeMessageInfoDTO.getAuthor().getName() : "";
+            changeMessageInfos.add(new ChangeMessageInfo(authorName, DateUtils.getPrettyDate(changeMessageInfoDTO.getDate()), changeMessageInfoDTO.getMessage()));
         }
 
         return changeMessageInfos;
@@ -202,18 +207,25 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
         return translateCommentInfoDTOsToComments(restApi.getDraftComments(changeId, revisionId));
     }
 
+    @Override
+    public SubmissionResult submitChange(String changeId) {
+        return restApi.submitChange(changeId, new SubmitInputDTO(true));
+    }
+
     private Map<String, List<Comment>> translateCommentInfoDTOsToComments(Map<String, List<CommentInfoDTO>> draftComments){
         Map<String, List<Comment>> filesCommentsDTOs = new HashMap<>();
 
-        for(String path : draftComments.keySet()){
-            List<CommentInfoDTO> commentInfoDTOs = draftComments.get(path);
+        if(draftComments != null) {
+            for (String path : draftComments.keySet()) {
+                List<CommentInfoDTO> commentInfoDTOs = draftComments.get(path);
 
-            List<Comment> commentInputDTOs = new LinkedList<>();
-            for(CommentInfoDTO commentInfoDTO : commentInfoDTOs){
-                commentInputDTOs.add(CommentHelper.commentFromDTO(commentInfoDTO, path, true));
+                List<Comment> commentInputDTOs = new LinkedList<>();
+                for (CommentInfoDTO commentInfoDTO : commentInfoDTOs) {
+                    commentInputDTOs.add(CommentHelper.commentFromDTO(commentInfoDTO, path, true));
+                }
+
+                filesCommentsDTOs.put(path, commentInputDTOs);
             }
-
-            filesCommentsDTOs.put(path, commentInputDTOs);
         }
 
         return filesCommentsDTOs;

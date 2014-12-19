@@ -45,10 +45,6 @@ import roboguice.inject.InjectView;
  */
 public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     public static final String COMMENT_ADDING_NOT_AVALAIBLE = "Adding comment is not avalaible for Anonymous or when change status is merged or abandoned";
-    private String change_id;
-    private String revision_id;
-    private String file_id;
-    private String changeStatus;
     private int visibleFileIndex;
 
     private Menu menu;

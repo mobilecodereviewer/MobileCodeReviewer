@@ -11,6 +11,8 @@ import pl.edu.agh.mobilecodereviewer.model.FileInfo;
 import pl.edu.agh.mobilecodereviewer.model.LabelInfo;
 import pl.edu.agh.mobilecodereviewer.model.MergeableInfo;
 import pl.edu.agh.mobilecodereviewer.model.PermittedLabel;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
+import retrofit.client.Response;
 
 /**
  * Change Information Data Access Object is used for obtaining
@@ -98,4 +100,6 @@ public interface ChangeInfoDAO {
     Map<String, List<Comment>> updateFileComment(String changeId, String revisionId, String path, Comment comment, String content);
 
     Map<String, List<Comment>> getPendingComments(String changeId, String revisonId);
+
+    SubmissionResult submitChange(String changeId);
 }

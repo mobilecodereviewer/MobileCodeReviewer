@@ -14,6 +14,7 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,8 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
 
     @Inject
     private SourceExplorerController sourceExplorerController;
+
+    private static final String SUBMIT_SUCCESS = "Change submitted successfully";
 
     /**
      * Tag of modified files tab.
@@ -104,7 +107,7 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState,controller);
+        super.onCreate(savedInstanceState, controller);
 
         Intent intent = getIntent();
 
@@ -191,6 +194,8 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
             controller.updateSetReviewPopup();
         } else if (id == R.id.refreshChangeDetails){
             refresh();
+        } else if (id == R.id.action_submitChange) {
+            controller.submitChange();
         }
 
         return super.onOptionsItemSelected(item);
@@ -259,6 +264,22 @@ public class ChangeDetails extends RefreshManagerTabBaseActivity implements Chan
             final ExpandableListView filesList = (ExpandableListView) addReviewView.findViewById(R.id.addReviewFilesList);
             filesList.setAdapter(new AddReviewFilesExpandableListAdapter(this, controller, pendingComments));
         }
+    }
+
+    @Override
+    public void onSubmitError(String message) {
+        showMessage((message.substring(0, 1).toUpperCase() + message.substring(1)).replaceAll("\n", ""));
+    }
+
+    @Override
+    public void onSubmitSuccess() {
+        showMessage(SUBMIT_SUCCESS);
+        controller.refreshChangeInfoTab();
+        controller.refreshChangeMessagesTab();
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pl.edu.agh.mobilecodereviewer.controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.ChangeMessagesTabView;
  * @version 0.1
  * @since 0.3
  */
+@Singleton
 public class ChangeMessagesTabControllerImpl implements ChangeMessagesTabController {
 
     /**

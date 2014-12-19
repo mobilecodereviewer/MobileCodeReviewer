@@ -16,7 +16,11 @@ import pl.edu.agh.mobilecodereviewer.dto.MergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.NullMergeableInfoDTO;
 import pl.edu.agh.mobilecodereviewer.dto.ReviewInputDTO;
 import pl.edu.agh.mobilecodereviewer.dto.RevisionInfoDTO;
+import pl.edu.agh.mobilecodereviewer.dto.SubmitInputDTO;
+import pl.edu.agh.mobilecodereviewer.exceptions.HTTPErrorException;
+import pl.edu.agh.mobilecodereviewer.model.SubmissionResult;
 import pl.edu.agh.mobilecodereviewer.utilities.Pair;
+import retrofit.client.Response;
 
 /**
  * Class decorates RestApi with asynchronous task
@@ -253,6 +257,16 @@ public class AsynchronousRestApi extends RestApi{
             protected Void doInBackground(Object... objects) {
                 restApi.deleteDraftComment(changeId, revisionId, draftId);
                 return null;
+            }
+        });
+    }
+
+    @Override
+    public SubmissionResult submitChange(final String changeId, final SubmitInputDTO submitInputDTO){
+        return runAsyncTask(new AsyncTask<Object, Void, SubmissionResult>() {
+            @Override
+            protected SubmissionResult doInBackground(Object... objects) {
+                return  restApi.submitChange(changeId, submitInputDTO);
             }
         });
     }
