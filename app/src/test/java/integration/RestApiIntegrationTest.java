@@ -48,15 +48,6 @@ public class RestApiIntegrationTest {
         assertEquals("give yourself some free time with this stuff..." , sourceCodeDiff.getDiffContent().get(1).getLinesAfterChange().get(3) );
     }
 
-    @Ignore
-    @Test
-    public void shouldPutCommentSaveValuesToServer() throws Exception {
-        String change_id = "I4b2ca228d25393ed58eee97bbaa46d5939d62767";
-        String revision_id = "1";
-        restApi.putFileComment(change_id, revision_id,
-                               5,"According to RFC RestApiTest 14:37:40/02/10/2014","file1.java");
-
-    }
 
     @Ignore
     @Test

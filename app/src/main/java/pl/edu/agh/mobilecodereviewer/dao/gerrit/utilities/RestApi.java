@@ -116,7 +116,7 @@ public class RestApi {
         return new RestAdapter.Builder()
                 .setExecutors(executor, executor)
                 .setEndpoint(url)
-                .setLogLevel(RestAdapter.LogLevel.BASIC)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setClient(client).build();
     }
 
@@ -131,8 +131,8 @@ public class RestApi {
         return new RestAdapter.Builder()
                 .setExecutors(executor, executor)
                 .setEndpoint(url)
-                .setLogLevel(RestAdapter.LogLevel.BASIC)
                 .setClient(new GerritClient(this.configurationInfo))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setErrorHandler(new GerritErrorHandler())
                 .build();
     }
@@ -333,7 +333,7 @@ public class RestApi {
                 return new NetworkException();
             }
 
-            if(retrofitError.getResponse().getStatus() != HttpURLConnection.HTTP_OK){
+            if(!(retrofitError.getResponse().getStatus()>=200 && retrofitError.getResponse().getStatus()<400)){
                 Response response = retrofitError.getResponse();
 
                 String responseBody = null;

@@ -185,9 +185,8 @@ public class ChangeInfoDAOImpl implements ChangeInfoDAO {
     }
 
     @Override
-    public String putDraftComment(String changeId, String revisionId, Comment comment) {
-        CommentInfoDTO commentInfoDTO = restApi.createDraftComment(changeId, revisionId, new CommentInputDTO(comment.getLine(), comment.getContent(), comment.getPath()));
-        return commentInfoDTO.getId();
+    public void putDraftComment(String changeId, String revisionId, Comment comment) {
+        restApi.createDraftComment(changeId, revisionId, new CommentInputDTO(comment.getLine(), comment.getContent(), comment.getPath()));
     }
 
     @Override

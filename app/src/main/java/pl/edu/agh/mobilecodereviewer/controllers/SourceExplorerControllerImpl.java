@@ -192,9 +192,9 @@ public class SourceExplorerControllerImpl implements SourceExplorerController{
         }
 
         Comment comment = new Comment(linenum, file_id, content, ConfigurationContainer.getInstance().getLoggedUser().getName(), (new Date()).toString());
-        String commentId = changeInfoDAO.putDraftComment(change_id, revision_id, comment);
+        changeInfoDAO.putDraftComment(change_id, revision_id, comment);
         comment.setDraft(true);
-        comment.setDraftId(commentId);
+        comment.setDraftId("current");
 
         getSourceCode().getLine(linenum).getComments().add(0, comment);
     }

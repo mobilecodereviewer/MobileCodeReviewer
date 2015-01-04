@@ -93,7 +93,7 @@ public interface ChangeInfoDAO {
 
     List<PermittedLabel> getPermittedLabels(String changeId);
 
-    String putDraftComment(String changeId, String revisionId, Comment comment);
+    void putDraftComment(String changeId, String revisionId, Comment comment);
 
     Map<String, List<Comment>> deleteFileComment(String changeId, String revisionId, String path, Comment comment);
 
