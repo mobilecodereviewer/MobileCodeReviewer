@@ -2,17 +2,13 @@ package pl.edu.agh.mobilecodereviewer.view.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.io.Files;
@@ -27,6 +23,7 @@ import pl.edu.agh.mobilecodereviewer.model.SourceCode;
 import pl.edu.agh.mobilecodereviewer.model.SourceCodeDiff;
 import pl.edu.agh.mobilecodereviewer.view.activities.base.BaseActivity;
 import pl.edu.agh.mobilecodereviewer.view.activities.resources.ExtraMessages;
+import pl.edu.agh.mobilecodereviewer.view.activities.utilities.comments.InsertCommentDialogBuilder;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SingleLineCommentViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeDiffViewListAdapter;
 import pl.edu.agh.mobilecodereviewer.view.activities.utilities.SourceCodeListAdapter;
@@ -95,7 +92,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
 
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                    return showCommentAddDialog(adapterView, i);
+                    return showCommentAddDialog(i, SourceExplorer.this, controller, (String) adapterView.getItemAtPosition(i));
                 }
             });
         } else  {
@@ -146,43 +143,8 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
         }
     }
 
-    private boolean showCommentAddDialog(AdapterView<?> sourceCodeLayout, final int lineClicked) {
-        LayoutInflater li = LayoutInflater.from(this);
-        View commentLineView = li.inflate(R.layout.layout_comment_line, null);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setView(commentLineView);
-
-        final EditText userInput = (EditText) commentLineView.findViewById(R.id.commentContentTextView);
-        final TextView selectedLineView = (TextView) commentLineView.findViewById(R.id.selectedCodeLine);
-
-        selectedLineView.setText((String) sourceCodeLayout.getItemAtPosition(lineClicked));
-
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        controller.insertComment(userInput.getText().toString(), lineClicked);
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        dialog.cancel();
-                        break;
-                }
-            }
-        };
-
-        alertDialogBuilder
-                .setCancelable(true)
-                .setPositiveButton(R.string.pl_agh_edu_common_ok, dialogClickListener)
-                .setNegativeButton(R.string.pl_agh_edu_common_cancel, dialogClickListener);
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        alertDialog.show();
-
-        return true;
+    private boolean showCommentAddDialog(final int selected_line_number, SourceExplorer parent_acitivity_context, final SourceExplorerController parent_controller, String selected_line_content) {
+        return new InsertCommentDialogBuilder(parent_acitivity_context, parent_controller, selected_line_number, selected_line_content).showInsertCommentDialog();
     }
 
     @Override
@@ -307,6 +269,7 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     public void setTitle(String fileName) {
         super.setTitle(fileName);
     }
+
 }
 
 

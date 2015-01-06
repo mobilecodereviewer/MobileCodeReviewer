@@ -120,5 +120,6 @@
     <string name="pl.agh.edu.mobilecodereviewer.SourceExplorer.toggleLineNumberVisiblity">Toggle line numbers visibility</string>
     <!--SourceExplorer end-->
 
+    <string name="lorem_ipsum">Witam cie tutaj</string>
 
 </resources>

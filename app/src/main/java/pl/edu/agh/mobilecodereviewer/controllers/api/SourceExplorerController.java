@@ -17,7 +17,7 @@ import pl.edu.agh.mobilecodereviewer.view.api.SourceExplorerView;
  * @version 0.1
  * @since 0.1
  */
-public interface SourceExplorerController {
+public interface SourceExplorerController extends CommentsManager {
 
     void initializeView();
 
@@ -26,8 +26,6 @@ public interface SourceExplorerController {
     void preInitialize(List<FileInfo> filesList, ChangeStatus status);
 
     void initializeData(SourceExplorerView view, int fileIndex);
-
-    void insertComment(String content, int lineNumber);
 
     void setCurrentLinePosition(int currLine);
 
@@ -42,10 +40,6 @@ public interface SourceExplorerController {
     void setVisibilityOnSourceCodeNavigation();
 
     void showComments(int position);
-
-    void deleteFileComment(Comment comment);
-
-    void updateFileComment(Comment comment, String content);
 
     boolean fileExists(int index);
 
