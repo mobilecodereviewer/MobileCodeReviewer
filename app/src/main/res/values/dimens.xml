@@ -13,4 +13,6 @@
     <dimen name="common_medium_font_size">17sp</dimen>
     <dimen name="common_small_font_size">15sp</dimen>
 
+    <dimen name="pl.agh.edu.mobilecodereviewer.source_code_font_size">15sp</dimen>
+
     </resources>
