@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -120,13 +121,25 @@ public class SourceExplorer extends BaseActivity implements SourceExplorerView {
     }
 
     @Override
-    public void showCommentListDialog(Line line) {
+    public void showCommentListDialog(final Line line) {
         View lineCommentsView = this.getLayoutInflater().inflate(R.layout.layout_line_comments, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(lineCommentsView);
 
         ListView listView = (ListView) lineCommentsView.findViewById(R.id.lineCommentsList);
         listView.setAdapter(new SingleLineCommentViewListAdapter(context, line, controller) );
+
+        Button replyButton = (Button) lineCommentsView.findViewById(R.id.replyCommentButton);
+
+        final Context sourceexplorer_context = this;
+        replyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InsertCommentDialogBuilder insertCommentDialogBuilder = new InsertCommentDialogBuilder(sourceexplorer_context, controller,
+                        line.getLineNumber(), line.getContent());
+                insertCommentDialogBuilder.showInsertCommentDialog();
+            }
+        });
 
         commentListDialog = alertDialogBuilder.create();
 
